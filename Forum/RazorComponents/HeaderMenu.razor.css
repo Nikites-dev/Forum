@@ -1,0 +1,31 @@
+﻿* {
+    margin: 0;
+    padding: 0;
+}
+.menu {
+    background: wheat;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    height: 7vh;
+}
+
+.box1 {
+    margin: 10px;
+}
+
+.box2 {
+    background: white;
+    border-radius: 10px;
+}
+
+.box2 p {
+    color: red;
+    padding: 1vh 8vh;
+}
+
+
+.box3 {
+    margin: 10px;
+}
