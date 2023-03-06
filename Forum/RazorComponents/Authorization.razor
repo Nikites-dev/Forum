@@ -1,0 +1,76 @@
+﻿
+
+<div hidden="@hideCardSignUp" class="cardSign">
+    
+     <div class="rowContent">
+            <h3>Sign up</h3>
+     </div>
+    
+    <div class="rowContent">
+        <p>Nickname</p>
+        <input class="inputCard" @bind-value="@itemLogin"/>
+    </div>
+
+    <div class="rowContent">
+        <p>Email</p>
+        <input class="inputCard" @bind-value="@itemEmail"/>
+    </div>
+
+
+    <div class="rowContent">
+        <p style="color: @colorCurrent">Password</p>
+        <input type="password" class="inputCard" @bind-value="@itemPassword"/>
+    </div>
+
+    <div class="rowContent">
+        <p style="color: @colorCurrent">Confirm password</p>
+        <input type="password" class="inputCard" @bind-value="@itemConfPassword"/>
+    </div>
+        
+    
+
+    <button class="btnSign" @onclick="@IsSelect">Sign up</button>
+    <br/>
+    <div>
+        <p>Already have an account? <span style="color: #4807ed">Sing in</span></p> 
+    </div>
+    
+
+</div>
+
+
+
+
+
+@code
+{
+    String itemLogin = ""; 
+    String itemPassword = ""; 
+    String itemConfPassword = ""; 
+    String itemFName = ""; 
+    String itemLName = ""; 
+    String itemEmail = "";
+
+    String typeMsg = "";
+    String message = "";
+    
+    bool hideLabel = true;
+    bool hideCardSignUp = false;
+    String colorGray = "#494949";
+    String colorGreen = "lightgreen";
+    String colorRed = "#ee9090";
+    String colorCurrent = "#494949";
+
+
+    void IsSelect()
+    {
+        if (hideCardSignUp)
+        {
+            hideCardSignUp = false;
+        }
+        else
+        {
+            hideCardSignUp = true;
+        }
+    }
+}

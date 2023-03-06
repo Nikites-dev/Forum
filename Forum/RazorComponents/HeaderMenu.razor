@@ -11,13 +11,27 @@
     </div>
     
     <div class="box3">
-        <p>Sign in</p>
+        <button onclick="@SignInClick">Sign in</button> 
     </div>
-    
-    
+</div>
+
+<div hidden="@isClickSign">
+    <Authorization/> 
 </div>
 
 
 @code {
+    bool isClickSign = false;
     
+    void SignInClick()
+    {
+        if (isClickSign)
+        {
+            isClickSign = false;
+        }
+        else
+        {
+            isClickSign = true;
+        }
+    }
 }
