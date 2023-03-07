@@ -1,0 +1,55 @@
+﻿
+
+<div class="content">
+    @if (_posts != null)
+    {
+        @foreach (var post in _posts)
+        {
+            <div class="postCard">
+                <div class="leftSide">
+                    <p>Text</p>
+                </div>
+
+                <div class="rightSide">
+                    <div class="rowCard">
+                        <p>@post.UserId.ToString()</p>
+                    </div>
+                    <div class="rowCard">
+                        <p>@post.Text</p>
+                    </div>
+                </div>
+
+            </div>
+        }
+    }
+    
+</div>
+
+
+@code {
+    List<Comment> comments;
+    List<Post> _posts;
+   
+    
+
+
+    protected override void OnInitialized()
+    {
+       comments = new()
+        {
+            new Comment{UserId = 1, Rating = 12, Text = "Cool"},
+            new Comment{UserId = 13, Rating = 22, Text = "Text"},
+            new Comment{UserId = 134, Rating = 142, Text = "Cool"},
+            new Comment{UserId = 11, Rating = 42, Text = "Cool"},
+        };
+        // error
+        _posts = new()
+        {
+            new Post
+            { 
+                UserId = 1, Likes = new List<int>() {23,234, 2, 13}, Rating = 213, Text = "123", CreatePost = DateTime.Now, Comments = {new Comment{ Text = "weqwe", UserId = 2, Rating = 123}}
+            }
+        };
+    }
+}
+

@@ -2,6 +2,7 @@ using Forum.Data;
 using Forum.RazorComponents;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Post = Forum.Models.Post;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,9 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 // builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddSingleton<HeaderMenu>();
+builder.Services.AddSingleton<Post>();
+builder.Services.AddSingleton<NavMenu>();
+builder.Services.AddSingleton<Authorization>();
 
 var app = builder.Build();
 
