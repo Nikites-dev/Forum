@@ -7,16 +7,22 @@
         {
             <div class="postCard">
                 <div class="leftSide">
-                    <p>Text</p>
+                    <p>@post.Likes.Count</p>
+                    <button>Like</button>
                 </div>
 
                 <div class="rightSide">
                     <div class="rowCard">
-                        <p>@post.UserId.ToString()</p>
+                        <p>@post.UserId.ToString() * </p>
+                        <p> posted by  @post.CreatePost.ToString()</p>
                     </div>
                     <div class="rowCard">
                         <p>@post.Text</p>
                     </div>
+                    <div class="rowCard">
+                        <button>@post.Comments.Count.ToString() Comments</button>
+                    </div>
+                    
                 </div>
 
             </div>
@@ -47,7 +53,11 @@
         {
             new Post
             { 
-                UserId = 1, Likes = new List<int>() {23,234, 2, 13}, Rating = 213, Text = "123", CreatePost = DateTime.Now, Comments = {new Comment{ Text = "weqwe", UserId = 2, Rating = 123}}
+                UserId = 1, Comments = comments, Rating = 123, Text = "COOL!!!", CreatePost = DateTime.Now, Likes = new List<int>(){1, 21,13}
+            },
+            new Post
+            { 
+                UserId = 1, Comments = comments, Rating = 123, Text = "COOL!!!", CreatePost = DateTime.Now, Likes = new List<int>(){1, 21,13}
             }
         };
     }

@@ -4,10 +4,14 @@
 }
 
 .navbar {
+    position: fixed;
     display: flex;
     flex-direction: column;
     justify-content: left;
     padding: 20px;
+    width: 280px;
+    height: 100vh;
+    background: lightpink;
 }
 
 .section {

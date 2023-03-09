@@ -1,4 +1,4 @@
-﻿
+﻿@inject NavigationManager NavigationManager
 
 <div hidden="@hideCardSignUp" class="cardSign">
     
@@ -64,13 +64,6 @@
 
     void IsSelect()
     {
-        if (hideCardSignUp)
-        {
-            hideCardSignUp = false;
-        }
-        else
-        {
-            hideCardSignUp = true;
-        }
+        NavigationManager.NavigateTo("profile");
     }
 }

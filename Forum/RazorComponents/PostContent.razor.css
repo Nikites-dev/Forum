@@ -1,0 +1,43 @@
+﻿* {
+    margin: 0;
+    padding: 0;
+}
+
+.content {
+    width: 40vw;
+    background: lightgoldenrodyellow;
+}
+
+
+.postCard {
+    display: flex;
+    flex-direction: row;
+    background: cadetblue;
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+}
+
+.leftSide {
+    display: flex;
+    flex-direction: column;
+    background: lightpink;
+    width: 40px;
+}
+
+.rightSide {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    background: lightgrey;
+    width: 100%;
+    margin: 0 0 0 5px;
+}
+
+
+.rowCard {
+    display: flex;
+    background: lightsteelblue;
+    flex-direction: row;
+    margin: 1vh 0;
+}

@@ -1,6 +1,5 @@
-﻿@page "/"
-
-<PageTitle>Forum</PageTitle>
+﻿@page "/profile"
+@using Microsoft.VisualBasic
 
 <div class="page">
     <HeaderMenu/>
@@ -9,9 +8,13 @@
             <NavMenu></NavMenu>
         </div>
         
-        <div class="sideRight">
+        <div class="sideCenter">
+            <CreatePost></CreatePost>
             <PostContent></PostContent>
         </div>
         
+        <div class="sideRight">
+          <ProfileUser></ProfileUser>
+        </div>
     </div>
 </div>

@@ -1,0 +1,39 @@
+﻿* {
+    margin: 0;
+    padding: 0;
+}
+
+.cardProfile {
+    display: flex;
+    height: 500px;
+    flex-direction: column;
+    background: wheat;
+    border-radius: 10px;
+    width: 350px;
+}
+
+.boxTop {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 30%;
+    background: #0a53be;
+}
+
+.boxEnd {
+    display: flex;
+    flex-direction: column;
+    height: 70%;
+    background: #e0abab;
+}
+
+.boxEnd h3 {
+    text-align: center;
+}
+
+.cardRow {
+    display: flex;
+    flex-direction: row;
+    margin: 10px 10px;
+    
+}
