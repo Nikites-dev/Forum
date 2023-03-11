@@ -1,6 +1,7 @@
 using Forum.Data;
 using Forum.Pages;
 using Forum.RazorComponents;
+using Forum.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Post = Forum.Models.Post;
@@ -16,6 +17,7 @@ builder.Services.AddSingleton<Post>();
 builder.Services.AddSingleton<NavMenu>();
 builder.Services.AddSingleton<Authorization>();
 builder.Services.AddSingleton<Profile>();
+builder.Services.AddSingleton<PostService>();
 
 var app = builder.Build();
 

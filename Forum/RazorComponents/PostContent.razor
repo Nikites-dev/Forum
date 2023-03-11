@@ -1,4 +1,5 @@
-﻿
+﻿@using Forum.Services
+@inject PostService PostService
 
 <div class="content">
     @if (_posts != null)
@@ -41,25 +42,28 @@
 
     protected override void OnInitialized()
     {
-       comments = new()
-        {
-            new Comment{UserId = 1, Rating = 12, Text = "Cool"},
-            new Comment{UserId = 13, Rating = 22, Text = "Text"},
-            new Comment{UserId = 134, Rating = 142, Text = "Cool"},
-            new Comment{UserId = 11, Rating = 42, Text = "Cool"},
-        };
-        // error
-        _posts = new()
-        {
-            new Post
-            { 
-                UserId = 1, Comments = comments, Rating = 123, Text = "COOL!!!", CreatePost = DateTime.Now, Likes = new List<int>(){1, 21,13}
-            },
-            new Post
-            { 
-                UserId = 1, Comments = comments, Rating = 123, Text = "COOL!!!", CreatePost = DateTime.Now, Likes = new List<int>(){1, 21,13}
-            }
-        };
+        _posts = PostService.GetPosts();
+
+
+    // comments = new()
+    //  {
+    //      new Comment{UserId = 1, Rating = 12, Text = "Cool"},
+    //      new Comment{UserId = 13, Rating = 22, Text = "Text"},
+    //      new Comment{UserId = 134, Rating = 142, Text = "Cool"},
+    //      new Comment{UserId = 11, Rating = 42, Text = "Cool"},
+    //  };
+    //  // error
+    //  _posts = new()
+    //  {
+    //      new Post
+    //      { 
+    //          UserId = 1, Comments = comments, Rating = 123, Text = "COOL!!!", CreatePost = DateTime.Now, Likes = new List<int>(){1, 21,13}
+    //      },
+    //      new Post
+    //      { 
+    //          UserId = 2, Comments = comments, Rating = 123, Text = "COOL!!!", CreatePost = DateTime.Now, Likes = new List<int>(){1, 21,13}
+    //      }
+    //  };
     }
 }
 

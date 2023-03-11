@@ -1,26 +1,54 @@
-﻿<div class="card">
+﻿@using Forum.Services
+@inject PostService  PostService
+
+<div class="cardCreate">
     <div class="types">
         <button>Post</button>
         <button>Image</button>
         <button>Link</button>
     </div>
     
-    <div>
+    <div class="box">
         <div class="tools">
-            <p>Bold</p> 
-            <p>Cursive</p> 
-            <p>Heading</p> 
-            <p>Link</p> 
+            <button>Bold</button> 
+            <button>Cursive</button> 
+            <button>Heading</button> 
+            <button>Link</button> 
         </div>
-        <div>
-            <button>Create</button>
+        <div class="inputField">
+            <textarea type="text" content="@inputText"/>
         </div>
     </div>
     
-    
-    
+    <div class="bottom">
+        <button @onclick="@CreateNewPost">Create</button>
+    </div>
 </div>
 
 @code {
+
+    String inputText = "TextMB";
     
+    List<Comment> comments = new()
+    {
+        new Comment{UserId = 1, Rating = 12, Text = "Cool"},
+        new Comment{UserId = 13, Rating = 22, Text = "Text"},
+        new Comment{UserId = 134, Rating = 142, Text = "Cool"},
+        new Comment{UserId = 11, Rating = 42, Text = "Cool"},
+    };
+
+    
+    void CreateNewPost()
+    {
+        Post post = new Post();
+        post.Comments = comments;
+        post.Rating = 234;
+        post.Text = inputText.ToString();
+        post.UserId = 2;
+        post.CreatePost = DateTime.Now;
+        post.Likes = new List<int>() { 21, 432, 43, 45 };
+        
+        PostService.GetPosts().Add(post);
+    }
+
 }
