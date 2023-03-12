@@ -11,7 +11,7 @@ namespace Forum.Models
         [BsonIgnoreIfDefault]
         public ObjectId _id;
         [BsonIgnoreIfDefault]
-        public int UserId { get; set; }
+        public String Username { get; set; }
         [BsonIgnoreIfDefault]
         public String Text { get; set; }
         [BsonIgnoreIfDefault]

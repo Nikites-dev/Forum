@@ -1,38 +1,39 @@
-﻿@inject NavigationManager NavigationManager
+﻿@using Forum.MongoDB
+@inject NavigationManager NavigationManager
 
 <div hidden="@hideCardSignUp" class="cardSign">
     
      <div class="rowContent">
-            <h3>Sign up</h3>
+            <h3>@titleSign</h3>
      </div>
     
-    <div class="rowContent">
-        <p>Nickname</p>
-        <input class="inputCard" @bind-value="@itemLogin"/>
+    <div hidden="@hidenUsername" class="rowContent">
+        <p style="color: @itemColors[0]">Username</p>
+        <input class="inputCard" @bind-value="@itemData[0]"/>
     </div>
 
-    <div class="rowContent">
-        <p>Email</p>
-        <input class="inputCard" @bind-value="@itemEmail"/>
+    <div hidden="@hidenEmail" class="rowContent">
+        <p style="color: @itemColors[1]">Email</p>
+        <input class="inputCard" @bind-value="@itemData[1]"/>
     </div>
 
 
-    <div class="rowContent">
-        <p style="color: @colorCurrent">Password</p>
-        <input type="password" class="inputCard" @bind-value="@itemPassword"/>
+    <div hidden="@hidenPassword" class="rowContent">
+        <p style="color: @itemColors[2]">Password</p>
+        <input type="password" class="inputCard" @bind-value="@itemData[2]"/>
     </div>
 
-    <div class="rowContent">
-        <p style="color: @colorCurrent">Confirm password</p>
-        <input type="password" class="inputCard" @bind-value="@itemConfPassword"/>
+    <div hidden="@hidenConfirmP" class="rowContent">
+        <p style="color: @itemColors[3]">Confirm password</p>
+        <input type="password" class="inputCard" @bind-value="@itemData[3]"/>
     </div>
         
     
 
-    <button class="btnSign" @onclick="@IsSelect">Sign up</button>
+    <button class="btnSign" @onclick="@isValidate">@titleSign</button>
     <br/>
     <div>
-        <p>Already have an account? <span style="color: #4807ed">Sing in</span></p> 
+        <p>Already have an account? <span style="color: #4807ed" @onclick="@ChangeSignMethod">@txtSign</span></p> 
     </div>
     
 
@@ -44,26 +45,134 @@
 
 @code
 {
-    String itemLogin = ""; 
-    String itemPassword = ""; 
-    String itemConfPassword = ""; 
-    String itemFName = ""; 
-    String itemLName = ""; 
+    // hidden rows
+    bool hidenUsername = false;
+    bool hidenEmail = false;
+    bool hidenPassword = false;
+    bool hidenConfirmP = false;
+    
+    // input data
+    String itemUsername = ""; 
+    String itemPassword = "";
     String itemEmail = "";
-
-    String typeMsg = "";
-    String message = "";
+    String itemConfPassword = "";
+    
+    String titleSign = "Sign up";
+    String txtSign = "Sign in";
+    bool isSignUp = true;
     
     bool hideLabel = true;
     bool hideCardSignUp = false;
+    
+    
     String colorGray = "#494949";
-    String colorGreen = "lightgreen";
-    String colorRed = "#ee9090";
-    String colorCurrent = "#494949";
+    String colorBlack = "black";
+    String colorGreen = "#6dce83";
+    String colorRed = "#fc3f1d";
+    String colorCurrent = "red";
+
+    String colorUsername = "";
+    String colorEmail = "";
+    String colorPassword = "";
+    String colorConfirmP = "";
+
+    List<String> itemColors = new List<string>(); 
+    List<String> itemData = new List<string>(); 
 
 
-    void IsSelect()
+    protected override void OnInitialized()
     {
-        NavigationManager.NavigateTo("profile");
+        itemColors = new List<string>() {colorUsername, colorEmail, colorPassword, colorConfirmP};
+        itemData = new List<string>() {itemUsername, itemEmail, itemPassword, itemConfPassword};
+
+        CheckFields(colorBlack, colorBlack);
+    }
+
+    public void isValidate()
+    {
+        if (isSignUp)
+        {
+            CheckFields(colorGreen, colorRed);
+            if (itemData[0] != "" && itemData[1] != "" && itemData[2] != ""  && itemData[3] != "" && itemData[2] == itemData[3])
+            {
+                User newUser = new User();
+                newUser.Username = itemData[0]; 
+                newUser.Email = itemData[1];
+                newUser.Password = itemData[2];
+                
+                UserDbConnection.AddToDatabase(newUser);
+                NavigationManager.NavigateTo("profile");
+                hideCardSignUp = true;
+            }
+        }
+        else
+        {
+            itemColors[0] = colorBlack;
+            itemColors[2] = colorBlack;
+            if (itemData[0] != "" && itemData[2] != "")
+            {
+               
+            }
+        }
+    }
+
+    void OnChangeUsername()
+    {
+        
+    }
+
+    void BtnSignClick()
+    {
+        
+        // NavigationManager.NavigateTo("profile");
+    }
+
+    void CheckFields(String colorY, String colorN)
+    {
+        for (var i = 0; i < itemData.Count; i++)
+        {
+            if (itemData[i] == "")
+            {
+                itemColors[i] = colorN;
+            }
+            else
+            {
+                itemColors[i] = colorGreen;
+                
+                if (itemData[2] == itemData[3])
+                {
+                    itemColors[2] = colorGreen;
+                    itemColors[3] = colorGreen;
+                }
+                else
+                {
+                    itemColors[2] = colorRed;
+                    itemColors[3] = colorRed;
+                }
+            }
+        }
+        StateHasChanged();
+    }
+
+    void ChangeSignMethod()
+    {
+        if (isSignUp)
+        {
+            isSignUp = false;
+            titleSign = "Sign up";
+            txtSign = "Sign in";
+            
+            hidenEmail = true;
+            hidenConfirmP = true;
+        }
+        else
+        {
+            isSignUp = true;
+            titleSign = "Sign in";
+            txtSign = "Sign up";
+
+            hidenEmail = false;
+            hidenConfirmP = false;
+        }
     }
 }

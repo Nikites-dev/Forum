@@ -11,16 +11,14 @@ namespace Forum.Models
         [BsonIgnoreIfDefault]
         public ObjectId _id;
         
-        // public int Id { get; set; }
-        public String NickName { get; set; }
         [BsonIgnoreIfDefault]
-        public String FirstName { get; set; }
-        [BsonIgnoreIfDefault]
-        public String LastName { get; set; }
+        public String Username { get; set; }
+        
         [BsonIgnoreIfDefault]
         public String Email { get; set; }
+
         [BsonIgnoreIfDefault]
-        public List<Post> posts { get; set; }
+        public String Password { get; set; }
     }
 }
 

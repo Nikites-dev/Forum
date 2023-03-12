@@ -34,7 +34,7 @@ namespace Forum.Services
             
         public List<Post> GetPosts() {
         
-            return posts = MongoDBAction.FindPosts();
+            return posts = PostDbConnection.FindPosts();
         }
 
         public void AddPost(Post post)
