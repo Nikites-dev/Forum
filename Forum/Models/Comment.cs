@@ -1,8 +1,12 @@
-﻿namespace Forum.Models;
+﻿using System;
 
-public class Comment
+namespace Forum.Models
 {
-    public int UserId { get; set; }
-    public String Text { get; set; }
-    public int Rating { get; set; }
+    public class Comment
+    {
+        public int UserId { get; set; }
+        public String Text { get; set; }
+        public int Rating { get; set; }
+    }
 }
+

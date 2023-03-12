@@ -1,5 +1,6 @@
 ﻿@using Forum.Services
-@inject PostService  PostService
+@using Forum.MongoDB
+@inject PostService postService
 
 <div class="cardCreate">
     <div class="types">
@@ -16,7 +17,8 @@
             <button>Link</button> 
         </div>
         <div class="inputField">
-            <textarea type="text" content="@inputText"/>
+            <label class="control-label">Message</label>
+            <textarea rows="4" value="@EmailMessage" @onchange="@((args) => EmailMessage = args.Value.ToString())"></textarea>
         </div>
     </div>
     
@@ -27,8 +29,6 @@
 
 @code {
 
-    String inputText = "TextMB";
-    
     List<Comment> comments = new()
     {
         new Comment{UserId = 1, Rating = 12, Text = "Cool"},
@@ -36,19 +36,35 @@
         new Comment{UserId = 134, Rating = 142, Text = "Cool"},
         new Comment{UserId = 11, Rating = 42, Text = "Cool"},
     };
-
     
     void CreateNewPost()
     {
         Post post = new Post();
+        post.UserId = RandomGeneratorId.GetRndNumber();
         post.Comments = comments;
         post.Rating = 234;
-        post.Text = inputText.ToString();
-        post.UserId = 2;
+        post.Text = emailMessage.ToString();
         post.CreatePost = DateTime.Now;
         post.Likes = new List<int>() { 21, 432, 43, 45 };
-        
-        PostService.GetPosts().Add(post);
-    }
 
+        postService.AddPost(post);
+        
+        MongoDBAction.AddToDatabase(post);
+
+        StateHasChanged();
+    }
+    
+    private string emailMessage = "";
+    
+    public string EmailMessage
+    {
+        get =>  emailMessage;
+        set
+        {
+            if (emailMessage != value)
+            {
+                emailMessage = ((MarkupString)value).ToString();
+            }
+        }
+    }
 }

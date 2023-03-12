@@ -1,3 +1,5 @@
+using System;
+
 namespace Forum.Data
 {
     public class WeatherForecast
