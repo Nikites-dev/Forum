@@ -19,8 +19,7 @@ namespace Forum.Models
         [BsonIgnoreIfDefault]
         public List<Comment> Comments { get; set; }
         [BsonIgnoreIfDefault]
-    
-        public List<int> Likes { get; set; }
+        public List<String> Likes { get; set; }
         [BsonIgnoreIfDefault]
         public int Rating { get; set; }
     }

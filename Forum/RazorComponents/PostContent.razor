@@ -1,6 +1,8 @@
 ﻿@using Forum.Services
 @using System.Threading
+@using Forum.MongoDB
 @inject PostService PostService
+@inject Forum.MongoDB.UserDbConnection userConnection
 
 <div class="content">
     @if (_posts != null)
@@ -9,8 +11,23 @@
         {
             <div class="postCard">
                 <div class="leftSide">
-                    <p>@post.Likes.Count</p>
-                    <button>Like</button>
+                    @if (@post.Likes != null)
+                    {
+                        <p>@post.Likes.Count</p>
+                    }
+                    else
+                    {
+                        <p>0</p>
+                    }
+                    @if (userConnection.isLoginUser == null)
+                    {
+                        <button disabled="disabled" @onclick="(() => PutLike(post))">Like</button>
+                    }
+                    else
+                    {
+                        <button @onclick="(() => PutLike(post))">Like</button>    
+                    }
+                    
                 </div>
 
                 <div class="rightSide">
@@ -22,7 +39,14 @@
                         <p>@post.Text</p>
                     </div>
                     <div class="rowCard">
-                        <button>@post.Comments.Count.ToString() Comments</button>
+                        @if (post.Comments != null)
+                        {
+                            <button>@post.Comments.Count.ToString() Comments</button>
+                        }
+                        else
+                        {
+                            <button>add first comment</button>
+                        }
                     </div>
                     
                 </div>
@@ -37,12 +61,9 @@
 @code {
     List<Comment> comments;
     List<Post> _posts;
-   
-   
-
+    
     protected override void OnInitialized()
     {
-        
         StateHasChanged();
         _posts = PostService.GetPosts();
 
@@ -51,12 +72,37 @@
 
     public async Task DataUpdating()
     {
-       
         while(true) {
             StateHasChanged();
             _posts = PostService.GetPosts();
             await Task.Delay(1000);
         }
     }
+
+    void PutLike(Post post)
+    {
+        bool alreadyLike = false;
+        if (post.Likes != null)
+        {
+            foreach (var likes in post.Likes)
+            {
+                if (likes == userConnection.isLoginUser.Username)
+                {
+                    alreadyLike = true;
+                }
+            }
+        }
+
+        if (alreadyLike == false)
+        {
+            post.Likes.Add(userConnection.isLoginUser.Username);
+        }
+        else
+        {
+            post.Likes.Remove(userConnection.isLoginUser.Username);
+        }
+        PostDbConnection.UpdatePost(post);
+    }
+
 }
 

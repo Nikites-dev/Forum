@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Forum.Models;
+using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace Forum.MongoDB
@@ -66,6 +67,14 @@ namespace Forum.MongoDB
                 return null;
             }
             return post;
+        }
+        
+        public static void UpdatePost(Post post)
+        {
+            var client = new MongoClient("mongodb://localhost");
+            var database = client.GetDatabase("Forum");
+            var collection = database.GetCollection<Post>("Posts");
+            var b = collection.ReplaceOne(x => x._id == post._id, post).ModifiedCount > 0;
         }
     }
 }
