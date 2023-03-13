@@ -1,4 +1,5 @@
 using Forum.Data;
+using Forum.MongoDB;
 using Forum.Pages;
 using Forum.RazorComponents;
 using Forum.Services;
@@ -23,6 +24,7 @@ builder.Services.AddSingleton<Profile>();
 builder.Services.AddSingleton<PostService>();
 builder.Services.AddSingleton<CreatePost>();
 builder.Services.AddSingleton<PostContent>();
+builder.Services.AddSingleton<UserDbConnection>();
 
 var app = builder.Build();
 

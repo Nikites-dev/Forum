@@ -6,7 +6,7 @@ namespace Forum.MongoDB
 {
     public class UserDbConnection
     {
-        
+        public User? isLoginUser { get; set; }
         public static void AddToDatabase(User user)
         {
             var client = new MongoClient("mongodb://localhost");

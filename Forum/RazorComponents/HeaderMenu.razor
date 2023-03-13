@@ -16,12 +16,12 @@
 </div>
 
 <div hidden="@isClickSign">
-    <Authorization/> 
+    <Authorization IsActiveCard="@isClickSign"/> 
 </div>
 
 
 @code {
-    bool isClickSign = false;
+    bool isClickSign = true;
     
     void SignInClick()
     {

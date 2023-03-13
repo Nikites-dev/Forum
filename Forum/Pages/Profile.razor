@@ -1,4 +1,6 @@
 ﻿@page "/profile"
+@using Forum.MongoDB
+@inject Forum.MongoDB.UserDbConnection userConnect
 @using Microsoft.VisualBasic
 
 <div class="page">
@@ -13,12 +15,13 @@
             <br/>
             <br/>
             <br/>
-            
             <PostContent></PostContent>
         </div>
         
         <div class="sideRight">
-          <ProfileUser></ProfileUser>
+            <ProfileUser CrntUser="userConnect.isLoginUser"></ProfileUser>
         </div>
     </div>
 </div>
+
+

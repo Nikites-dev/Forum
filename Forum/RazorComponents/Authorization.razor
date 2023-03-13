@@ -1,7 +1,8 @@
 ﻿@using Forum.MongoDB
+@inject Forum.MongoDB.UserDbConnection userConnect
 @inject NavigationManager NavigationManager
 
-<div hidden="@hideCardSignUp" class="cardSign">
+<div hidden="@IsActiveCard" class="cardSign">
     
      <div class="rowContent">
             <h3>@titleSign</h3>
@@ -45,6 +46,11 @@
 
 @code
 {
+    [Parameter]
+    public bool IsActiveCard { get; set; }
+
+
+
     // hidden rows
     bool hidenUsername = false;
     bool hidenEmail = false;
@@ -62,9 +68,7 @@
     bool isSignUp = true;
     
     bool hideLabel = true;
-    bool hideCardSignUp = false;
-    
-    
+
     String colorGray = "#494949";
     String colorBlack = "black";
     String colorGreen = "#6dce83";
@@ -101,8 +105,9 @@
                 newUser.Password = itemData[2];
                 
                 UserDbConnection.AddToDatabase(newUser);
+                userConnect.isLoginUser = newUser;
                 NavigationManager.NavigateTo("profile");
-                hideCardSignUp = true;
+                IsActiveCard = true;
             }
         }
         else
@@ -111,7 +116,13 @@
             itemColors[2] = colorBlack;
             if (itemData[0] != "" && itemData[2] != "")
             {
-               
+                userConnect.isLoginUser = UserDbConnection.GetUserByUsernamePassword(itemData[0], itemData[2]);
+
+                if (userConnect.isLoginUser != null)
+                {
+                    NavigationManager.NavigateTo("profile");
+                    IsActiveCard = true;
+                }
             }
         }
     }
