@@ -1,0 +1,30 @@
+﻿* {
+    margin: 0;
+    padding: 0
+}
+
+.background {
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    margin: auto;
+}
+
+
+.field {
+    display: flex;
+    margin: auto;
+    width: 100vh;
+    flex-direction: column;
+    background: white;
+}
+
+.content1 {
+    
+    background: white;
+    
+}

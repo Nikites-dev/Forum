@@ -41,11 +41,11 @@
                     <div class="rowCard">
                         @if (post.Comments != null)
                         {
-                            <button>@post.Comments.Count.ToString() Comments</button>
+                            <button @onclick="(() => CommmentRemote(post))">@post.Comments.Count.ToString() Comments</button>
                         }
                         else
                         {
-                            <button>add first comment</button>
+                            <button @onclick="(() => CommmentRemote(post))">add first comment</button>
                         }
                     </div>
                     
@@ -55,12 +55,18 @@
         }
     }
     
+    <div hidden="@hideCmntComponent">
+        <CommentPost PostChoose="@selectPost"/>    
+    </div>
 </div>
+
 
 
 @code {
     List<Comment> comments;
     List<Post> _posts;
+    bool hideCmntComponent = true;
+    Post selectPost = new Post(); 
     
     protected override void OnInitialized()
     {
@@ -103,5 +109,20 @@
         }
         PostDbConnection.UpdatePost(post);
     }
+
+    void CommmentRemote(Post post)
+    {
+        selectPost = post;
+        if (hideCmntComponent)
+        {
+            hideCmntComponent = false;
+        }
+        else
+        {
+            hideCmntComponent = true;
+        }
+
+    }
+
 }
 
