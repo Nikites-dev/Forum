@@ -16,6 +16,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 // builder.Services.AddSingleton<WeatherForecastService>();
+builder.Services.AddSingleton<BehaviourService>();
 builder.Services.AddSingleton<HeaderMenu>();
 builder.Services.AddSingleton<Post>();
 builder.Services.AddSingleton<NavMenu>();

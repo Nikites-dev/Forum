@@ -2,6 +2,7 @@
 @using System.Threading
 @using Forum.MongoDB
 @inject PostService PostService
+@inject BehaviourService BehaviourService
 @inject Forum.MongoDB.UserDbConnection userConnection
 
 <div class="content">
@@ -55,9 +56,9 @@
         }
     }
     
-    <div hidden="@hideCmntComponent">
-        <CommentPost PostChoose="@selectPost"/>    
-    </div>
+   
+    <CommentPost PostChoose="@selectPost"/>    
+   
 </div>
 
 
@@ -65,11 +66,13 @@
 @code {
     List<Comment> comments;
     List<Post> _posts;
-    bool hideCmntComponent = true;
+    bool hideCmntBtn = true;
+    bool hideCmntComponent = false;
     Post selectPost = new Post(); 
     
     protected override void OnInitialized()
     {
+        BehaviourService.isShowCommentContent = true;
         StateHasChanged();
         _posts = PostService.GetPosts();
 
@@ -113,16 +116,16 @@
     void CommmentRemote(Post post)
     {
         selectPost = post;
-        if (hideCmntComponent)
-        {
-            hideCmntComponent = false;
-        }
-        else
-        {
-            hideCmntComponent = true;
-        }
+        BehaviourService.isShowCommentContent = false;
+        // if (BehaviourService.isShowCommentContent)
+        // {
+        //     BehaviourService.isShowCommentContent = false;
+        // }
+        // else
+        // {
+        //     BehaviourService.isShowCommentContent = true;
+        // }
 
     }
-
 }
 
