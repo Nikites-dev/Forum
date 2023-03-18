@@ -5,6 +5,7 @@
 
 .content {
     width: 40vw;
+    position: relative;
     background: lightgoldenrodyellow;
 }
 

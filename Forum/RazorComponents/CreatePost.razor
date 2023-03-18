@@ -1,12 +1,13 @@
 ﻿@using Forum.Services
 @using Forum.MongoDB
+@using System.IO
 @inject Forum.MongoDB.UserDbConnection userConnect
 @inject PostService postService
 
 <div class="cardCreate">
     <div class="types">
         <button>Post</button>
-        <button>Image</button>
+        <InputFile OnChange="@LoadFiles" class="btnDb" multiple/>
         <button>Link</button>
     </div>
     
@@ -21,7 +22,14 @@
             <label class="control-label">Message</label>
             <textarea rows="4" value="@EmailMessage" @onchange="@((args) => EmailMessage = args.Value.ToString())"></textarea>
         </div>
+         
+       
     </div>
+   
+     <div class="card_img">
+          
+           <img src="imgSource/kap3.jpeg"  alt="img"/>
+       </div>
     
     <div class="bottom">
         <button @onclick="@CreateNewPost">Create</button>
@@ -30,7 +38,24 @@
 
 @code {
 
+    string? path;
+    string? fileName;
+    List<string> names = new List<string>();
+    List<IBrowserFile> _loadedFiles = new();
+    List<String> loadImgNames = new List<string>();
+    
+    private String edImgName = "";
+    
+    List<String> imgNames = FileSystemService.GetNamesOfDir();
 
+    protected override void OnInitialized()
+    {
+        FileSystemService sService = new FileSystemService();
+    //sService.UploadImageToDb();
+        loadImgNames = sService.DownloadToLocal();
+        
+        imgNames = FileSystemService.GetNamesOfDir();
+    }
     
     void CreateNewPost()
     {
@@ -63,4 +88,23 @@
             }
         }
     }
+    
+    private async Task LoadFiles(InputFileChangeEventArgs e)
+    {
+        _loadedFiles.Clear();
+        foreach (var file in e.GetMultipleFiles(e.FileCount))
+        {
+            _loadedFiles.Add(file);
+            
+            Stream stream = file.OpenReadStream();
+            
+            
+            await FileSystemService.UploadImageToDbAsync(stream, file.Name);
+            stream.Dispose();
+        }
+    // LoadNames();
+        FileSystemService sService = new FileSystemService();
+        loadImgNames = sService.DownloadToLocal();
+        imgNames = FileSystemService.GetNamesOfDir();
+    }  
 }
