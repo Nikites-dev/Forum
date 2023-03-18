@@ -1,4 +1,5 @@
 ﻿@using Forum.Services
+@using Forum.MongoDB
 @inject BehaviourService BehaviourService
 
 <div hidden="@BehaviourService.isShowCommentContent" class="background">
@@ -51,7 +52,7 @@
                      @foreach (var comment in @PostChoose.Comments)
                      {
                          <div class="commentField">
-                             <p>@comment.UserId.ToString()</p>
+                             <p>@comment.Username</p>
                              <p>@comment.Text</p>
                              <p>@comment.Rating</p>
                          </div>

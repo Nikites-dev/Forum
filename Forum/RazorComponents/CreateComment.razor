@@ -1,6 +1,6 @@
 ﻿@using Forum.Services
 @using Forum.MongoDB
-
+@inject UserDbConnection UserDbConnection
 
 <div class="box">
     <div class="box1">
@@ -36,7 +36,7 @@
     void AddComment()
     {
         Comment comment = new Comment();
-        comment.UserId = 1;
+        comment.Username = UserDbConnection.isLoginUser.Username;
         comment.Rating = 1;
         comment.Text = text;
         CurrentPost.Comments.Add(comment);

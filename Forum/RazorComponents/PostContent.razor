@@ -28,7 +28,6 @@
                     {
                         <button @onclick="(() => PutLike(post))">Like</button>    
                     }
-                    
                 </div>
 
                 <div class="rightSide">
@@ -36,9 +35,24 @@
                         <p>@post.Username.ToString() * </p>
                         <p> posted by  @post.CreatePost.ToString()</p>
                     </div>
-                    <div class="rowCard">
-                        <p>@post.Text</p>
-                    </div>
+                    @if (post.Text.Length < 20)
+                    {
+                        <div class="rowCard">
+                            <p style="font-size: 25px">@post.Text</p>
+                        </div>  
+                    } else if (post.Text.Length >= 20 && post.Text.Length <= 210)
+                    {
+                        <div class="rowCard">
+                            <p style="font-size: 20px">@post.Text</p>
+                        </div>   
+                    }
+                    else
+                    {
+                        <div class="rowCard">
+                            <p style="font-size: 15px">@post.Text</p>
+                        </div>   
+                    }
+                    
                     <div class="rowCard">
                         @if (post.Comments != null)
                         {
@@ -49,19 +63,12 @@
                             <button @onclick="(() => CommmentRemote(post))">add first comment</button>
                         }
                     </div>
-                    
                 </div>
-
             </div>
         }
     }
-    
-   
-    <CommentPost PostChoose="@selectPost"/>    
-   
+    <CommentPost PostChoose="@selectPost"/>
 </div>
-
-
 
 @code {
     List<Comment> comments;
@@ -84,7 +91,7 @@
         while(true) {
             StateHasChanged();
             _posts = PostService.GetPosts();
-            await Task.Delay(1000);
+            await Task.Delay(500);
         }
     }
 
@@ -117,15 +124,6 @@
     {
         selectPost = post;
         BehaviourService.isShowCommentContent = false;
-        // if (BehaviourService.isShowCommentContent)
-        // {
-        //     BehaviourService.isShowCommentContent = false;
-        // }
-        // else
-        // {
-        //     BehaviourService.isShowCommentContent = true;
-        // }
-
     }
 }
 

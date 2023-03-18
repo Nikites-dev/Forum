@@ -1,8 +1,9 @@
-﻿
+﻿@inject NavigationManager NavigationManager
+
 <div class="menu">
     <div class="box1">
         <div>
-            <p>icon</p>    
+            <button @onclick="@HomeClick">Home</button>    
         </div>
     </div>
     
@@ -34,4 +35,10 @@
             isClickSign = true;
         }
     }
+
+    void HomeClick()
+    {
+        NavigationManager.NavigateTo("/");
+    }
+
 }
