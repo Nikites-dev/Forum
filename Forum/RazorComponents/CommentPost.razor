@@ -4,52 +4,57 @@
             <p>Header</p>
         </div>
         
+        
         <div class="content2">
             <div class="card">
                 <div class="postCard">
-                                <div class="leftSide">
-                                    @if (@PostChoose.Likes != null)
-                                    {
-                                        <p>@PostChoose.Likes.Count</p>
-                                    }
-                                    else
-                                    {
-                                        <p>0</p>
-                                    }
-                                    @* @if (userConnection.isLoginUser == null) *@
-                                    @* { *@
-                                    @*     <button disabled="disabled" @onclick="(() => PutLike(post))">Like</button> *@
-                                    @* } *@
-                                    @* else *@
-                                    @* { *@
-                                    @*     <button @onclick="(() => PutLike(post))">Like</button>     *@
-                                    @* } *@
-                                    
-                                </div>
-                
-                                <div class="rightSide">
-                                    <div class="rowCard">
-                                        @* <p>@PostChoose.Username.ToString() * </p> *@
-                                        <p> posted by  @PostChoose.CreatePost.ToString()</p>
-                                    </div>
-                                    <div class="rowCard">
-                                        <p>@PostChoose.Text</p>
-                                    </div>
-                                    <div class="rowCard">
-                                        @* @if (post.Comments != null) *@
-                                        @* { *@
-                                        @*     <button @onclick="(() => CommmentRemote(post))">@post.Comments.Count.ToString() Comments</button> *@
-                                        @* } *@
-                                        @* else *@
-                                        @* { *@
-                                        @*     <button @onclick="(() => CommmentRemote(post))">add first comment</button> *@
-                                        @* } *@
-                                    </div>
-                                    
-                                </div>
-                
-                            </div>
+                    <div class="leftSide">
+                        @if (@PostChoose.Likes != null)
+                        {
+                            <p>@PostChoose.Likes.Count</p>
+                        }
+                        else
+                        {
+                            <p>0</p>
+                        }
+
+                    </div>
+    
+                    <div class="rightSide">
+                        <div class="rowCard">
+                            @* <p>@PostChoose.Username.ToString() * </p> *@
+                            <p> posted by  @PostChoose.CreatePost.ToString()</p>
+                        </div>
+                        <div class="rowCard">
+                            <p>@PostChoose.Text</p>
+                        </div>
+                        <div class="rowCard">
+                            @if (@PostChoose.Comments != null)
+                            {
+                                <button>@PostChoose.Comments.Count.ToString() Comments</button>
+                            }
+                        </div>
+                    </div>
+                </div>
+               
             </div>
+            
+             <CreateComment CurrentPost="PostChoose"/>
+            
+             <div>
+                 @if (@PostChoose.Comments != null)
+                 {
+                     @foreach (var comment in @PostChoose.Comments)
+                     {
+                         <div class="commentField">
+                             <p>@comment.UserId.ToString()</p>
+                             <p>@comment.Text</p>
+                             <p>@comment.Rating</p>
+                         </div>
+                     }   
+                 }
+             </div>
+             
         </div>
         
     </div>

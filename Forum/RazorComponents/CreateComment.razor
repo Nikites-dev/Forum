@@ -1,0 +1,48 @@
+﻿@using Forum.Services
+@using Forum.MongoDB
+
+
+<div class="box">
+    <div class="box1">
+        <div class="inputField">
+            <label class="control-label">Comment as Username</label>
+            <textarea rows="4" placeholder="What are your thoughts?" value="@text" @onchange="@((args) => EmailMessage = args.Value.ToString())"></textarea>
+        </div>
+        <div class="box2">
+            <button @onclick="@AddComment">Comment</button>
+        </div>
+    </div>
+</div>
+
+@code {
+    private string text = "";
+
+    [Parameter]
+    public Post CurrentPost { get; set; }
+
+    public string EmailMessage
+    {
+        get =>  text;
+        set
+        {
+            if (text != value)
+            {
+                text = ((MarkupString)value).ToString();
+            }
+        }
+    }
+
+
+    void AddComment()
+    {
+        Comment comment = new Comment();
+        comment.UserId = 1;
+        comment.Rating = 1;
+        comment.Text = text;
+        CurrentPost.Comments.Add(comment);
+        
+        PostDbConnection.UpdatePost(CurrentPost);
+        text = "";
+    }
+
+}

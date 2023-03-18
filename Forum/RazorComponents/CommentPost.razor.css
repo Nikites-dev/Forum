@@ -16,15 +16,65 @@
 
 
 .field {
+    position: relative;
     display: flex;
     margin: auto;
+    top: 70px;
     width: 100vh;
+    height: 1000px;
     flex-direction: column;
     background: white;
+    overflow-y: scroll;
+}
+
+.field::-webkit-scrollbar {
+    width: 0;
 }
 
 .content1 {
-    
-    background: white;
-    
+    background: black;
+    height: 40px;
+    color: white;
+}
+
+
+
+.postCard {
+    display: flex;
+    flex-direction: row;
+    background: cadetblue;
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    white-space: normal;
+
+}
+
+.leftSide {
+    display: flex;
+    flex-direction: column;
+    background: lightpink;
+    width: 40px;
+}
+
+.rightSide {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    background: lightgrey;
+    width: 100%;
+    margin: 0 0 0 5px;
+}
+
+
+.rowCard {
+    display: flex;
+    background: lightsteelblue;
+    flex-direction: row;
+    margin: 1vh 0;
+    white-space: normal;
+}
+
+.rowCard p {
+    white-space: normal;
 }
