@@ -23,17 +23,21 @@
 
   left: 0;
   top: 80px;
-  background: #c562ff;
+
   width: 20%;
   height: 100vh;
   float: left;
 }
 
 .sideCenter {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: stretch;
   width: 41%;
   float: right;
   margin: 0 0 0 10vh;
-  background: #874ba9;
+ 
 }
 
 .sideRight {

@@ -4,9 +4,11 @@
 }
 
 .content {
+    position: relative;
     width: 40vw;
     position: relative;
-    background: lightgoldenrodyellow;
+    background: #d54ffd;
+    margin-top: 10px;
 }
 
 

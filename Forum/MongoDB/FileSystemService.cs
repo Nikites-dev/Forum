@@ -13,13 +13,13 @@ namespace Forum.MongoDB
     public class FileSystemService
     {
         private String path = $"{Directory.CreateDirectory(Directory.GetCurrentDirectory() + "/wwwroot/imgSource/")}";
+        private String pathCreate = $"{Directory.CreateDirectory(Directory.GetCurrentDirectory() + "/wwwroot/imgCreate/")}";
+        private String pathList = $"{Directory.CreateDirectory(Directory.GetCurrentDirectory() + "/wwwroot/imgList/")}";
 
         private readonly ILogger<FileSystemService> _logger;
 
         public void UploadImageToDb()
         {
-            
-            
             var client = new MongoClient("mongodb://localhost");
             var database = client.GetDatabase("Forum");
             

@@ -3,11 +3,12 @@
 @using System.IO
 @inject Forum.MongoDB.UserDbConnection userConnect
 @inject PostService postService
+@inject NavigationManager _navigationManager
 
 <div class="cardCreate">
     <div class="types">
         <button>Post</button>
-        <InputFile OnChange="@LoadFiles" class="btnDb" multiple/>
+        <InputFile OnChange="@OnSubmit" class="btnDb" multiple/>
         <button>Link</button>
     </div>
     
@@ -26,10 +27,21 @@
        
     </div>
    
-     <div class="card_img">
-          
-           <img src="imgSource/kap3.jpeg"  alt="img"/>
-       </div>
+    <div class="card_img">
+     @if (fileName != null || fileName != "") 
+     {
+         <img src="imgCreate/@fileName" alt="img"/>
+     }
+        @* @while (true) *@
+        @* { *@
+        @*     @if (fileName != null || fileName != "") *@
+        @*     { *@
+        @*         <img src="imgCreate/@fileName" alt="img"/> *@
+        @*     } *@
+        @*     //    @DataUpdating *@
+        @* } *@
+
+    </div>
     
     <div class="bottom">
         <button @onclick="@CreateNewPost">Create</button>
@@ -39,7 +51,7 @@
 @code {
 
     string? path;
-    string? fileName;
+    static string? fileName;
     List<string> names = new List<string>();
     List<IBrowserFile> _loadedFiles = new();
     List<String> loadImgNames = new List<string>();
@@ -55,8 +67,48 @@
         loadImgNames = sService.DownloadToLocal();
         
         imgNames = FileSystemService.GetNamesOfDir();
+        GetNamesOfDir();
+        DataUpdating();
     }
     
+    
+    public async Task DataUpdating()
+    {
+      
+        await Task.Delay(5000);
+    _navigationManager.NavigateTo("profile");
+    }
+    
+
+    public static void GetNamesOfDir()
+    {
+    // String path = "C:/Users/Petov/source/repos/BlazorPMLabsUnits/BlazorPMLabsUnits/wwwroot/imgSource/";
+        String path = $"{Directory.CreateDirectory(Directory.GetCurrentDirectory() + "/wwwroot/imgCreate/")}";
+        path = path.Replace("/", @"\");
+        DirectoryInfo info = new DirectoryInfo($"{path}");
+
+        List<String> listNames = new List<string>();
+
+        
+            foreach (var item in info.GetFiles())
+            {
+                listNames.Add(item.Name);
+            }
+            
+            
+        
+        if (listNames.Count > 1)
+        {
+            RemoveFolder();
+        }
+        if (listNames.Count == 1)
+        {
+            fileName = listNames[0].ToString();
+            
+        }
+    }
+
+
     void CreateNewPost()
     {
         Post post = new Post();
@@ -88,23 +140,84 @@
             }
         }
     }
-    
-    private async Task LoadFiles(InputFileChangeEventArgs e)
+
+   
+
+    private async void OnSubmit(InputFileChangeEventArgs e)
     {
-        _loadedFiles.Clear();
+        try
+        {
+            RemoveFolder();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex);
+            throw;
+        }
+      
         foreach (var file in e.GetMultipleFiles(e.FileCount))
         {
-            _loadedFiles.Add(file);
+            try
+            {
+                fileName = file.Name;
+                Stream stream = file.OpenReadStream();
+                var path = $"{Directory.CreateDirectory(Directory.GetCurrentDirectory() + "/wwwroot/imgCreate/")}{file.Name}";
+                FileStream fs = File.Create(path);
+                await stream.CopyToAsync(fs);
+                stream.Close();
+                fs.Close();
+                StateHasChanged();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                throw;
+            }
             
-            Stream stream = file.OpenReadStream();
-            
-            
-            await FileSystemService.UploadImageToDbAsync(stream, file.Name);
-            stream.Dispose();
+           
         }
-    // LoadNames();
-        FileSystemService sService = new FileSystemService();
-        loadImgNames = sService.DownloadToLocal();
-        imgNames = FileSystemService.GetNamesOfDir();
-    }  
+     
+  
+      //  StateHasChanged();
+    }
+    
+    public static void DeleteImgLocal(String name)
+    {
+    // String path = $"C:/Users/Petov/source/repos/BlazorPMLabsUnits/BlazorPMLabsUnits/wwwroot/imgSource/{name}";
+        String path = $"{Directory.CreateDirectory(Directory.GetCurrentDirectory() + "/wwwroot/imgCreate/")}{name}";
+           
+        FileInfo file = new FileInfo(path);
+        file.Delete();
+    }
+
+    public static void RemoveFolder()
+    {
+        String path = $"{Directory.CreateDirectory(Directory.GetCurrentDirectory() + "/wwwroot/imgCreate/")}";
+        DirectoryInfo dirInfo = new DirectoryInfo(path);
+ 
+        foreach (FileInfo f in dirInfo.GetFiles())
+        {
+            f.Delete();
+        }
+    }
+
+    // private async Task LoadFiles(InputFileChangeEventArgs e)
+    // {
+    //     _loadedFiles.Clear();
+    //     foreach (var file in e.GetMultipleFiles(e.FileCount))
+    //     {
+    //         _loadedFiles.Add(file);
+    //         Stream stream = file.OpenReadStream();
+    //         
+    //         await FileSystemService.UploadImageToDbAsync(stream, file.Name);
+    //         stream.Dispose();
+    //     }
+    // // LoadNames();
+    //     FileSystemService sService = new FileSystemService();
+    //     loadImgNames = sService.DownloadToLocal();
+    //     imgNames = FileSystemService.GetNamesOfDir();
+    // }  
+    //
+    
+    
 }
