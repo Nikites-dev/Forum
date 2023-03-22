@@ -27,14 +27,12 @@
          
        
     </div>
-   
-    <div class="card_img">
-         @if (fileName != null || fileName != "")
-         {
-             <img src="imgCreate/@fileName" alt="img"/>    
-         }
-    </div>
-    
+     @if (fileName != "")
+     {
+        <div class="card_img">
+            <img src="imgCreate/@fileName" alt="img"/>
+        </div>
+    }
     <div class="bottom">
         <button @onclick="@CreateNewPost">Create</button>
     </div>

@@ -20,7 +20,7 @@
 
 
     <div hidden="@hidenPassword" class="rowContent">
-        <p style="color: @itemColors[2]">Password</p>
+        <p style="  color: @itemColors[2]">Password</p>
         <input type="password" class="inputCard" @bind-value="@itemData[2]"/>
     </div>
 
@@ -40,22 +40,16 @@
 
 </div>
 
-
-
-
-
 @code
 {
     [Parameter]
     public bool IsActiveCard { get; set; }
 
-
-
     // hidden rows
     bool hidenUsername = false;
-    bool hidenEmail = false;
+    bool hidenEmail = true;
     bool hidenPassword = false;
-    bool hidenConfirmP = false;
+    bool hidenConfirmP = true;
     
     // input data
     String itemUsername = ""; 
@@ -67,7 +61,7 @@
     String txtSign = "Sign in";
     bool isSignUp = true;
     
-    bool hideLabel = true;
+    // bool hideLabel = true;
 
     String colorGray = "#494949";
     String colorBlack = "black";
@@ -90,6 +84,7 @@
         itemData = new List<string>() {itemUsername, itemEmail, itemPassword, itemConfPassword};
 
         CheckFields(colorBlack, colorBlack);
+        ChangeSignMethod();
     }
 
     public void isValidate()
@@ -170,8 +165,9 @@
         if (isSignUp)
         {
             isSignUp = false;
-            titleSign = "Sign up";
-            txtSign = "Sign in";
+            titleSign = "Sign in";
+            txtSign = "Sign up";
+            
             
             hidenEmail = true;
             hidenConfirmP = true;
@@ -179,8 +175,8 @@
         else
         {
             isSignUp = true;
-            titleSign = "Sign in";
-            txtSign = "Sign up";
+            titleSign = "Sign up";
+            txtSign = "Sign in";
 
             hidenEmail = false;
             hidenConfirmP = false;
