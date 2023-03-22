@@ -4,6 +4,7 @@
 @inject Forum.MongoDB.UserDbConnection userConnect
 @inject PostService postService
 @inject NavigationManager _navigationManager
+@inject FileSystemService FileSystemService
 
 <div class="cardCreate">
     <div class="types">
@@ -28,18 +29,10 @@
     </div>
    
     <div class="card_img">
-        <button @onclick="@NevigateToYourUrl" content="show" title="show2"/>
-         <img src="imgCreate/@fileName" alt="img"/>
-     
-        @* @while (true) *@
-        @* { *@
-        @*     @if (fileName != null || fileName != "") *@
-        @*     { *@
-        @*         <img src="imgCreate/@fileName" alt="img"/> *@
-        @*     } *@
-        @*     //    @DataUpdating *@
-        @* } *@
-
+         @if (fileName != null || fileName != "")
+         {
+             <img src="imgCreate/@fileName" alt="img"/>    
+         }
     </div>
     
     <div class="bottom">
@@ -57,47 +50,27 @@
     
     private String edImgName = "";
     
-    List<String> imgNames = FileSystemService.GetNamesOfDir();
+ //   List<String> imgNames = FileSystemService.GetNamesOfDir();
 
     protected override void OnInitialized()
     {
         FileSystemService sService = new FileSystemService();
-    //sService.UploadImageToDb();
         loadImgNames = sService.DownloadToLocal();
-        
-        imgNames = FileSystemService.GetNamesOfDir();
-    
-        // GetNamesOfDir();
+       // imgNames = FileSystemService.GetNamesOfDir();
     }
     
-    
-    
-    
-    public async Task DataUpdating()
-    {
-      
-        await Task.Delay(500);
-        // _navigationManager.NavigateTo("profile");
-       // GetNamesOfDir();
-    }
-    
-
     public void  GetNamesOfDir()
     {
-    // String path = "C:/Users/Petov/source/repos/BlazorPMLabsUnits/BlazorPMLabsUnits/wwwroot/imgSource/";
         String path = $"{Directory.CreateDirectory(Directory.GetCurrentDirectory() + "/wwwroot/imgCreate/")}";
         path = path.Replace("/", @"\");
         DirectoryInfo info = new DirectoryInfo($"{path}");
 
         List<String> listNames = new List<string>();
-
         
-            foreach (var item in info.GetFiles())
-            {
-                listNames.Add(item.Name);
-            }
-            
-            
+        foreach (var item in info.GetFiles())
+        {
+            listNames.Add(item.Name);
+        }
         
         if (listNames.Count > 1)
         {
@@ -108,15 +81,14 @@
             fileName = listNames[0].ToString();
         }
     }
-
-
+    
     void CreateNewPost()
     {
         Post post = new Post();
-        // post.Username = "user" + RandomGeneratorId.GetRndNumber();
         post.Username = userConnect.isLoginUser.Username;
         post.Comments = new List<Comment>();
         post.Rating = 234;
+        post.NameImage = fileName;
         post.Text = emailMessage.ToString();
         post.CreatePost = DateTime.Now;
         post.Likes = new List<string>();
@@ -124,6 +96,7 @@
         postService.AddPost(post);
         
         PostDbConnection.AddToDatabase(post);
+        FileSystemService.UploadCreateImgToDb();
 
         StateHasChanged();
     }

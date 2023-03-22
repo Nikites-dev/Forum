@@ -52,6 +52,18 @@
                             <p style="font-size: 15px">@post.Text</p>
                         </div>   
                     }
+                    @if (@post.NameImage != null)
+                    {
+                        <div class="rowCard">
+                            @{
+                                FileSystemService.DownloadToLocalByName(@post.NameImage);
+                            }
+                            ;
+                            <img src="imgSource/@post.NameImage" alt="img"/>
+                        </div>    
+                    }
+                      
+                    
                     
                     <div class="rowCard">
                         @if (post.Comments != null)
@@ -84,6 +96,7 @@
         _posts = PostService.GetPosts();
 
         DataUpdating();
+        
     }
 
     public async Task DataUpdating()
