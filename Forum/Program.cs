@@ -27,6 +27,7 @@ builder.Services.AddSingleton<PostService>();
 builder.Services.AddSingleton<CreatePost>();
 builder.Services.AddSingleton<PostContent>();
 builder.Services.AddSingleton<UserDbConnection>();
+builder.Services.AddSingleton<PostDbConnection>();
 builder.Services.AddSingleton<CreateComment>();
 // builder.Services.AddSingleton<CommentPost>();
 

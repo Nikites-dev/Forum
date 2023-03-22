@@ -30,15 +30,38 @@
                             @* <p>@PostChoose.Username.ToString() * </p> *@
                             <p> posted by  @PostChoose.CreatePost.ToString()</p>
                         </div>
-                        <div class="rowCard">
-                            <p>@PostChoose.Text</p>
-                        </div>
-                        <div class="rowCard">
-                            @if (@PostChoose.Comments != null)
+                        @if (@PostChoose.Text != null)
+                        {
+                            @if (PostChoose.Text.Length < 20)
                             {
-                                <button>@PostChoose.Comments.Count.ToString() Comments</button>
+                                <div class="rowCard">
+                                    <p style="font-size: 25px">@PostChoose.Text</p>
+                                </div>  
+                            } else if (PostChoose.Text.Length >= 20 && PostChoose.Text.Length <= 210)
+                            {
+                                <div class="rowCard">
+                                    <p style="font-size: 20px">@PostChoose.Text</p>
+                                </div>   
                             }
-                        </div>
+                            else
+                            {
+                                <div class="rowCard">
+                                    <p style="font-size: 15px">@PostChoose.Text</p>
+                                </div>   
+                            }
+                        }
+                       
+                        @if (@PostChoose.NameImage != null)
+                        {
+                            <div class="rowCard">
+                                @{
+                                    FileSystemService.DownloadToLocalByName(@PostChoose.NameImage);
+                                }
+                                ;
+                                <img class="imgPost" src="imgSource/@PostChoose.NameImage" alt="img"/>
+                            </div>    
+                        }
+                        
                     </div>
                 </div>
                
@@ -46,7 +69,7 @@
             
              <CreateComment CurrentPost="PostChoose"/>
             
-             <div>
+             <div class="contentComments">
                  @if (@PostChoose.Comments != null)
                  {
                      @foreach (var comment in @PostChoose.Comments)
@@ -60,14 +83,16 @@
                  }
              </div>
              
+             <div class="footer">
+                 <p>footer</p>
+             </div>
+             
         </div>
         
     </div>
 </div>
 
 @code {
-
-   
     
     [Parameter]
     public Post PostChoose { get; set; }
@@ -75,8 +100,6 @@
     // [Parameter]
     // public bool HiddenContent { get; set; }
 
-    
-    
     void ShowCheck()
     {
         BehaviourService.isShowCommentContent = true;

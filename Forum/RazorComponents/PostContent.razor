@@ -4,6 +4,7 @@
 @inject PostService PostService
 @inject BehaviourService BehaviourService
 @inject Forum.MongoDB.UserDbConnection userConnection
+@inject PostDbConnection PostDbConnection
 
 <div class="content">
     @if (_posts != null)
@@ -89,22 +90,41 @@
     bool hideCmntComponent = false;
     Post selectPost = new Post(); 
     
+    [Parameter]
+    public User RegUser { get; set; }
+    
+    [Parameter]
+    public String SortName { get; set; }
+    
     protected override void OnInitialized()
     {
         BehaviourService.isShowCommentContent = true;
         StateHasChanged();
-        _posts = PostService.GetPosts();
-
+        GetPosts();
         DataUpdating();
-        
     }
 
     public async Task DataUpdating()
     {
         while(true) {
             StateHasChanged();
-            _posts = PostService.GetPosts();
+            GetPosts();
             await Task.Delay(500);
+        }
+    }
+
+    void GetPosts()
+    {
+        if (RegUser == null)
+        {
+            _posts = PostService.GetPosts();
+        }
+        else
+        {
+            if (SortName == "not")
+            {
+                _posts = PostDbConnection.FindUserPostsByUsername(RegUser.Username);    
+            }
         }
     }
 

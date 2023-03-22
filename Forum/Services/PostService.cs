@@ -37,6 +37,7 @@ namespace Forum.Services
             return posts = PostDbConnection.FindPosts();
         }
 
+     
         public void AddPost(Post post)
         {
             posts.Add(post);

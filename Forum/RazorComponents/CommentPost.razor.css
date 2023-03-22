@@ -78,3 +78,25 @@
 .rowCard p {
     white-space: normal;
 }
+
+.contentComments {
+    background: #e1c3c3;
+    margin-bottom: 100px;
+}
+
+.commentField {
+    margin: 10px 0;
+    background: #0dcaf0;
+}
+
+.footer {
+    height: 100px;
+}
+
+
+.imgPost {
+    background: yellow;
+    max-width: 100%;
+    margin: auto;
+    object-fit: contain;
+}

@@ -31,20 +31,6 @@ namespace Forum.MongoDB
             return post;
         }
         
-        public static List<Post> FindUserPostsByUsername(String username)
-        {
-            var client = new MongoClient("mongodb://localhost");
-            var database = client.GetDatabase("Forum");
-            var collection = database.GetCollection<Post>("Posts");
-            var post = collection.Find(x => x.Username  == username).ToList();
-            
-            if (post == null)
-            {
-                return null;
-            }
-            return post;
-        }
-        
         public static List<Post> FindPosts()
         {
             var client = new MongoClient("mongodb://localhost");
@@ -56,6 +42,30 @@ namespace Forum.MongoDB
             try
             {
                 post = collection.Find(x => x.Username  != "").ToList();
+            }
+            catch (Exception e)
+            {
+                post = null;
+            }
+            
+            if (post == null)
+            {
+                return null;
+            }
+            return post;
+        }
+        
+        public static List<Post> FindUserPostsByUsername(String username)
+        {
+            var client = new MongoClient("mongodb://localhost");
+            var database = client.GetDatabase("Forum");
+            var collection = database.GetCollection<Post>("Posts");
+
+            List<Post> post = new List<Post>();
+            
+            try
+            {
+                post = collection.Find(x => x.Username == username).ToList();
             }
             catch (Exception e)
             {

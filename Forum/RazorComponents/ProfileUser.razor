@@ -1,4 +1,7 @@
-﻿<div class="cardProfile">
+﻿@using Forum.MongoDB
+@inject PostDbConnection PostDbConnection
+
+<div class="cardProfile">
     
     @if (CrntUser != null)
     {
@@ -21,6 +24,12 @@
                 <p>First Email:  </p>
                 <p>@CrntUser.Email</p>
             </div>
+            
+            <div class="cardRow">
+                <p>Posts:  </p>
+                <p>@countPosts.ToString()</p>
+            </div>
+            
         </div> 
     }
 </div>
@@ -28,4 +37,11 @@
 @code {
     [Parameter]
     public User CrntUser { get; set; }
+
+    int countPosts = 0;
+    protected override void OnInitialized()
+    {
+        countPosts = PostDbConnection.FindUserPostsByUsername("sd").Count;
+    }
+
 }

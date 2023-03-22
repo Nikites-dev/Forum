@@ -1,9 +1,22 @@
-﻿textarea {
+﻿* {
+    margin: 0;
+    padding: 0;
+}
+
+.box {
+    background: lightgreen;
+    height: 300px;
+}
+
+
+textarea {
     width: 100%;
     height: 200px;
     resize: none;
 }
 
 .box2 {
+    
     float: right;
+ 
 }
