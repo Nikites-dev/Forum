@@ -66,20 +66,7 @@
             StateHasChanged();
         }
     }
-    
-    // private async Task OnSubmit(InputFileChangeEventArgs e)
-    // {
-    //
-    //     FileSystemService.OnSubmit(e, "imgUser");
-    //     StateHasChanged();
-    //     fileName = FileSystemService.GetNameOfDir("imgUser");
-    //     if (fileName != "")
-    //     {
-    //         ConfirmImage(fileName);
-    //     }
-    //  //   StateHasChanged();
-    // }
-    
+
     private async Task OnSubmit(InputFileChangeEventArgs e)
     {
         String folder = "imgUser";
@@ -110,8 +97,6 @@
         }
     }
     
-    
-
     void ConfirmImage(String filename)
     {
         FileSystemService.UploadImageToDb("imgUser");
