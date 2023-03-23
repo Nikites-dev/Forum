@@ -55,7 +55,7 @@
                         {
                             <div class="rowCard">
                                 @{
-                                    FileSystemService.DownloadToLocalByName(@PostChoose.NameImage);
+                                    FileSystemService.DownloadToLocalByName(@PostChoose.NameImage, "imgSource");
                                 }
                                 ;
                                 <img class="imgPost" src="imgSource/@PostChoose.NameImage" alt="img"/>

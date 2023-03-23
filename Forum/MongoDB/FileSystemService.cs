@@ -13,21 +13,25 @@ namespace Forum.MongoDB
     public class FileSystemService
     {
         private String path = $"{Directory.CreateDirectory(Directory.GetCurrentDirectory() + "/wwwroot/imgSource/")}";
-        private String pathCreate = $"{Directory.CreateDirectory(Directory.GetCurrentDirectory() + "/wwwroot/imgCreate/")}";
+
+        private String pathCreate =
+            $"{Directory.CreateDirectory(Directory.GetCurrentDirectory() + "/wwwroot/imgCreate/")}";
+
         private String pathList = $"{Directory.CreateDirectory(Directory.GetCurrentDirectory() + "/wwwroot/imgList/")}";
 
         private readonly ILogger<FileSystemService> _logger;
 
-        public void UploadImageToDb()
+        public List<String> UploadImageToDb()
         {
             var client = new MongoClient("mongodb://localhost");
             var database = client.GetDatabase("Forum");
-            
-            
+            List<String> listNames = new List<string>();
+
             List<String> imgNames = GetNamesOfDir("imgSource");
 
             foreach (var name in imgNames)
             {
+                listNames.Add(name);
                 var gridFS = new GridFSBucket(database);
 
                 using (FileStream fs = new FileStream($"{path}{name}", FileMode.Open))
@@ -35,14 +39,16 @@ namespace Forum.MongoDB
                     gridFS.UploadFromStream(name, fs);
                 }
             }
+
+            return imgNames;
         }
 
         public void UploadCreateImgToDb()
         {
             var client = new MongoClient("mongodb://localhost");
             var database = client.GetDatabase("Forum");
-            
-            
+
+
             List<String> imgNames = GetNamesOfDir("imgCreate");
 
             foreach (var name in imgNames)
@@ -55,10 +61,10 @@ namespace Forum.MongoDB
                 }
             }
         }
-        
+
         public List<String> DownloadToLocal()
         {
-           // path = path.Replace(@"\","/" );
+            // path = path.Replace(@"\","/" );
             List<String> imgNames = GetFindByName();
             List<String> loadImgNames = new List<string>();
 
@@ -66,46 +72,16 @@ namespace Forum.MongoDB
             var database = client.GetDatabase("Forum");
             var gridFS = new GridFSBucket(database);
 
-            
-                foreach (var name in imgNames)
-                {
-                    try
-                    {
-                        using (FileStream fs = new FileStream($"{path}{name}", FileMode.CreateNew))
-                        {
-                            gridFS.DownloadToStreamByName(name, fs);
-                           
-                        }
-                        loadImgNames.Add(name);
-                    }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine($"a file named {name} already exists");
-                        // _logger.LogError($"a file named {name} already exists");
-                    }
 
-                }
-            return loadImgNames;
-        }
-        
-        public static void DownloadToLocalByName(String name)
-        {
-            List<String> imgNames = GetFindByName();
-            List<String> loadImgNames = new List<string>();
-
-            var client = new MongoClient("mongodb://localhost");
-            var database = client.GetDatabase("Forum");
-            var gridFS = new GridFSBucket(database);
-            
-             String path = $"{Directory.CreateDirectory(Directory.GetCurrentDirectory() + "/wwwroot/imgSource/")}";
-            
-             try
+            foreach (var name in imgNames)
+            {
+                try
                 {
                     using (FileStream fs = new FileStream($"{path}{name}", FileMode.CreateNew))
                     {
                         gridFS.DownloadToStreamByName(name, fs);
-                           
                     }
+
                     loadImgNames.Add(name);
                 }
                 catch (Exception e)
@@ -113,17 +89,48 @@ namespace Forum.MongoDB
                     Console.WriteLine($"a file named {name} already exists");
                     // _logger.LogError($"a file named {name} already exists");
                 }
+            }
+
+            return loadImgNames;
         }
-        
+
+        public static void DownloadToLocalByName(String name, String folder)
+        {
+            String pathFolder = $"/wwwroot/{folder}/";
+            List<String> imgNames = GetFindByName();
+            List<String> loadImgNames = new List<string>();
+
+            var client = new MongoClient("mongodb://localhost");
+            var database = client.GetDatabase("Forum");
+            var gridFS = new GridFSBucket(database);
+
+            String path = $"{Directory.CreateDirectory(Directory.GetCurrentDirectory() + pathFolder)}";
+
+            try
+            {
+                using (FileStream fs = new FileStream($"{path}{name}", FileMode.CreateNew))
+                {
+                    gridFS.DownloadToStreamByName(name, fs);
+                }
+
+                loadImgNames.Add(name);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"a file named {name} already exists");
+                // _logger.LogError($"a file named {name} already exists");
+            }
+        }
+
         public static List<String> GetNamesOfDir(String folder)
         {
             String pathFolder = $"/wwwroot/{folder}/";
-           
+
             String path = $"{Directory.CreateDirectory(Directory.GetCurrentDirectory() + pathFolder)}";
             path = path.Replace("/", @"\");
             DirectoryInfo info = new DirectoryInfo($"{path}");
 
-            List<String> listNames = new List<string>(); 
+            List<String> listNames = new List<string>();
 
             foreach (var item in info.GetFiles())
             {
@@ -132,7 +139,7 @@ namespace Forum.MongoDB
 
             return listNames;
         }
-        
+
         public static List<String> GetFindByName()
         {
             var client = new MongoClient("mongodb://localhost");
@@ -141,11 +148,10 @@ namespace Forum.MongoDB
             var collection = database.GetCollection<GridFSFileInfo>("fs.files");
 
             var strNames = collection.Find(x => x.Filename != null).ToEnumerable<GridFSFileInfo>();
-            
-            return strNames.Select(x => x.Filename).ToList<String>();
 
+            return strNames.Select(x => x.Filename).ToList<String>();
         }
-        
+
         public static void ClearDB()
         {
             var client = new MongoClient("mongodb://localhost");
@@ -157,7 +163,7 @@ namespace Forum.MongoDB
         {
             // String path = $"C:/Users/Petov/source/repos/BlazorPMLabsUnits/BlazorPMLabsUnits/wwwroot/imgSource/{name}";
             String path = $"{Directory.CreateDirectory(Directory.GetCurrentDirectory() + "/wwwroot/imgSource/")}{name}";
-           
+
             FileInfo file = new FileInfo(path);
             file.Delete();
         }
@@ -180,7 +186,7 @@ namespace Forum.MongoDB
         //     }
         //     System.IO.Directory.Move(sourceDir, $"{Directory.CreateDirectory(Directory.GetCurrentDirectory() + "/wwwroot/imgSource/")}");
         // }
-        
+
         public static async Task UploadImageToDbAsync(Stream fs, string name)
         {
             var client = new MongoClient("mongodb://localhost");
@@ -189,6 +195,5 @@ namespace Forum.MongoDB
 
             await gridFS.UploadFromStreamAsync(name, fs);
         }
-       
     }
 }

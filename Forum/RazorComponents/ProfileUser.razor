@@ -1,15 +1,29 @@
 ﻿@using Forum.MongoDB
 @inject PostDbConnection PostDbConnection
+@inject UserDbConnection UserDbConnection
+@inject FileSystemService FileSystemService 
 
 <div class="cardProfile">
     
     @if (CrntUser != null)
     {
         <div class="boxTop">
-            <div class="imageUser">
-                <img alt="image"/>
-                <img src="imgSource/twitter.png" alt="img"/>    
-            </div>
+            @if (fileName != "")
+            {
+                <img class="userImg" src="imgSource/@fileName" alt="img"/>
+            }
+            @* <div class="inputFile"> *@
+                @* <InputFile OnChange="@OnSubmit" class="invisible" multiple type="file"/> *@
+
+            @* </div> *@
+            
+            <label for="filePicker" class="label">
+              <i class="fas fa-paperclip"></i>
+                <span class="title">image</span>
+                
+              <InputFile id="filePicker" class="invisible" OnChange="@OnSubmit" multiple></InputFile>
+            </label>
+            
         </div>
     
         <div class="boxEnd">
@@ -21,7 +35,7 @@
             </div>
 
             <div class="cardRow">
-                <p>First Email:  </p>
+                <p>Email:  </p>
                 <p>@CrntUser.Email</p>
             </div>
             
@@ -37,11 +51,86 @@
 @code {
     [Parameter]
     public User CrntUser { get; set; }
-
+    string fileName;
     int countPosts = 0;
     protected override void OnInitialized()
     {
+        RemoveFolder();
         countPosts = PostDbConnection.FindUserPostsByUsername("sd").Count;
+        if (CrntUser.NameImage != null)
+        {
+            FileSystemService.DownloadToLocalByName(CrntUser.NameImage, "imgUser");
+            GetNamesOfDir();
+        }
+    }
+    
+    
+    private async Task OnSubmit(InputFileChangeEventArgs e)
+    {
+        RemoveFolder();
+        foreach (var file in e.GetMultipleFiles(e.FileCount))
+        {
+            try
+            {
+  
+                Stream stream = file.OpenReadStream();
+                var path = $"{Directory.CreateDirectory(Directory.GetCurrentDirectory() + "/wwwroot/imgUser/")}{file.Name}";
+                FileStream fs = File.Create(path);
+                await stream.CopyToAsync(fs);
+                stream.Close();
+                fs.Close();
+                StateHasChanged();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                throw;
+            }
+        }
+
+        GetNamesOfDir();
+    
+    }
+    
+    public void  GetNamesOfDir()
+    {
+        String path = $"{Directory.CreateDirectory(Directory.GetCurrentDirectory() + "/wwwroot/imgUser/")}";
+        path = path.Replace("/", @"\");
+        DirectoryInfo info = new DirectoryInfo($"{path}");
+
+        List<String> listNames = new List<string>();
+        
+        foreach (var item in info.GetFiles())
+        {
+            listNames.Add(item.Name);
+        }
+        
+        if (listNames.Count > 1)
+        {
+            RemoveFolder();
+        }
+        if (listNames.Count == 1)
+        {
+            fileName = listNames[0].ToString();
+            ConfirmImage();
+        }
     }
 
+    void ConfirmImage()
+    {
+        FileSystemService.UploadCreateImgToDb();
+        CrntUser.NameImage = fileName;
+        UserDbConnection.UpdateUser(CrntUser);
+    }
+
+    public static void RemoveFolder()
+    {
+        String path = $"{Directory.CreateDirectory(Directory.GetCurrentDirectory() + "/wwwroot/imgUser/")}";
+        DirectoryInfo dirInfo = new DirectoryInfo(path);
+ 
+        foreach (FileInfo f in dirInfo.GetFiles())
+        {
+            f.Delete();
+        }
+    }
 }

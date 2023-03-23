@@ -19,6 +19,9 @@ namespace Forum.Models
 
         [BsonIgnoreIfDefault]
         public String Password { get; set; }
+        
+        [BsonIgnoreIfDefault]
+        public String? NameImage { get; set; }
     }
 }
 

@@ -44,5 +44,13 @@ namespace Forum.MongoDB
             }
             return true;
         }
+        
+        public static void UpdateUser(User user)
+        {
+            var client = new MongoClient("mongodb://localhost");
+            var database = client.GetDatabase("Forum");
+            var collection = database.GetCollection<User>("Users");
+            var b = collection.ReplaceOne(x => x.Username == user.Username, user).ModifiedCount > 0;
+        }
     }
 }
