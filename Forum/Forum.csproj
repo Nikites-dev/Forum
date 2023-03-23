@@ -9,6 +9,7 @@
   <ItemGroup>
     <Folder Include="Controllers" />
     <Folder Include="wwwroot\imgCreate" />
+    <Folder Include="wwwroot\imgSource" />
     <Folder Include="wwwroot\imgUser" />
   </ItemGroup>
 

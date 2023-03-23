@@ -1,4 +1,6 @@
-﻿@inject NavigationManager NavigationManager
+﻿@using Forum.MongoDB
+@inject NavigationManager NavigationManager
+@inject UserDbConnection UserDbConnection
 
 <div class="menu">
     <div class="box1">
@@ -12,7 +14,18 @@
     </div>
     
     <div class="box3">
-        <button onclick="@SignInClick">Sign in</button> 
+        @if (UserDbConnection.isLoginUser != null)
+        {
+            <button onclick="@SignInClick">Profile</button>
+            @if (UserDbConnection.isLoginUser.NameImage != "")
+            {
+                <img class="userImg" src="imgUser/@fileName" alt="img"/>    
+            }
+        }
+        else
+        {
+            <button onclick="@SignInClick">Sign in</button>    
+        }
     </div>
 </div>
 
@@ -23,22 +36,72 @@
 
 @code {
     bool isClickSign = true;
+    string fileName;
+    
+    protected override void OnInitialized()
+    {
+        GetNamesOfDir();
+    }
     
     void SignInClick()
     {
-        if (isClickSign)
+        if (UserDbConnection.isLoginUser != null)
         {
-            isClickSign = false;
+            NavigationManager.NavigateTo("profile");
         }
         else
         {
-            isClickSign = true;
+            if (isClickSign)
+            {
+                isClickSign = false;
+            }
+            else
+            {
+                isClickSign = true;
+            }
         }
+
+        
     }
 
     void HomeClick()
     {
         NavigationManager.NavigateTo("/");
     }
+    
+    
+    public void  GetNamesOfDir()
+    {
+        String path = $"{Directory.CreateDirectory(Directory.GetCurrentDirectory() + "/wwwroot/imgUser/")}";
+        path = path.Replace("/", @"\");
+        DirectoryInfo info = new DirectoryInfo($"{path}");
 
+        List<String> listNames = new List<string>();
+        
+        foreach (var item in info.GetFiles())
+        {
+            listNames.Add(item.Name);
+        }
+        if (listNames.Count > 1)
+        {
+            RemoveFolder();
+        }
+        if (listNames.Count == 1)
+        {
+            fileName = listNames[0].ToString();
+        }
+        
+        
+    }
+    
+    public static void RemoveFolder()
+    {
+        String path = $"{Directory.CreateDirectory(Directory.GetCurrentDirectory() + "/wwwroot/imgUser/")}";
+        DirectoryInfo dirInfo = new DirectoryInfo(path);
+ 
+        foreach (FileInfo f in dirInfo.GetFiles())
+        {
+            f.Delete();
+        }
+    }
 }
