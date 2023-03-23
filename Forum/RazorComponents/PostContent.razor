@@ -3,8 +3,9 @@
 @using Forum.MongoDB
 @inject PostService PostService
 @inject BehaviourService BehaviourService
-@inject Forum.MongoDB.UserDbConnection userConnection
+@inject Forum.MongoDB.UserDbConnection UserDbConnection
 @inject PostDbConnection PostDbConnection
+@inject FileSystemService FileSystemService
 
 <div class="content">
     @if (_posts != null)
@@ -21,7 +22,7 @@
                     {
                         <p>0</p>
                     }
-                    @if (userConnection.isLoginUser == null)
+                    @if (UserDbConnection.isLoginUser == null)
                     {
                         <button disabled="disabled" @onclick="(() => PutLike(post))">Like</button>
                     }
@@ -33,8 +34,17 @@
 
                 <div class="rightSide">
                     <div class="rowCard">
+                       
+                        
+                        @if (GetUserImg(post.Username) != null)
+                        {
+                            DownloadLocalUserImg(GetUserImg(post.Username));
+                            <img class="userImg" src="imgSource/@GetUserImg(post.Username)" alt="img"/>    
+                        }
+                        
+                        
                         <p>@post.Username.ToString() * </p>
-                        <p> posted by  @post.CreatePost.ToString()</p>
+                        <p> posted by @post.CreatePost.ToString()</p>
                     </div>
                     @if (post.Text.Length < 20)
                     {
@@ -104,6 +114,7 @@
         DataUpdating();
     }
 
+    
     public async Task DataUpdating()
     {
         while(true) {
@@ -111,6 +122,17 @@
             GetPosts();
             await Task.Delay(500);
         }
+    }
+
+    String? GetUserImg(String username)
+    {
+        User user = UserDbConnection.GetUserByUsername(username);
+        return user.NameImage;
+    }
+    
+    void DownloadLocalUserImg(String username)
+    {
+        FileSystemService.DownloadToLocalByName(username, "imgSource");
     }
 
     void GetPosts()
@@ -135,7 +157,7 @@
         {
             foreach (var likes in post.Likes)
             {
-                if (likes == userConnection.isLoginUser.Username)
+                if (likes == UserDbConnection.isLoginUser.Username)
                 {
                     alreadyLike = true;
                 }
@@ -144,11 +166,11 @@
 
         if (alreadyLike == false)
         {
-            post.Likes.Add(userConnection.isLoginUser.Username);
+            post.Likes.Add(UserDbConnection.isLoginUser.Username);
         }
         else
         {
-            post.Likes.Remove(userConnection.isLoginUser.Username);
+            post.Likes.Remove(UserDbConnection.isLoginUser.Username);
         }
         PostDbConnection.UpdatePost(post);
     }

@@ -30,6 +30,19 @@ namespace Forum.MongoDB
             return user;
         }
         
+        public static User GetUserByUsername(String username)
+        {
+            var client = new MongoClient("mongodb://localhost");
+            var database = client.GetDatabase("Forum");
+            var collection = database.GetCollection<User>("Users");
+            User user = collection.Find(x => x.Username == username).FirstOrDefault();
+            
+            if (user == null)
+            {
+                return null;
+            }
+            return user;
+        }
         
         public static bool ExistsUser(String username)
         {
