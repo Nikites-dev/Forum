@@ -43,6 +43,31 @@ namespace Forum.MongoDB
             return imgNames;
         }
 
+        public static List<String> UploadImageToDb(String folder)
+        {
+            String pathFolder = $"/wwwroot/{folder}/";
+            String path = $"{Directory.CreateDirectory(Directory.GetCurrentDirectory() + pathFolder)}";
+            path = path.Replace("/", @"\");
+            
+            var client = new MongoClient("mongodb://localhost");
+            var database = client.GetDatabase("Forum");
+            List<String> listNames = new List<string>();
+            List<String> imgNames = GetNamesOfDir(folder);
+            
+            foreach (var name in imgNames)
+            {
+                listNames.Add(name);
+                var gridFS = new GridFSBucket(database);
+
+                using (FileStream fs = new FileStream($"{path}{name}", FileMode.Open))
+                {
+                    gridFS.UploadFromStream(name, fs);
+                }
+            }
+
+            return imgNames;
+        }
+        
         public void UploadCreateImgToDb()
         {
             var client = new MongoClient("mongodb://localhost");
@@ -139,6 +164,32 @@ namespace Forum.MongoDB
 
             return listNames;
         }
+        
+        
+        public static String GetNameOfDir(String folder)
+        {
+            String pathFolder = $"/wwwroot/{folder}/";
+        
+            String path = $"{Directory.CreateDirectory(Directory.GetCurrentDirectory() + pathFolder)}";
+            path = path.Replace("/", @"\");
+            DirectoryInfo info = new DirectoryInfo($"{path}");
+
+            List<String> listNames = new List<string>();
+        
+            foreach (var item in info.GetFiles())
+            {
+                listNames.Add(item.Name);
+            }
+        
+            
+            if (listNames.Count == 1)
+            {
+                return listNames[0].ToString();;
+            }
+            return "";
+        }
+        
+        
 
         public static List<String> GetFindByName()
         {
@@ -167,7 +218,20 @@ namespace Forum.MongoDB
             FileInfo file = new FileInfo(path);
             file.Delete();
         }
-
+        
+        public static void RemoveFolder(String folder)
+        {
+            String pathFolder = $"/wwwroot/{folder}/";
+            
+            String path = $"{Directory.CreateDirectory(Directory.GetCurrentDirectory() + pathFolder)}";
+            DirectoryInfo dirInfo = new DirectoryInfo(path);
+ 
+            foreach (FileInfo f in dirInfo.GetFiles())
+            {
+                f.Delete();
+            }
+        }
+        
         // public static void AddImgLocal(String path)
         // {
         //     String[] pathRoot = path.Split(@"\");
