@@ -79,6 +79,30 @@ namespace Forum.MongoDB
             return post;
         }
         
+        public static List<Post> FindUserPostsByInterest(String interest)
+        {
+            var client = new MongoClient("mongodb://localhost");
+            var database = client.GetDatabase("Forum");
+            var collection = database.GetCollection<Post>("Posts");
+
+            List<Post> post = new List<Post>();
+            
+            try
+            {
+                post = collection.Find(x => x.Interest == interest).ToList();
+            }
+            catch (Exception e)
+            {
+                post = null;
+            }
+            
+            if (post == null)
+            {
+                return null;
+            }
+            return post;
+        }
+        
         public static void UpdatePost(Post post)
         {
             var client = new MongoClient("mongodb://localhost");

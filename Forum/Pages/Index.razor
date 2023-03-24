@@ -1,4 +1,6 @@
 ﻿@page "/"
+@using Forum.Services
+@inject BehaviourService BehaviourService 
 
 <PageTitle>Forum</PageTitle>
 
@@ -10,8 +12,15 @@
         </div>
         
         <div class="sideRight">
-            <PostContent RegUser="null" SortName="empty"></PostContent>
+            <PostContent RegUser="null" SortName=""></PostContent>
         </div>
         
     </div>
 </div>
+
+@code {
+    protected override void OnInitialized()
+    {
+        BehaviourService.SelectInterest = "";
+    }
+}

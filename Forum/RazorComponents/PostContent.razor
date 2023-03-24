@@ -121,7 +121,6 @@
         GetPosts();
         DataUpdating();
     }
-
     
     public async Task DataUpdating()
     {
@@ -145,15 +144,19 @@
 
     void GetPosts()
     {
-        if (RegUser == null)
+        if (RegUser != null && SortName == "profile")
         {
-            _posts = PostService.GetPosts();
+            _posts = PostDbConnection.FindUserPostsByUsername(RegUser.Username);
         }
         else
         {
-            if (SortName == "not")
+            if(BehaviourService.SelectInterest == String.Empty)
             {
-                _posts = PostDbConnection.FindUserPostsByUsername(RegUser.Username);    
+                _posts = PostService.GetPosts();     
+            }
+            else
+            {
+                _posts = PostDbConnection.FindUserPostsByInterest(BehaviourService.SelectInterest);    
             }
         }
     }

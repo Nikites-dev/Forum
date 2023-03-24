@@ -1,7 +1,9 @@
 ﻿@page "/profile"
 @using Forum.MongoDB
+@using Forum.Services
 @inject Forum.MongoDB.UserDbConnection userConnect
 @using Microsoft.VisualBasic
+@inject BehaviourService BehaviourService
 
 <div class="page">
     <HeaderMenu/>
@@ -12,7 +14,7 @@
         
         <div class="sideCenter">
             <CreatePost></CreatePost>
-            <PostContent RegUser="userConnect.isLoginUser" SortName="not"></PostContent>
+            <PostContent RegUser="userConnect.isLoginUser" SortName="@BehaviourService.SelectInterest"></PostContent>
         </div>
         
         <div class="sideRight">
@@ -20,5 +22,13 @@
         </div>
     </div>
 </div>
+
+@code
+{
+    protected override void OnInitialized()
+    {
+        BehaviourService.SelectInterest = "profile";
+    }
+}
 
 
