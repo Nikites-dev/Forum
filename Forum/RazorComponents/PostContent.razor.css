@@ -11,6 +11,11 @@
 }
 
 
+.sortBox {
+    display: flex;
+}
+
+
 .postCard {
     display: flex;
     flex-direction: row;

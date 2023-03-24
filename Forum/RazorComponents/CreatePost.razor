@@ -5,6 +5,8 @@
 @inject PostService postService
 @inject NavigationManager _navigationManager
 @inject FileSystemService FileSystemService
+@inject Interests Interests
+
 
 <div class="cardCreate">
     <div class="types">
@@ -19,6 +21,19 @@
             <button>Cursive</button> 
             <button>Heading</button> 
             <button>Link</button> 
+            
+            @if (listInterests != null || listInterests.Count != 0)
+            {
+                <select class="selectInterest" @bind="@valueInterest">
+                @foreach (var interest in listInterests)
+                {
+                    <option value="@interest">@interest</option>
+                }
+                </select>
+            }
+
+            <p>@valueInterest</p>
+
         </div>
         <div class="inputField">
             <label class="control-label">Message</label>
@@ -45,11 +60,15 @@
     List<IBrowserFile> _loadedFiles = new();
     List<String> loadImgNames = new List<string>();
     
+    
     private String edImgName = "";
+    private List<String> listInterests = Models.Interests.GetListInterest();
+    private String valueInterest = "";
     
     protected override void OnInitialized()
     {
         FileSystemService sService = new FileSystemService();
+        listInterests = Models.Interests.GetListInterest();
     }
     
     public void  GetNamesOfDir()
@@ -80,7 +99,7 @@
         Post post = new Post();
         post.Username = userConnect.isLoginUser.Username;
         post.Comments = new List<Comment>();
-        post.Rating = 234;
+        post.Interest = valueInterest;
         post.NameImage = fileName;
         post.Text = emailMessage.ToString();
         post.CreatePost = DateTime.Now;

@@ -10,6 +10,14 @@
 <div class="content">
     @if (_posts != null)
     {
+        <div class="sortBox">
+            <div class="sortRow">
+                @* <button @onclick="@Sort">Popular</button> *@
+                <button>Fresh</button>
+                <button>Interest</button>
+            </div>
+        </div>
+
         @foreach (var post in _posts)
         {
             <div class="postCard">
@@ -42,9 +50,9 @@
                             <img class="userImg" src="imgSource/@GetUserImg(post.Username)" alt="img"/>    
                         }
                         
-                        
                         <p>@post.Username.ToString() * </p>
                         <p> posted by @post.CreatePost.ToString()</p>
+                        <p> @post.Interest.ToString()</p>
                     </div>
                     @if (post.Text.Length < 20)
                     {
@@ -149,6 +157,8 @@
             }
         }
     }
+
+   
 
     void PutLike(Post post)
     {

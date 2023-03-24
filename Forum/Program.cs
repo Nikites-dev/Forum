@@ -1,4 +1,5 @@
 using Forum.Data;
+using Forum.Models;
 using Forum.MongoDB;
 using Forum.Pages;
 using Forum.RazorComponents;
@@ -29,6 +30,7 @@ builder.Services.AddSingleton<PostContent>();
 builder.Services.AddSingleton<UserDbConnection>();
 builder.Services.AddSingleton<PostDbConnection>();
 builder.Services.AddSingleton<CreateComment>();
+builder.Services.AddSingleton<Interests>();
 // builder.Services.AddSingleton<CommentPost>();
 
 var app = builder.Build();

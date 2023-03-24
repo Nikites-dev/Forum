@@ -61,15 +61,10 @@
 }
 
 
-
-
 .inputField {
     position: relative;
     height: 100%;
 }
-
-
-
 
 .card_img {
     display: block;
@@ -89,31 +84,6 @@
     object-fit: contain;
 }
 
-/*.card_img {*/
-/*    position: relative;*/
-/*    display: flex;*/
-/*    justify-content: center;*/
-/*    align-items: center;*/
-/*    width: 100%;*/
-/*    height: 100%;*/
-/*    object-fit: contain;*/
-/*    background: #eab7b7;*/
-/*    text-align: center;*/
-/*    border-radius: 10px;*/
-/*}*/
-
-/*.card_img img {*/
-/*    position: center;*/
-/*    width: 95%;*/
-/*    height: 95%;*/
-/*    margin-top: 3%;*/
-/*    margin-bottom: 3%;*/
-/*    background-size: cover;*/
-/*    object-fit: contain;*/
-/*    border-radius: 3px;*/
-/*}*/
-
-
 .bottom{
     position: relative;
     background: #0a53be;
@@ -123,4 +93,8 @@
 .bottom button {
     height: 100%;
     width: 100px;
+}
+
+.selectInterest {
+    height: 100% 
 }

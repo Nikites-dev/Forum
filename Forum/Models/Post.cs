@@ -30,7 +30,7 @@ namespace Forum.Models
         public List<String> Likes { get; set; }
         
         [BsonIgnoreIfDefault]
-        public int Rating { get; set; }
+        public String Interest { get; set; }
     }
 }
 
