@@ -1,5 +1,6 @@
 ﻿@using Forum.Services
 @inject BehaviourService BehaviourService
+@inject Interests Interests
 
 <div class="navbar">
     
@@ -8,9 +9,6 @@
         <div class="rowNav">
             <span class="oi oi-dollar" aria-hidden="true"></span>
             <p>Text</p>
-            <button @onclick="() => Sort(str)">str</button>
-            @* <button @onclick="()=> @Sort("Finance")">Finance</button> *@
-            
         </div>
         
         <div class="rowNav">
@@ -19,51 +17,42 @@
         </div>
         
     </div>
-    
-    
+
     <div class="section">
         
         <p>TOPICS</p>
         
         <div class="rowNav">
             <span class="oi oi-dollar" aria-hidden="true"></span>
-            <p>Text</p>
-        </div>
+            <button @onclick="() => Sort(str3)">All</button>
+        </div>  
         
         
-        <div class="rowNav">
-            <span class="oi oi-dollar" aria-hidden="true"></span>
-            <p>Text</p>
-        </div>
-
-        <div class="rowNav">
-            <span class="oi oi-dollar" aria-hidden="true"></span>
-            <p>Text</p>
-        </div>
-
-        <div class="rowNav">
-            <span class="oi oi-dollar" aria-hidden="true"></span>
-            <p>Text</p>
-        </div>
-
-        <div class="rowNav">
-            <span class="oi oi-dollar" aria-hidden="true"></span>
-            <p>Text</p>
-        </div>
-
-        <div class="rowNav">
-            <span class="oi oi-dollar" aria-hidden="true"></span>
-            <p>Text</p>
-        </div>
+        @if (listInterests != null || listInterests.Count != 0)
+        {
+            @foreach (var interest in listInterests)
+            {
+                <div class="rowNav">
+                    <span class="oi oi-dollar" aria-hidden="true"></span>
+                    <button @onclick="() => Sort(interest)">@interest</button>
+                </div>        
+            }
+        }
     </div>
-    
-    
-    
 </div>
  
 
 @code {
     String str = "Finance";
+    String str2 = "Cooking";
+    String str3 = "";
+    List<String> listInterests = Models.Interests.GetListInterest();
+
+    protected override void OnInitialized()
+    {
+        listInterests = Models.Interests.GetListInterest();
+    }
+
     void Sort(String nameInterest)
     {
         BehaviourService.SelectInterest = nameInterest;

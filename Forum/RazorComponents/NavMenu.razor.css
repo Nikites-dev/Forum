@@ -6,13 +6,29 @@
 .navbar {
     position: fixed;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: left;
     padding: 20px;
     width: 280px;
     height: 100vh;
     background: lightpink;
+    overflow-y: scroll; 
 }
+
+.navbar::-webkit-scrollbar {
+    width: 12px;
+}
+
+.navbar::-webkit-scrollbar-track {
+    background: #fcfcfc;
+}
+
+.navbar::-webkit-scrollbar-thumb {
+    background-color: #bcbcc5;
+    border-radius: 20px;
+    border: 3px solid #bcbcc5;
+}
+
 
 .section {
     margin: 1vh 0;
