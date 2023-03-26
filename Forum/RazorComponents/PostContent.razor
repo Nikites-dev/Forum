@@ -10,13 +10,13 @@
 <div class="content">
     @if (_posts != null)
     {
-        <div class="sortBox">
-            <div class="sortRow">
-                @* <button @onclick="@Sort">Popular</button> *@
-                <button>Fresh</button>
-                <button>Interest</button>
-            </div>
-        </div>
+      @*  <div class="sortBox"> *@
+            @* <div class="sortRow"> *@
+            @*     $1$ <button @onclick="@Sort">Popular</button> #1# *@
+            @*     <button>Fresh</button> *@
+            @*     <button>Interest</button> *@
+            @* </div> *@
+      @*  </div>*@
 
         @foreach (var post in _posts)
         {
@@ -32,27 +32,32 @@
                     }
                     @if (UserDbConnection.isLoginUser == null)
                     {
-                        <button disabled="disabled" @onclick="(() => PutLike(post))">Like</button>
+                        <button class="btnLike" disabled="disabled" @onclick="(() => PutLike(post))"><img src="icons/Like.svg" alt="like"></button>
                     }
                     else
                     {
-                        <button @onclick="(() => PutLike(post))">Like</button>    
+                        <button class="btnLike" @onclick="(() => PutLike(post))"><img src="icons/Like.svg" alt="like"></button>
                     }
                 </div>
 
                 <div class="rightSide">
-                    <div class="rowCard">
-                       
+                    <div class="rowCard1">
+                        <div class="side1">
+                            @if (GetUserImg(post.Username) != null)
+                            {
+                                DownloadLocalUserImg(GetUserImg(post.Username));
+                                <img class="userImg" src="imgSource/@GetUserImg(post.Username)" alt="img"/>    
+                            }
+                            
+                            <div class="columnText">
+                                <p>@post.Username.ToString()</p>
+                                <p> posted by <span>@post.CreatePost.ToString()</span></p>
+                            </div>
+                            
+                        </div>
                         
-                        @if (GetUserImg(post.Username) != null)
-                        {
-                            DownloadLocalUserImg(GetUserImg(post.Username));
-                            <img class="userImg" src="imgSource/@GetUserImg(post.Username)" alt="img"/>    
-                        }
                         
-                        <p>@post.Username.ToString() * </p>
-                        <p> posted by @post.CreatePost.ToString()</p>
-                        <p> @post.Interest.ToString()</p>
+                        <p class="postInterest"> @post.Interest.ToString()</p>
                     </div>
                     @if (post.Text.Length < 20)
                     {
@@ -77,7 +82,7 @@
                             @{
                                 FileSystemService.DownloadToLocalByName(@post.NameImage, "imgSource");
                             }
-                            ;
+                            
                             <img class="imgPost" src="imgSource/@post.NameImage" alt="img"/>
                         </div>    
                     }
@@ -87,11 +92,11 @@
                     <div class="rowCard">
                         @if (post.Comments != null)
                         {
-                            <button @onclick="(() => CommmentRemote(post))">@post.Comments.Count.ToString() Comments</button>
+                            <button class="btnComment" @onclick="(() => CommmentRemote(post))"> @post.Comments.Count.ToString() Comments</button>
                         }
                         else
                         {
-                            <button @onclick="(() => CommmentRemote(post))">add first comment</button>
+                            <button class="btnComment" @onclick="(() => CommmentRemote(post))">add first comment</button>
                         }
                     </div>
                 </div>

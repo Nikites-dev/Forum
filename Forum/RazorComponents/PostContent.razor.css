@@ -1,12 +1,12 @@
 ﻿* {
     margin: 0;
     padding: 0;
+    color: #24292f;
 }
 
 .content {
     position: relative;
     width: 40vw;
-    background: #d54ffd;
     margin-top: 10px;
 }
 
@@ -19,52 +19,128 @@
 .postCard {
     display: flex;
     flex-direction: row;
-    background: cadetblue;
+    background: white;
     width: 100%;
-    padding: 10px;
+    
     margin: 10px 0;
     white-space: normal;
-    
+    border-radius: 7px;
+    border: solid #c9c9c9 1px;
 }
 
 .leftSide {
     display: flex;
     flex-direction: column;
-    background: lightpink;
+    align-items: center;
+    padding-top: 10px;
+    border-radius: 7px 0 0 7px;
+    background: #f8f9fa; 
     width: 40px;
+}
+
+.btnLike {
+    
+    border: none;
+}
+
+.btnLike img {
+    width: 20px;
 }
 
 .rightSide {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    background: lightgrey;
+    background: #ffffff;
     width: 100%;
-    margin: 0 0 0 5px;
+    border-radius: 0 7px 0 0;
 }
 
 
+.rowCard1 {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    white-space: normal;
+    border-radius: 0 7px 0 0;
+    
+    height: 50px
+}
+
+.rowCard1 .side1{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    white-space: normal;
+    border-radius: 0 7px 0 0;
+    height: 50px
+}
+
 .rowCard {
     display: flex;
-    background: lightsteelblue;
+    background: #ffffff;
     flex-direction: row;
     margin: 1vh 0;
     white-space: normal;
 }
 
+
 .rowCard p {
     white-space: normal;
+    padding: 9px;
 }
 
 .imgPost {
-    background: yellow;
+    background: #ffffff;
     max-width: 100%;
     margin: auto;
     object-fit: contain;
+    padding: 10px;
+}
+
+.columnText {
+    display:flex;
+    flex-direction: column;
+}
+
+.columnText p:first-child {
+    font-weight: bold
+}
+
+.columnText p:last-child {
+    font-size: 13px;
+    color: #414141;
+}
+
+.columnText p:last-child span{
+    font-size: 13px;
+    color: #414141;
+    font-weight: bold;
+}
+
+.postInterest {
+    float: right;
+    background: #24292f;
+    color: white;
+    font-size: 10px;
+    padding: 5px 10px;
+    border-radius: 999px;
+    margin-right: 10px;
+    letter-spacing: .1rem;
 }
 
 .userImg {
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
     margin: 20px;
+    object-fit: cover;
+    border-radius: 999px;
+}
+
+.btnComment {
+    border: solid #24292f 2px;
+    background: white;
+    padding: 5px 10px;
+    border-radius: 999px
 }
