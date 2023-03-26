@@ -5,37 +5,63 @@
 <div class="navbar">
     
     <div class="section">
-        <p>FEEDS</p>
+        <p class="txtHeader">FEEDS</p>
+        
+     
+        
+        
         <div class="rowNav">
-            <span class="oi oi-dollar" aria-hidden="true"></span>
-            <p>Text</p>
+            <button class="btnNav">
+                <div Match="NavLinkMatch.All">
+                    <span><img src="icons/@GetIcon("Home")" width="18"alt="icon"/> </span> Home
+                </div>
+            </button>
         </div>
         
         <div class="rowNav">
-            <span class="oi oi-dollar" aria-hidden="true"></span>
-            <p>Text</p>
+            <button class="btnNav">
+                <div Match="NavLinkMatch.All">
+                    <span><img src="icons/@GetIcon("Popular")" width="18"alt="icon"/> </span> Popular
+                </div>
+            </button>
         </div>
+        
+        
+        @* <div class="rowNav"> *@
+        @*     <button class="btnNav"> *@
+        @*         <div Match="NavLinkMatch.All"> *@
+        @*             <span class="oi oi-star" aria-hidden="true"></span> Popular *@
+        @*         </div> *@
+        @*     </button> *@
+        @* </div> *@
+        
+        
         
     </div>
 
     <div class="section">
         
-        <p>TOPICS</p>
-        
+        <p class="txtHeader">TOPICS</p>
+
         <div class="rowNav">
-            <span class="oi oi-dollar" aria-hidden="true"></span>
-            <button @onclick="() => Sort(str3)">All</button>
-        </div>  
-        
-        
+            <button class="btnNav" @onclick="() => Sort(strAll)">
+                <div Match="NavLinkMatch.All">
+                    <span><img src="icons/@GetIcon("All")" width="18"alt="icon"/> </span> All
+                </div>
+            </button>
+        </div>
+
         @if (listInterests != null || listInterests.Count != 0)
         {
             @foreach (var interest in listInterests)
             {
                 <div class="rowNav">
-                    <span class="oi oi-dollar" aria-hidden="true"></span>
-                    <button @onclick="() => Sort(interest)">@interest</button>
-                </div>        
+                    <button class="btnNav" @onclick="() => Sort(interest)">
+                        <div Match="NavLinkMatch.All">
+                            <span><img src="icons/@GetIcon(interest)" width="18"alt="icon"/> </span> @interest
+                        </div>
+                    </button>
+                </div>
             }
         }
     </div>
@@ -44,8 +70,10 @@
 
 @code {
     String str = "Finance";
-    String str2 = "Cooking";
-    String str3 = "";
+    String strOI = "oi oi-star";
+    String strAll = "";
+
+
     List<String> listInterests = Models.Interests.GetListInterest();
 
     protected override void OnInitialized()
@@ -56,6 +84,11 @@
     void Sort(String nameInterest)
     {
         BehaviourService.SelectInterest = nameInterest;
+    }
+
+    String GetIcon(String name)
+    {
+        return name + ".svg";
     }
 
 }

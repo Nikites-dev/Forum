@@ -18,7 +18,6 @@ namespace Forum.Models
                 "Music",
                 "IT",
                 "Cooking",
-                "Gym",
                 "Travel",
                 "Cars",
                 "Finance",

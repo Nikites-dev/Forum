@@ -1,6 +1,13 @@
 ﻿* {
     margin: 0;
     padding: 0;
+    color: #24292f;
+}
+
+.txtHeader {
+    font-size: 15px;
+    padding: 10px;
+    font-weight: bolder;
 }
 
 .navbar {
@@ -8,10 +15,10 @@
     display: flex;
     flex-direction: row;
     justify-content: left;
-    padding: 20px;
+    align-items: start;
     width: 280px;
     height: 100vh;
-    background: lightpink;
+    background: white;
     overflow-y: scroll; 
 }
 
@@ -31,7 +38,7 @@
 
 
 .section {
-    margin: 1vh 0;
+
     width: 100%;
 }
 
@@ -40,7 +47,29 @@
     flex-direction: row;
     background: lightgray;
     align-items: center;
-    height: 5vh;
-    margin: 1vh 0;
+    height: 4vh;
+  
     width: 100%;
+}
+
+.btnNav {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    border-color: white;
+    border: none;
+    background: white;
+    text-decoration: none;
+   width: 100%;
+    height: 100%;
+}
+
+.btnNav:hover {
+
+    background: #f6f7f8;
+   
+}
+
+.btnNav div span {
+    padding: 10px;
 }
