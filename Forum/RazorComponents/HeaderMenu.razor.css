@@ -10,7 +10,7 @@
 
     margin:  auto;
     z-index: 10;
-    background: #e8e8e8;
+    background: #24292f;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -24,98 +24,96 @@
     margin: 10px;
 }
 
+
+
+/* search */
+
 .box2 {
-    background: #a19797;
-    border-radius: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    background: #24292f;
+    border: solid white 2px;
+    border-radius: 999px;
+    height: 40px;
+    width: 250px;
 }
 
-.box2 p {
-    color: red;
-    padding: 1vh 8vh;
+.box2 span {
+    color: white;
+    margin: 10px;
 }
 
+.box2 span:last-child {
+    color: #24292f;
+    margin: 10px;
+}
+
+.box2 p{
+    color: white;
+}
+
+
+/* sign elements */
 
 .box3 {
     margin: 10px;
 }
 
+.btnSign{
+    background: white;
+    border: solid #24292f 2px;
+    color: #24292f;
+    border-radius: 999px;
+    padding: 5px 20px
+}
+
 .userImg {
-    width: 30px;
-    height: 30px;
+    width: 35px;
+    height: 35px;
     margin: 20px;
+    border-radius: 999px;
 }
 
 
-
-
-
-
-
-.text-box {
-    height: 20px;
-    width: 200px;
-    margin-bottom: 20px;
+.text-box a{
+    color: white;
+    margin-left: 20px;
 }
 
-.btn:link,
-.btn:visited {
-    text-transform: uppercase;
+
+/* btn HOME */
+
+.btnHeader {
+    color: white;
     text-decoration: none;
-    padding: 10px 19px;
+}
+
+.btn-12 {
+    text-align: center;
     display: inline-block;
-    border-radius: 100px;
-    transition: all .2s;
-    
+    padding: 15px 40px;
+    cursor: pointer;
+    letter-spacing: 2px;
+    position:relative;
+    overflow:hidden;
+    margin: 0 20px;
 }
 
-.btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-}
-
-.btn:active {
-    transform: translateY(-1px);
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-}
-
-.btn-white {
-    background-color: #ffffff;
-    color: #777;
-}
-
-.btn::after {
+.btn-12:before {
     content: "";
-    display: inline-block;
-    border-radius: 100px;
     position: absolute;
-    top: 0;
-    left: 0;
-    z-index: -1;
-    transition: all .4s;
+    width: 0;
+    background : #fff;
+    left: 45%;
+    height: 2px;
+    bottom: 0;
+    transition: all .3s;
+    opacity: 0.7;
 }
 
-.btn-white::after {
-   
-}
-
-.btn:hover::after {
-    transform: scaleX(1.4) scaleY(1.6);
-    opacity: 0;
-}
-
-.btn-animated {
-    animation: moveInBottom 5s ease-out;
-    animation-fill-mode: backwards;
-}
-
-@keyframes moveInBottom {
-    0% {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-
-    100% {
-        opacity: 1;
-        transform: translateY(0px);
-    }
+.btn-12:hover:before {
+    width: 100%;
+    left:0;
 }

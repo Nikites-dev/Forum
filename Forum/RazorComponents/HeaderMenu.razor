@@ -6,20 +6,22 @@
 
 <div class="menu">
     <div class="box1">
-        <div class="text-box">
-            <a href="#" @onclick="@HomeClick" class="btn btn-white btn-animate">Home</a>
+        <div class="btn-12">
+            <a href="#" @onclick="@HomeClick" class="btnHeader">Home</a>
         </div>
         
     </div>
     
     <div class="box2">
-        <p>Search</p>
+        <span class="oi oi-magnifying-glass" aria-hidden="true">  </span> 
+            <p>Search</p>
+         <span class="oi oi-magnifying-glass" aria-hidden="true">  </span>
     </div>
     
     <div class="box3">
         @if (UserDbConnection.isLoginUser != null)
         {
-            <button onclick="@SignInClick">Profile</button>
+            <button class="btnSign" onclick="@SignInClick">Profile</button>
             @if (UserDbConnection.isLoginUser.NameImage != "")
             {
                 <img class="userImg" src="imgUser/@fileName" alt="img"/>    
