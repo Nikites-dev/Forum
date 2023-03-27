@@ -36,7 +36,12 @@
                     }
                     else
                     {
+                        if(@CheckLike(@post)) {
+                        <button class="btnLike" @onclick="(() => PutLike(post))"><img src="icons/LikeColored.svg" alt="like" style=" filter: invert(13%) sepia(94%) saturate(7466%) hue-rotate(0deg) brightness(94%) contrast(115%);"></button>
+                        } else {
                         <button class="btnLike" @onclick="(() => PutLike(post))"><img src="icons/Like.svg" alt="like"></button>
+                        }
+                        
                     }
                 </div>
 
@@ -92,7 +97,7 @@
                     <div class="rowCard">
                         @if (post.Comments != null)
                         {
-                            <button class="btnComment" @onclick="(() => CommmentRemote(post))"> @post.Comments.Count.ToString() Comments</button>
+                            <button class="btnComment" @onclick="(() => CommmentRemote(post))"><img src="icons/Comment.svg" alt="like" > @post.Comments.Count.ToString() Comments</button>
                         }
                         else
                         {
@@ -170,6 +175,21 @@
 
     void PutLike(Post post)
     {
+        bool alreadyLike = CheckLike(post);
+       
+        if (alreadyLike == false)
+        {
+            post.Likes.Add(UserDbConnection.isLoginUser.Username);
+        }
+        else
+        {
+            post.Likes.Remove(UserDbConnection.isLoginUser.Username);
+        }
+        PostDbConnection.UpdatePost(post);
+    }
+
+    bool CheckLike(Post post)
+    {
         bool alreadyLike = false;
         if (post.Likes != null)
         {
@@ -182,15 +202,7 @@
             }
         }
 
-        if (alreadyLike == false)
-        {
-            post.Likes.Add(UserDbConnection.isLoginUser.Username);
-        }
-        else
-        {
-            post.Likes.Remove(UserDbConnection.isLoginUser.Username);
-        }
-        PostDbConnection.UpdatePost(post);
+       return alreadyLike;
     }
 
     void CommmentRemote(Post post)

@@ -39,12 +39,13 @@
 }
 
 .btnLike {
-    
+    background: #f8f9fa;
     border: none;
 }
 
 .btnLike img {
     width: 20px;
+    border: none;
 }
 
 .rightSide {
@@ -53,7 +54,7 @@
     justify-content: space-around;
     background: #ffffff;
     width: 100%;
-    border-radius: 0 7px 0 0;
+    border-radius: 0 7px 7px 0;
 }
 
 
@@ -110,12 +111,12 @@
 
 .columnText p:last-child {
     font-size: 13px;
-    color: #414141;
+    color: #7e8996;
 }
 
 .columnText p:last-child span{
     font-size: 13px;
-    color: #414141;
+    color: #606060;
     font-weight: bold;
 }
 
@@ -139,8 +140,21 @@
 }
 
 .btnComment {
-    border: solid #24292f 2px;
-    background: white;
+    background: #dae0e6;
     padding: 5px 10px;
-    border-radius: 999px
+    margin: 0 10px;
+    color: #7e8996;
+    border-radius: 999px;
+    border: none;
+    font-size: 13px;
 }
+
+.btnComment:hover {
+    background: #d1d8dc; 
+}
+
+.btnComment img {
+    width: 19px;
+    filter: invert(0.5);
+}
+
