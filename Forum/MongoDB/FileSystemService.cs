@@ -225,11 +225,16 @@ namespace Forum.MongoDB
             
             String path = $"{Directory.CreateDirectory(Directory.GetCurrentDirectory() + pathFolder)}";
             DirectoryInfo dirInfo = new DirectoryInfo(path);
- 
-            foreach (FileInfo f in dirInfo.GetFiles())
+
+            if (dirInfo.GetFiles().Length != 0)
             {
-                f.Delete();
+                foreach (FileInfo f in dirInfo.GetFiles())
+                {
+                    f.Delete();
+                }    
             }
+
+            
         }
         
         // public static void AddImgLocal(String path)

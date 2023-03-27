@@ -9,28 +9,34 @@
 
 
 <div class="cardCreate">
-    <div class="types">
-        <button>Post</button>
-        <InputFile OnChange="@OnSubmit" class="btnDb" multiple/>
-        <button>Link</button>
-    </div>
-    
-    <div class="box">
-        <div class="tools">
-            <button>Bold</button> 
-            <button>Cursive</button> 
-            <button>Heading</button> 
-            <button>Link</button> 
-            
-            @if (listInterests != null || listInterests.Count != 0)
-            {
-                <select class="selectInterest" @bind="@valueInterest">
-                @foreach (var interest in listInterests)
+    <div class="boxInterest">
+               @if (listInterests != null || listInterests.Count != 0)
                 {
-                    <option value="@interest">@interest</option>
+                    <select class="selectInterest" @bind="@valueInterest">
+                         <option value="">Choose a community</option>
+                        @foreach (var interest in listInterests)
+                        {
+                            <option value="@interest">@interest</option>
+                        }
+                    </select>
                 }
-                </select>
-            }
+            </div>
+    <div class="box">
+
+
+
+        <div class="tools">
+            <button class="btnTool"><img class="imgTool" src="icons/TextBold.svg" alt="img"/></button>
+            <button class="btnTool"><img class="imgTool" src="icons/TextItalic.svg" alt="img"/></button>
+            <button class="btnTool"><img class="imgTool" src="icons/TextSize.svg" alt="img"/></button>
+            <button class="btnTool">Link</button>
+
+            <label for="filePicker" class="label">
+                <span class="title"><img class="imgtool" src="icons/Image.svg" alt="img"/></span>
+                <InputFile id="filePicker" class="invisible" OnChange="@OnSubmit" multiple></InputFile>
+            </label>
+
+
 
             <p>@valueInterest</p>
 
@@ -39,11 +45,11 @@
             <label class="control-label">Message</label>
             <textarea rows="4" value="@EmailMessage" @onchange="@((args) => EmailMessage = args.Value.ToString())"></textarea>
         </div>
-         
-       
+
+
     </div>
-     @if (fileName != "")
-     {
+    @if (fileName != "")
+    {
         <div class="card_img">
             <img src="imgCreate/@fileName" alt="img"/>
         </div>
