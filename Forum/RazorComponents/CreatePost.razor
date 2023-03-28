@@ -9,7 +9,10 @@
 
 
 <div class="cardCreate">
-    <div class="boxInterest">
+    
+    <div class="box">
+
+        <div class="boxInterest">
                @if (listInterests != null || listInterests.Count != 0)
                 {
                     <select class="selectInterest" @bind="@valueInterest">
@@ -21,9 +24,6 @@
                     </select>
                 }
             </div>
-    <div class="box">
-
-
 
         <div class="tools">
             <button class="btnTool"><img class="imgTool" src="icons/TextBold.svg" alt="img"/></button>
@@ -38,20 +38,20 @@
 
 
 
-            <p>@valueInterest</p>
+            @* <p>@valueInterest</p> *@
 
         </div>
-        <div class="inputField">
-            <label class="control-label">Message</label>
-            <textarea rows="4" value="@EmailMessage" @onchange="@((args) => EmailMessage = args.Value.ToString())"></textarea>
+        <div class="inputField" >
+            @* <label class="control-label">Message</label> *@
+            <textarea rows="4" placeholder="What are your thoughts?" value="@EmailMessage" @onchange="@((args) => EmailMessage = args.Value.ToString())"></textarea>
         </div>
 
 
     </div>
-    @if (fileName != "")
+    @if (fileName != null)
     {
         <div class="card_img">
-            <img src="imgCreate/@fileName" alt="img"/>
+            <img class="imgPost" src="imgCreate/@fileName" alt="img"/>
         </div>
     }
     <div class="bottom">
