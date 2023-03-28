@@ -20,14 +20,15 @@
             @* </div> *@
             
             <label for="filePicker2" class="label">
-              <i class="fas fa-paperclip"></i>
-                <span class="title">image</span>
-                
-              <InputFile id="filePicker2" class="invisible" OnChange="@OnSubmit" multiple></InputFile>
+              <span class="title"><img class="imgtool" src="icons/Image.svg" alt="img"/></span>
+
+                <InputFile id="filePicker2" class="invisible" OnChange="@OnSubmit" multiple></InputFile>
             </label>
             
         </div>
     
+        
+        
         <div class="boxEnd">
             <h3>@CrntUser.Username.ToString()</h3>
         
@@ -41,10 +42,28 @@
                 <p>@CrntUser.Email</p>
             </div>
             
-            <div class="cardRow">
-                <p>Posts:  </p>
-                <p>@countPosts.ToString()</p>
+            <div class="boxDevide">
+                <p>devide</p>
             </div>
+            
+            <div class="boxBottom">
+                <div class="cardRow">
+                    <p>Posts</p>
+                    <p>@countPosts.ToString()</p>
+                </div>
+                
+                <div class="cardRow">
+                    <p>Likes</p>
+                    <p>@countPosts.ToString()</p>
+                </div>
+                
+                <div class="cardRow">
+                    <p>Comments</p>
+                    <p>@countPosts.ToString()</p>
+                </div>
+            </div>
+            
+            <button class="btnLogOut">Log Out</button>
             
         </div> 
     }

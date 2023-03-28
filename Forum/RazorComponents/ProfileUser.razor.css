@@ -1,15 +1,19 @@
 ﻿* {
     margin: 0;
     padding: 0;
+    color: #24292f;
 }
 
 .cardProfile {
     display: flex;
     height: 500px;
     flex-direction: column;
-    background: wheat;
+  
     border-radius: 10px;
     width: 350px;
+    background: white;
+    border: solid 2px #d5d5d5;
+    border-radius: 7px;
 }
 
 .boxTop {
@@ -17,18 +21,27 @@
     justify-content: center;
     align-items: center;
     height: 200px;
-    background: #0a53be;
+    
 }
 
 .boxEnd {
     display: flex;
     flex-direction: column;
+    justify-content: space-evenly;
     height: 70%;
-    background: #e0abab;
+    width: 90%;
+    margin: auto;
 }
 
 .boxEnd h3 {
     text-align: center;
+}
+
+span img {
+    padding-top: 3px;
+    padding-right: 2px;
+    width: 30px;
+    height: 30px;
 }
 
 .cardRow {
@@ -38,10 +51,16 @@
 }
 
 .userImg {
-    background: #efef57;
-    width:100%;
-    height:100%;
-    object-fit: contain;
+    width: 170px;
+    height: 170px;
+    margin: 10px;
+  
+    object-fit: cover;
+    border-radius: 999px;
+
+    -webkit-box-shadow: 0px 6px 24px -5px rgba(34, 60, 80, 0.44);
+    -moz-box-shadow: 0px 6px 24px -5px rgba(34, 60, 80, 0.44);
+    box-shadow: 0px 6px 24px -5px rgba(34, 60, 80, 0.44);
 }
 
 /*.inputFile {*/
@@ -54,13 +73,24 @@
 /*    color: transparent;*/
 /*}*/
 
+.boxDevide {
+    height: 1px;
+    width: 90%;
+    background: #d7d7d7;
+    margin: 10px auto;
+    color: white;
+}
 
+.boxDevide p {
+    color: white;
+}
 
 .label {
     position: absolute;
     right: 0;
     top: 140px;
-    margin: 10px;
+    margin-bottom: 10px;
+    margin-right: 10px;
     background: rgba(255, 255, 255, 0.36);
     width: 40px;
     height: 40px;
@@ -85,4 +115,22 @@ i{
 
 .label:hover {
     border: 2px solid;
+}
+
+.boxBottom {
+    display: flex;
+    justify-content: space-around;
+}
+
+.boxBottom .cardRow {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 100px;
+}
+
+.btnLogOut {
+    border-radius: 999px;
+    background: white;
+    height: 39px;
 }
