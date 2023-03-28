@@ -98,6 +98,7 @@
     margin: auto;
     object-fit: contain;
     padding: 10px;
+    border-radius: 13px;
 }
 
 .columnText {
