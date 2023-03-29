@@ -114,14 +114,14 @@
     flex-direction: row;
     align-items: center;
     white-space: normal;
-    height: 50px
+    height: 50px;
+    margin-left: 10px;
 }
 
 .rowCard {
     display: flex;
     background: #ffffff;
     flex-direction: row;
-    margin: 1vh 0;
     white-space: normal;
 }
 
@@ -131,19 +131,37 @@
     padding: 9px;
 }
 .contentComments {
-    background: #e1c3c3;
     margin-bottom: 100px;
 }
 
 .commentField {
-    margin: 10px 0;
-    background: #90e6f8;
-    width: 95%;
-    margin: 10px auto;
+    display: flex;
+    flex-direction: column;
+    width: 98%;
+    margin: 20px auto;
+}
+
+.headerComment {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: start;
+    height: 60px;
 }
 
 .footer {
     height: 100px;
+}
+
+.rowCard {
+    display: flex;
+    white-space: normal;
+}
+
+
+.rowCard p {
+    white-space: normal;
+    padding: 0 29px;
 }
 
 
@@ -160,22 +178,13 @@
 .columnText {
     display:flex;
     flex-direction: column;
+    margin-left: 10px;
 }
 
-.columnText p:first-child {
-    font-weight: bold
-}
-
-.columnText p:last-child {
-    font-size: 13px;
-    color: #7e8996;
-}
-
-.columnText p:last-child span{
-    font-size: 13px;
-    color: #606060;
+.columnText p {
     font-weight: bold;
 }
+
 
 .postInterest {
     float: right;
@@ -191,7 +200,6 @@
 .userImg {
     width: 40px;
     height: 40px;
-    margin: 20px;
     object-fit: cover;
     border-radius: 999px;
 }
@@ -199,7 +207,7 @@
 .btnComment {
     background: #dae0e6;
     padding: 5px 10px;
-    margin: 0 10px;
+    margin: 10px;
     color: #7e8996;
     border-radius: 999px;
     border: none;
@@ -215,3 +223,20 @@
     filter: invert(0.5);
 }
 
+
+.textContent {
+    display: flex;
+    flex-direction: row;
+    width: 96%;
+    margin: auto;
+}
+
+.emptyStick {
+    background: #edeff1;
+    height: auto;
+    width: 3px;
+}
+
+.emptyStick:hover {
+    background: #dcdee0;
+}
