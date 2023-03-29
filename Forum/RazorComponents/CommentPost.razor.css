@@ -1,7 +1,9 @@
 ﻿* {
     margin: 0;
-    padding: 0
+    padding: 0;
+    color: #24292f;
 }
+
 
 .background {
     display: flex;
@@ -32,28 +34,49 @@
 }
 
 .content1 {
-    background: black;
+    display: flex;
+    background: #f8f9fa;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
     height: 40px;
-    color: white;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-right: 10px;
+    padding-left: 10px;
+    border: solid #c9c9c9 1px;
 }
 
+
+
+.content1 button {
+    background: #f8f9fa;
+    border: none;
+}
+
+.content1 button:hover {
+    color: #54646c;
+}
 
 
 .postCard {
     display: flex;
     flex-direction: row;
-    background: cadetblue;
+    background: white;
     width: 100%;
-    padding: 10px;
-    margin: 10px 0;
+    margin-top: -1px;
     white-space: normal;
-
+   
+   
 }
+
 
 .leftSide {
     display: flex;
     flex-direction: column;
-    background: lightpink;
+    align-items: center;
+    padding-top: 10px;
+    background: #f8f9fa;
     width: 40px;
 }
 
@@ -61,24 +84,52 @@
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    background: lightgrey;
+    background: #ffffff;
     width: 100%;
-    margin: 0 0 0 5px;
 }
 
+.btnLike {
+    background: #f8f9fa;
+    border: none;
+}
+
+.btnLike img {
+    width: 20px;
+    border: none;
+}
+
+.rowCard1 {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    white-space: normal;
+  
+
+    height: 50px
+}
+
+.rowCard1 .side1{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    white-space: normal;
+    height: 50px
+}
 
 .rowCard {
     display: flex;
-    background: lightsteelblue;
+    background: #ffffff;
     flex-direction: row;
     margin: 1vh 0;
     white-space: normal;
 }
 
+
 .rowCard p {
     white-space: normal;
+    padding: 9px;
 }
-
 .contentComments {
     background: #e1c3c3;
     margin-bottom: 100px;
@@ -86,7 +137,9 @@
 
 .commentField {
     margin: 10px 0;
-    background: #0dcaf0;
+    background: #90e6f8;
+    width: 95%;
+    margin: 10px auto;
 }
 
 .footer {
@@ -95,8 +148,70 @@
 
 
 .imgPost {
-    background: yellow;
+    background: #ffffff;
     max-width: 100%;
     margin: auto;
     object-fit: contain;
+    padding: 10px;
+    border-radius: 13px;
 }
+
+
+.columnText {
+    display:flex;
+    flex-direction: column;
+}
+
+.columnText p:first-child {
+    font-weight: bold
+}
+
+.columnText p:last-child {
+    font-size: 13px;
+    color: #7e8996;
+}
+
+.columnText p:last-child span{
+    font-size: 13px;
+    color: #606060;
+    font-weight: bold;
+}
+
+.postInterest {
+    float: right;
+    background: #24292f;
+    color: white;
+    font-size: 10px;
+    padding: 5px 10px;
+    border-radius: 999px;
+    margin-right: 10px;
+    letter-spacing: .1rem;
+}
+
+.userImg {
+    width: 40px;
+    height: 40px;
+    margin: 20px;
+    object-fit: cover;
+    border-radius: 999px;
+}
+
+.btnComment {
+    background: #dae0e6;
+    padding: 5px 10px;
+    margin: 0 10px;
+    color: #7e8996;
+    border-radius: 999px;
+    border: none;
+    font-size: 13px;
+}
+
+.btnComment:hover {
+    background: #d1d8dc;
+}
+
+.btnComment img {
+    width: 19px;
+    filter: invert(0.5);
+}
+

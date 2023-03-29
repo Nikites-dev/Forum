@@ -1,12 +1,17 @@
 ﻿@using Forum.Services
 @using Forum.MongoDB
 @inject BehaviourService BehaviourService
+@inject UserDbConnection UserDbConnection
 
 <div hidden="@BehaviourService.isShowCommentContent" class="background">
+    @if (PostChoose.Username != null)
+    {
+        
+  
     <div class="field">
         <div class="content1">
-            <p>Header</p>
-            <button @onclick="@ShowCheck">Close</button>
+            <p>Comments</p>
+            <button @onclick="@ShowCheck">&#66327; Close</button>
         </div>
         
         
@@ -22,45 +27,79 @@
                         {
                             <p>0</p>
                         }
-
+                        @if (UserDbConnection.isLoginUser == null)
+                        {
+                            <button class="btnLike" disabled="disabled" @onclick="(() => PutLike(PostChoose))"><img src="icons/Like.svg" alt="like"></button>
+                        }
+                        else
+                        {
+                            if(@CheckLike(@PostChoose)) {
+                            <button class="btnLike" @onclick="(() => PutLike(PostChoose))"><img src="icons/LikeColored.svg" alt="like" style=" filter: invert(13%) sepia(94%) saturate(7466%) hue-rotate(0deg) brightness(94%) contrast(115%);"></button>
+                            } else {
+                            <button class="btnLike" @onclick="(() => PutLike(PostChoose))"><img src="icons/Like.svg" alt="like"></button>
+                            }
+                            
+                        }
                     </div>
     
                     <div class="rightSide">
-                        <div class="rowCard">
-                            @* <p>@PostChoose.Username.ToString() * </p> *@
-                            <p> posted by  @PostChoose.CreatePost.ToString()</p>
+                        
+                        <div class="rowCard1">
+                            <div class="side1">
+                                @if (GetUserImg(PostChoose.Username) != null)
+                                {
+                                    <img class="userImg" src="imgSource/@GetUserImg(PostChoose.Username)" alt="img"/>    
+                                }
+                                
+                                <div class="columnText">
+                                    <p>@PostChoose.Username.ToString()</p>
+                                    <p> posted by <span>@PostChoose.CreatePost.ToString()</span></p>
+                                </div>
+                                
+                            </div>
+                                <p class="postInterest"> @PostChoose.Interest.ToString()</p>
                         </div>
-                        @if (@PostChoose.Text != null)
+                        
+                        
+                        @if (PostChoose.Text.Length < 20)
                         {
-                            @if (PostChoose.Text.Length < 20)
-                            {
-                                <div class="rowCard">
-                                    <p style="font-size: 25px">@PostChoose.Text</p>
-                                </div>  
-                            } else if (PostChoose.Text.Length >= 20 && PostChoose.Text.Length <= 210)
-                            {
-                                <div class="rowCard">
-                                    <p style="font-size: 20px">@PostChoose.Text</p>
-                                </div>   
-                            }
-                            else
-                            {
-                                <div class="rowCard">
-                                    <p style="font-size: 15px">@PostChoose.Text</p>
-                                </div>   
-                            }
+                            <div class="rowCard">
+                                <p style="font-size: 25px">@PostChoose.Text</p>
+                            </div>  
+                        } else if (PostChoose.Text.Length >= 20 && PostChoose.Text.Length <= 210)
+                        {
+                            <div class="rowCard">
+                                <p style="font-size: 20px">@PostChoose.Text</p>
+                            </div>   
                         }
-                       
+                        else
+                        {
+                            <div class="rowCard">
+                                <p style="font-size: 15px">@PostChoose.Text</p>
+                            </div>   
+                        }
                         @if (@PostChoose.NameImage != null)
                         {
                             <div class="rowCard">
                                 @{
                                     FileSystemService.DownloadToLocalByName(@PostChoose.NameImage, "imgSource");
                                 }
-                                ;
+                            
                                 <img class="imgPost" src="imgSource/@PostChoose.NameImage" alt="img"/>
                             </div>    
                         }
+                       
+                      
+                        <div class="rowCard">
+                            @if (PostChoose.Comments != null)
+                            {
+                                <button class="btnComment" @onclick="(() => CommmentRemote(PostChoose))"><img src="icons/Comment.svg" alt="like" > @PostChoose.Comments.Count.ToString() Comments</button>
+                            }
+                            else
+                            {
+                                <button class="btnComment" @onclick="(() => CommmentRemote(PostChoose))">add first comment</button>
+                            }
+                        </div>
                         
                     </div>
                 </div>
@@ -75,6 +114,22 @@
                      @foreach (var comment in @PostChoose.Comments)
                      {
                          <div class="commentField">
+                             
+                             @{
+                                FileSystemService.DownloadToLocalByName(@PostChoose.NameImage, "imgSource");
+                             }
+                             
+                             
+                             @if (GetUserImg(PostChoose.Username) != null)
+                             {
+                                 
+                                 
+                                
+                                 
+                                 <img class="userImg" src="imgSource/@GetUserImg(PostChoose.Username)" alt="img"/>    
+                             }
+                             
+                             
                              <p>@comment.Username</p>
                              <p>@comment.Text</p>
                              <p>@comment.Rating</p>
@@ -90,13 +145,14 @@
         </div>
         
     </div>
+    }
 </div>
 
 @code {
     
     [Parameter]
     public Post PostChoose { get; set; }
-    
+    Post selectPost = new Post(); 
     // [Parameter]
     // public bool HiddenContent { get; set; }
 
@@ -104,5 +160,50 @@
     {
         BehaviourService.isShowCommentContent = true;
         StateHasChanged();
+    }
+    
+    String? GetUserImg(String username)
+    {
+        User user = UserDbConnection.GetUserByUsername(username);
+        return user.NameImage;
+    }
+
+    
+    void PutLike(Post post)
+    {
+        bool alreadyLike = CheckLike(post);
+       
+        if (alreadyLike == false)
+        {
+            post.Likes.Add(UserDbConnection.isLoginUser.Username);
+        }
+        else
+        {
+            post.Likes.Remove(UserDbConnection.isLoginUser.Username);
+        }
+        PostDbConnection.UpdatePost(post);
+    }
+
+    void CommmentRemote(Post post)
+    {
+        selectPost = post;
+        BehaviourService.isShowCommentContent = false;
+    }
+    
+    bool CheckLike(Post post)
+    {
+        bool alreadyLike = false;
+        if (post.Likes != null)
+        {
+            foreach (var likes in post.Likes)
+            {
+                if (likes == UserDbConnection.isLoginUser.Username)
+                {
+                    alreadyLike = true;
+                }
+            }
+        }
+
+        return alreadyLike;
     }
 }

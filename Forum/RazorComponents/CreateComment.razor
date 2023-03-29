@@ -11,6 +11,7 @@
         <div class="box2">
             <button @onclick="@AddComment">Comment</button>
         </div>
+
     </div>
 </div>
 
@@ -32,7 +33,6 @@
         }
     }
 
-
     void AddComment()
     {
         Comment comment = new Comment();
@@ -44,5 +44,4 @@
         PostDbConnection.UpdatePost(CurrentPost);
         text = "";
     }
-
 }
