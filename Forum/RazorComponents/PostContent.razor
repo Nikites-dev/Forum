@@ -10,13 +10,11 @@
 <div class="content">
     @if (_posts != null)
     {
-      @*  <div class="sortBox"> *@
-            @* <div class="sortRow"> *@
-            @*     $1$ <button @onclick="@Sort">Popular</button> #1# *@
-            @*     <button>Fresh</button> *@
-            @*     <button>Interest</button> *@
-            @* </div> *@
-      @*  </div>*@
+        <div class="sortBox">
+            <button class="btnSort" style="background: #0a58ca" @onclick="() => Sort(radioName1)"> <img src="icons/Popular.svg" alt="img"> <p>Popular</p></button> 
+            <button class="btnSort"><img src="icons/Fresh.svg"/> <p>New</p></button> 
+            <button class="btnSort"><img src="icons/Hot.svg"/> <p>Hot</p></button>
+        </div>
 
         @foreach (var post in _posts)
         {
@@ -115,20 +113,37 @@
     List<Post> _posts;
     bool hideCmntBtn = true;
     bool hideCmntComponent = false;
-    Post selectPost = new Post(); 
+    Post selectPost = new Post();
+    
+    String checkRadio1 = "blue";
+    String checkRadio2 = "blue";
+    String checkRadio3 = "blue";
+    
+    //String[] strColor = new  {checkRadio1, };
+    
+    
+
+    String radioName1 = "Popular";
+    String radioName2 = "Hot";
+    String radioName3 = "New";
     
     [Parameter]
     public User RegUser { get; set; }
     
     [Parameter]
     public String SortName { get; set; }
-    
+
+    [Parameter]
+    public String Filter { get; set; }
+
     protected override void OnInitialized()
     {
         BehaviourService.isShowCommentContent = true;
         StateHasChanged();
         GetPosts();
-        DataUpdating();
+        
+        //OnTopicSelect += GetPosts;
+       // DataUpdating();
     }
     
     public async Task DataUpdating()
@@ -136,7 +151,7 @@
         while(true) {
             StateHasChanged();
             GetPosts();
-            await Task.Delay(500);
+            await Task.Delay(1);
         }
     }
 
@@ -153,6 +168,8 @@
 
     void GetPosts()
     {
+        SortName = Filter;
+        
         if (RegUser != null && SortName == "profile")
         {
             _posts = PostDbConnection.FindUserPostsByUsername(RegUser.Username);
@@ -208,6 +225,22 @@
     {
         selectPost = post;
         BehaviourService.isShowCommentContent = false;
+    }
+
+    void Sort(String sortName)
+    {
+        switch (sortName)
+        {
+            case "Popular":
+                
+                break;
+            case "Hot":
+                
+                break;
+            case "New":
+                
+                break;
+        }
     }
 }
 

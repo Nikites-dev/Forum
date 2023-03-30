@@ -8,19 +8,25 @@
     <HeaderMenu/>
     <div class="contentMain">
         <div class="sideLeft">
-            <NavMenu></NavMenu>
+            <NavMenu  Filter="@Filter"></NavMenu>
         </div>
         
         <div class="sideRight">
-            <PostContent RegUser="null" SortName=""></PostContent>
+            <PostContent Filter="@Filter" RegUser="null" SortName=""></PostContent>
         </div>
         
     </div>
 </div>
 
 @code {
+    private string Filter { get; set; }
     protected override void OnInitialized()
     {
         BehaviourService.SelectInterest = "";
+    }
+
+    public void OnFilterChange(string newValue)
+    {
+        Filter = newValue;
     }
 }
