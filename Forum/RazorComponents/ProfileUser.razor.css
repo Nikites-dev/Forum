@@ -21,6 +21,7 @@
     justify-content: center;
     align-items: center;
     height: 200px;
+    margin-top: 5px;
     
 }
 
@@ -130,7 +131,22 @@ i{
 }
 
 .btnLogOut {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
     border-radius: 999px;
     background: white;
-    height: 39px;
+    height: 35px;
+    border: solid 1px #808080;
+    margin-bottom: 10px;
+}
+
+.btnLogOut:hover {
+    border: solid 2px #808080;
+}
+
+.btnLogOut img {
+    width: 20px;
+    margin-right: 10px;
 }

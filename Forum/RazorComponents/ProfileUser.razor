@@ -4,6 +4,7 @@
 @inject PostDbConnection PostDbConnection
 @inject UserDbConnection UserDbConnection
 @inject FileSystemService FileSystemService 
+@inject NavigationManager NavigationManager
 
 <div class="cardProfile">
     
@@ -12,7 +13,7 @@
         <div class="boxTop">
             @if (fileName != "")
             {
-                <img class="userImg" src="imgUser/@fileName" alt="img"/>
+                <img class="userImg" src="imgUser/@fileName" alt=" "/>
             }
             @* <div class="inputFile"> *@
                 @* <InputFile OnChange="@OnSubmit" class="invisible" multiple type="file"/> *@
@@ -63,7 +64,7 @@
                 </div>
             </div>
             
-            <button class="btnLogOut">Log Out</button>
+            <button class="btnLogOut" @onclick="@ClickSignOut"><img src="icons/LogOut.svg"> <p>Log Out</p></button>
             
         </div> 
     }
@@ -123,14 +124,11 @@
         UserDbConnection.UpdateUser(CrntUser);
     }
 
-    // public static void RemoveFolder()
-    // {
-    //     String path = $"{Directory.CreateDirectory(Directory.GetCurrentDirectory() + "/wwwroot/imgUser/")}";
-    //     DirectoryInfo dirInfo = new DirectoryInfo(path);
-    //
-    //     foreach (FileInfo f in dirInfo.GetFiles())
-    //     {
-    //         f.Delete();
-    //     }
-    // }
+    void ClickSignOut()
+    {
+        FileSystemService.RemoveFolder("imgUser");
+        UserDbConnection.isLoginUser = null;
+        NavigationManager.NavigateTo("/");
+    }
+
 }

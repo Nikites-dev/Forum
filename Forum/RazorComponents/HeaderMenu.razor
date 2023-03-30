@@ -46,6 +46,17 @@
     protected override void OnInitialized()
     {
         fileName = FileSystemService.GetNameOfDir("imgUser");
+        DataUpdating();
+    }
+    
+    
+    public async Task DataUpdating()
+    {
+        while(true) {
+            StateHasChanged();
+            fileName = FileSystemService.GetNameOfDir("imgUser");
+            await Task.Delay(500);
+        }
     }
     
     void SignInClick()
