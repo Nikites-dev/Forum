@@ -79,6 +79,81 @@ namespace Forum.MongoDB
             return post;
         }
         
+        public static int FindUserLikesByUsername(String username)
+        {
+            var client = new MongoClient("mongodb://localhost");
+            var database = client.GetDatabase("Forum");
+            var collection = database.GetCollection<Post>("Posts");
+
+            List<Post> post = new List<Post>();
+            int postLikes = 0;
+            
+            try
+            {
+                post = collection.Find(x => x.Username != "").ToList();
+
+                for (int i = 0; i < post.Count; i++)
+                {
+                    var likes = post[i].Likes;
+                    for (int j = 0; j < likes.Count; j++)
+                    {
+                        if (likes[j] == username)
+                        {
+                            postLikes++;
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                post = null;
+            }
+            
+            if (post == null)
+            {
+                return 0;
+            }
+            return postLikes;
+        }
+        
+        
+        public static int FindUserCommentsByUsername(String username)
+        {
+            var client = new MongoClient("mongodb://localhost");
+            var database = client.GetDatabase("Forum");
+            var collection = database.GetCollection<Post>("Posts");
+
+            List<Post> post = new List<Post>();
+            int postLikes = 0;
+            
+            try
+            {
+                post = collection.Find(x => x.Username != "").ToList();
+
+                for (int i = 0; i < post.Count; i++)
+                {
+                    List<Comment> comments = post[i].Comments;
+                    for (int j = 0; j < comments.Count; j++)
+                    {
+                        if (comments[j].Username == username)
+                        {
+                            postLikes++;
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                post = null;
+            }
+            
+            if (post == null)
+            {
+                return 0;
+            }
+            return postLikes;
+        }
+        
         public static List<Post> FindUserPostsByInterest(String interest)
         {
             var client = new MongoClient("mongodb://localhost");

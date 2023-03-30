@@ -55,12 +55,12 @@
                 
                 <div class="cardRow">
                     <p>Likes</p>
-                    <p>@countPosts.ToString()</p>
+                    <p>@countLikes.ToString()</p>
                 </div>
                 
                 <div class="cardRow">
                     <p>Comments</p>
-                    <p>@countPosts.ToString()</p>
+                    <p>@countComments.ToString()</p>
                 </div>
             </div>
             
@@ -75,10 +75,15 @@
     public User CrntUser { get; set; }
     string fileName;
     int countPosts = 0;
+    int countLikes = 0;
+    int countComments = 0;
     protected override void OnInitialized()
     {
         FileSystemService.RemoveFolder("imgUser");
         countPosts = PostDbConnection.FindUserPostsByUsername(CrntUser.Username).Count;
+        countLikes = PostDbConnection.FindUserLikesByUsername(CrntUser.Username);
+        countComments = PostDbConnection.FindUserCommentsByUsername(CrntUser.Username);
+
         if (CrntUser.NameImage != null)
         {
             FileSystemService.DownloadToLocalByName(CrntUser.NameImage, "imgUser");
