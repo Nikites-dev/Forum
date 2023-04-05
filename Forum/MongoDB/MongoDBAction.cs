@@ -7,14 +7,7 @@ namespace Forum.MongoDB
 {
     public class MongoDBAction
     {
-        
-        
-        
-        
-        
-        
-        
-        
+
         // public static String DeleteByName(String name)
         // {
         //     var client = new MongoClient("mongodb://localhost");

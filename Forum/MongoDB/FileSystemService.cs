@@ -142,7 +142,7 @@ namespace Forum.MongoDB
             }
             catch (Exception e)
             {
-                Console.WriteLine($"a file named {name} already exists");
+              //  Console.WriteLine($"a file named {name} already exists");
                 // _logger.LogError($"a file named {name} already exists");
             }
         }

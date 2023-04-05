@@ -24,7 +24,10 @@
             <button class="btnSign" onclick="@SignInClick">Profile</button>
             @if (UserDbConnection.isLoginUser.NameImage != "")
             {
-                <img class="userImg" src="imgUser/@fileName" alt="img"/>    
+                @if (fileName != "")
+                {
+                    <img class="userImg" src="imgUser/@fileName" alt="img"/>    
+                }
             }
         }
         else
@@ -41,11 +44,11 @@
 
 @code {
     bool isClickSign = true;
-    string fileName;
-    
+    String fileName = "";
+
     protected override void OnInitialized()
     {
-        fileName = FileSystemService.GetNameOfDir("imgUser");
+       // fileName = FileSystemService.GetNameOfDir("imgUser");
         DataUpdating();
     }
     
@@ -53,8 +56,11 @@
     public async Task DataUpdating()
     {
         while(true) {
+            if (fileName != FileSystemService.GetNameOfDir("imgUser"))
+            {
+                fileName = FileSystemService.GetNameOfDir("imgUser");
+            }
             StateHasChanged();
-            fileName = FileSystemService.GetNameOfDir("imgUser");
             await Task.Delay(500);
         }
     }
