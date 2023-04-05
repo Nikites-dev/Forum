@@ -8,11 +8,12 @@
     <HeaderMenu/>
     <div class="contentMain">
         <div class="sideLeft">
-            <NavMenu  Filter="@Filter"></NavMenu>
+            <NavMenu></NavMenu>
         </div>
         
         <div class="sideRight">
-            <PostContent Filter="@Filter" RegUser="null" SortName=""></PostContent>
+           @* <PostContent Filter="@Filter" RegUser="null" SortName=""></PostContent> *@
+          <PostContent Filter="@BehaviourService.SelectInterest" RegUser="null" SortName=""></PostContent>
         </div>
         
     </div>

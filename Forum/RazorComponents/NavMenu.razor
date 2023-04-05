@@ -1,5 +1,6 @@
 ﻿@using Forum.Services
 @using Index = Forum.Pages.Index
+@using System.ComponentModel.DataAnnotations
 @inject BehaviourService BehaviourService
 @inject Interests Interests
 
@@ -7,15 +8,11 @@
     
     <div class="section">
         <p class="txtHeader">FEEDS</p>
-        
-     
-        
-        
         <div class="rowNav">
-            <button class="btnNav">
-                <div Match="NavLinkMatch.All">
-                    <span><img src="icons/@GetIcon("Home")" width="18"alt="icon"/> </span> Home
-                </div>
+                <button class="btnNav">
+                    <div Match="NavLinkMatch.All">
+                        <span><img src="icons/@GetIcon("Home")" width="18"alt="icon"/> </span> Home
+                    </div>
             </button>
         </div>
         
@@ -45,7 +42,7 @@
         <p class="txtHeader">TOPICS</p>
 
         <div class="rowNav">
-            <button class="btnNav" @onclick="() => Sort(strAll)">
+            <button class="btnNav" @onclick="() => SetInterest(strAll)">
                 <div Match="NavLinkMatch.All">
                     <span><img src="icons/@GetIcon("All")" width="18"alt="icon"/> </span> All
                 </div>
@@ -57,7 +54,7 @@
             @foreach (var interest in listInterests)
             {
                 <div class="rowNav">
-                    <button class="btnNav" @onclick="() => Sort(interest)">
+                    <button class="btnNav" @onclick="() => SetInterest(interest)">
                         <div Match="NavLinkMatch.All">
                             <span><img src="icons/@GetIcon(interest)" width="18"alt="icon"/> </span> @interest
                         </div>
@@ -73,23 +70,23 @@
     String str = "Finance";
     String strOI = "oi oi-star";
     String strAll = "";
+    String crntFilter= "";
     List<String> listInterests = Models.Interests.GetListInterest();
-
+    
     [Parameter]
     public String Filter{ get; set; }
 
-    
     protected override void OnInitialized()
     {
         listInterests = Models.Interests.GetListInterest();
         Filter = "Funny";
     }
+    
 
-
-    void Sort(String nameInterest)
+    void SetInterest(String nameInterest)
     {
-   
-    // BehaviourService.SelectInterest = nameInterest;
+        BehaviourService.OnFilterChange(nameInterest);
+       // BehaviourService.SelectInterest = nameInterest;
         //OnTopicSelect.Invoke();
     }
 

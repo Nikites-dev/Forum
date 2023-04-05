@@ -1,6 +1,7 @@
 ﻿@using Forum.Services
 @using System.Threading
 @using Forum.MongoDB
+@using System.ComponentModel.DataAnnotations
 @inject PostService PostService
 @inject BehaviourService BehaviourService
 @inject Forum.MongoDB.UserDbConnection UserDbConnection
@@ -11,9 +12,9 @@
     @if (_posts != null)
     {
         <div class="sortBox">
-            <button class="btnSort" style="background: #0a58ca" @onclick="() => Sort(radioName1)"> <img src="icons/Popular.svg" alt="img"> <p>Popular</p></button> 
-            <button class="btnSort"><img src="icons/Fresh.svg"/> <p>New</p></button> 
-            <button class="btnSort"><img src="icons/Hot.svg"/> <p>Hot</p></button>
+            <button class="btnSort" style="background: @strBgColors[0]" @onclick="() => SortPosts(radioName1)"><img src="icons/Popular.svg" alt="img" style="filter: invert(0.2)"> <p style="color: @strColors[0]">Popular</p></button> 
+            <button class="btnSort" style="background: @strBgColors[1]" @onclick="() => SortPosts(radioName2)"><img src="icons/Fresh.svg" style="filter: invert(0.2)"/> <p style="color: @strColors[1]">New</p></button> 
+            <button class="btnSort" style="background: @strBgColors[2]" @onclick="() => SortPosts(radioName3)"><img src="icons/Hot.svg" style="filter: invert(0.2)"/> <p style="color: @strColors[2]">Hot</p></button>
         </div>
 
         @foreach (var post in _posts)
@@ -114,25 +115,23 @@
     bool hideCmntBtn = true;
     bool hideCmntComponent = false;
     Post selectPost = new Post();
-    
-    String checkRadio1 = "blue";
-    String checkRadio2 = "blue";
-    String checkRadio3 = "blue";
-    
-    //String[] strColor = new  {checkRadio1, };
-    
-    
 
     String radioName1 = "Popular";
-    String radioName2 = "Hot";
-    String radioName3 = "New";
+    String radioName2 = "New";
+    String radioName3 = "Hot";
+    String _currentInterest = "";
     
+    List<double> filterInverts = new List<double>() {0.5, 0.5, 0.1};
+    List<String> strBgColors = new List<string>() {"white", "white", "white"};
+    List<String> strColors = new List<string>() {"#898b8c", "#898b8c", "#898b8c"};
+
     [Parameter]
     public User RegUser { get; set; }
     
     [Parameter]
     public String SortName { get; set; }
 
+    [Required]
     [Parameter]
     public String Filter { get; set; }
 
@@ -141,17 +140,26 @@
         BehaviourService.isShowCommentContent = true;
         StateHasChanged();
         GetPosts();
-        
+      
         //OnTopicSelect += GetPosts;
-       // DataUpdating();
+        DataUpdating();
     }
     
     public async Task DataUpdating()
     {
         while(true) {
+            if (_currentInterest != BehaviourService.SelectInterest)
+            {
+                _currentInterest = BehaviourService.SelectInterest;
+                GetPosts();
+            }      
+            
+            if (RegUser != null && SortName == "profile")
+            {
+                _posts = PostDbConnection.FindUserPostsByUsername(RegUser.Username);
+            }
             StateHasChanged();
-            GetPosts();
-            await Task.Delay(1);
+            await Task.Delay(1000);
         }
     }
 
@@ -168,23 +176,18 @@
 
     void GetPosts()
     {
-        SortName = Filter;
         
-        if (RegUser != null && SortName == "profile")
-        {
-            _posts = PostDbConnection.FindUserPostsByUsername(RegUser.Username);
-        }
-        else
-        {
             if(BehaviourService.SelectInterest == String.Empty)
             {
                 _posts = PostService.GetPosts();     
             }
             else
             {
-                _posts = PostDbConnection.FindUserPostsByInterest(BehaviourService.SelectInterest);    
+               // _posts = PostDbConnection.FindUserPostsByInterest(BehaviourService.SelectInterest);    
+                _posts = PostDbConnection.FindUserPostsByInterest(_currentInterest);    
             }
-        }
+    // _posts = _posts.OrderByDescending(o => o.Likes.Count).ToList();
+       // _posts = _posts.OrderByDescending(o => o.CreatePost).ToList();
     }
 
    
@@ -227,18 +230,43 @@
         BehaviourService.isShowCommentContent = false;
     }
 
-    void Sort(String sortName)
+    void SortPosts(String sortName)
     {
+        // SortName = BehaviourService.SelectInterest;
+        
         switch (sortName)
         {
             case "Popular":
+                strBgColors[0] = "#f6f7f8";
+                strBgColors[1] = "white";
+                strBgColors[2] = "white";
                 
-                break;
-            case "Hot":
-                
+                strColors[0] = "black";
+                strColors[1] = "#898b8c";
+                strColors[2] = "#898b8c";
+                _posts = _posts.OrderByDescending(o => o.Likes.Count).ToList();
                 break;
             case "New":
+                strBgColors[0] = "white";
+                strBgColors[1] = "#f6f7f8";
+                strBgColors[2] = "white";
                 
+                strColors[0] = "#898b8c";
+                strColors[1] = "black";
+                strColors[2] = "#898b8c";
+                
+                _posts = _posts.OrderByDescending(o => o.CreatePost).ToList();
+                break;
+            case "Hot":
+                strBgColors[0] = "white";
+                strBgColors[1] = "white";
+                strBgColors[2] = "#f6f7f8";
+                
+                strColors[0] = "#898b8c";
+                strColors[1] = "#898b8c";
+                strColors[2] = "black";
+                
+                _posts = _posts.OrderByDescending(o => o.Comments.Count).ToList();
                 break;
         }
     }
