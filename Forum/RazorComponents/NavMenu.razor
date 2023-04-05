@@ -1,30 +1,35 @@
 ﻿@using Forum.Services
 @using Index = Forum.Pages.Index
 @using System.ComponentModel.DataAnnotations
+@using Forum.MongoDB
 @inject BehaviourService BehaviourService
+@inject UserDbConnection UserDbConnection
 @inject Interests Interests
+@inject NavigationManager NavigationManager
 
 <div class="navbar">
     
     <div class="section">
         <p class="txtHeader">FEEDS</p>
         <div class="rowNav">
-                <button class="btnNav">
-                    <div Match="NavLinkMatch.All">
-                        <span><img src="icons/@GetIcon("Home")" width="18"alt="icon"/> </span> Home
-                    </div>
-            </button>
-        </div>
-        
-        <div class="rowNav">
-            <button class="btnNav">
+            <button class="btnNav" @onclick="NavigationHome">
                 <div Match="NavLinkMatch.All">
-                    <span><img src="icons/@GetIcon("Popular")" width="18"alt="icon"/> </span> Popular
+                    <span><img src="icons/@GetIcon("Home")" width="18"alt="icon"/> </span> Home
                 </div>
             </button>
         </div>
         
-        
+        @if (UserDbConnection.isLoginUser != null)
+        {
+            <div class="rowNav">
+                <button class="btnNav"  @onclick="NavigationProfile">
+                    <div Match="NavLinkMatch.All">
+                        <span><img src="icons/@GetIcon("Star")" width="18"alt="icon"/> </span> Profile
+                    </div>
+                </button>
+            </div>
+        }
+
         @* <div class="rowNav"> *@
         @*     <button class="btnNav"> *@
         @*         <div Match="NavLinkMatch.All"> *@
@@ -97,4 +102,19 @@
     public delegate void OnTopicSelectDelegate();
 
     public event OnTopicSelectDelegate OnTopicSelect;
+
+
+    void NavigationHome()
+    {
+        NavigationManager.NavigateTo("/");
+    }
+    
+    void NavigationProfile()
+    {
+        if (UserDbConnection.isLoginUser != null)
+        {
+            NavigationManager.NavigateTo("profile");
+        }
+    }
+
 }
