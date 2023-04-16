@@ -11,11 +11,15 @@
 <div class="content">
     @if (_posts != null)
     {
-        <div class="sortBox">
-            <button class="btnSort" style="background: @strBgColors[0]" @onclick="() => SortPosts(radioName1)"><img src="icons/Popular.svg" alt="img" style="filter: invert(0.2)"> <p style="color: @strColors[0]">Popular</p></button> 
-            <button class="btnSort" style="background: @strBgColors[1]" @onclick="() => SortPosts(radioName2)"><img src="icons/Fresh.svg" style="filter: invert(0.2)"/> <p style="color: @strColors[1]">New</p></button> 
-            <button class="btnSort" style="background: @strBgColors[2]" @onclick="() => SortPosts(radioName3)"><img src="icons/Hot.svg" style="filter: invert(0.2)"/> <p style="color: @strColors[2]">Hot</p></button>
-        </div>
+        @if (!IsProflie)
+        {
+            <div class="sortBox">
+                <button class="btnSort" style="background: @strBgColors[0]" @onclick="() => SortPosts(radioName1)"><img src="icons/Popular.svg" alt="img" style="filter: invert(0.2)"> <p style="color: @strColors[0]">Popular</p></button> 
+                <button class="btnSort" style="background: @strBgColors[1]" @onclick="() => SortPosts(radioName2)"><img src="icons/Fresh.svg" style="filter: invert(0.2)"/> <p style="color: @strColors[1]">New</p></button> 
+                <button class="btnSort" style="background: @strBgColors[2]" @onclick="() => SortPosts(radioName3)"><img src="icons/Hot.svg" style="filter: invert(0.2)"/> <p style="color: @strColors[2]">Hot</p></button>
+            </div>    
+        }
+        
 
         @foreach (var post in _posts)
         {
@@ -121,6 +125,8 @@
     String radioName3 = "Hot";
     String _currentInterest = "";
     
+    List<Post> _currentListPosts = new List<Post>();
+    
     List<double> filterInverts = new List<double>() {0.5, 0.5, 0.1};
     List<String> strBgColors = new List<string>() {"white", "white", "white"};
     List<String> strColors = new List<string>() {"#898b8c", "#898b8c", "#898b8c"};
@@ -130,6 +136,9 @@
     
     [Parameter]
     public String SortName { get; set; }
+    
+    [Parameter]
+    public bool IsProflie { get; set; }
 
     [Required]
     [Parameter]
@@ -139,25 +148,35 @@
     {
         BehaviourService.isShowCommentContent = true;
         StateHasChanged();
+        //GetPosts();
         GetPosts();
-      
         //OnTopicSelect += GetPosts;
         DataUpdating();
+        BehaviourService.isProfile = false;
     }
     
     public async Task DataUpdating()
     {
         while(true) {
+            // if (_currentListPosts != PostService.posts)
+            // {
+            //     _currentListPosts = PostService.posts;
+            //     GetPosts();
+            // }    
+            //
             if (_currentInterest != BehaviourService.SelectInterest)
             {
                 _currentInterest = BehaviourService.SelectInterest;
                 GetPosts();
             }      
             
+            // _currentInterest = BehaviourService.SelectInterest;
+            // GetPosts();
+            
             if (RegUser != null && SortName == "profile")
             {
                 _posts = PostDbConnection.FindUserPostsByUsername(RegUser.Username);
-            }
+            } 
             StateHasChanged();
             await Task.Delay(1000);
         }
@@ -233,7 +252,7 @@
     void SortPosts(String sortName)
     {
         // SortName = BehaviourService.SelectInterest;
-        
+       // GetPosts();
         switch (sortName)
         {
             case "Popular":

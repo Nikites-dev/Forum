@@ -14,7 +14,7 @@
         
         <div class="sideCenter">
             <CreatePost></CreatePost>
-            <PostContent RegUser="userConnect.isLoginUser" SortName="profile"></PostContent>
+            <PostContent RegUser="userConnect.isLoginUser" SortName="profile" IsProflie="true"></PostContent>
         </div>
         
         <div class="sideRight">
@@ -28,6 +28,7 @@
     protected override void OnInitialized()
     {
         BehaviourService.SelectInterest = "profile";
+       
     }
 }
 
