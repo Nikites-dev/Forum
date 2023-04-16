@@ -109,7 +109,15 @@
                 </div>
             </div>
         }
+        
+        @if (_posts.Count == 0)
+        {
+            <div class="cardNotFound">
+                <p>Hm... we couldn’t find any results for <span><u>@_currentInterest</u></span></p>
+            </div>
+        }
     }
+    
     <CommentPost PostChoose="@selectPost"/>
 </div>
 
