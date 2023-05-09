@@ -1,6 +1,8 @@
 ﻿@using Forum.MongoDB
+@using BlazorAnimate
 @inject Forum.MongoDB.UserDbConnection userConnect
 @inject NavigationManager NavigationManager
+@inject Forum.RazorComponents.ErrorMessage ErrorMessage;
 
 <div hidden="@IsActiveCard" class="cardSign">
     
@@ -36,20 +38,29 @@
     <div>
         <p>Already have an account? <span style="color: #4807ed" @onclick="@ChangeSignMethod">@txtSign</span></p> 
     </div>
-    
-
+ 
+      
+      <Animate Animation="Animations.ZoomIn" Duration="TimeSpan.FromSeconds(0.5)" @ref="myAnim" IsManual="true">
+          <ErrorMessage Title="@errTitle" Text="@errTxt"/>
+      </Animate>
+ 
 </div>
+
 
 @code
 {
     [Parameter]
     public bool IsActiveCard { get; set; }
 
+    [CascadingParameter] String coin { get; set; }
+    
     // hidden rows
     bool hidenUsername = false;
     bool hidenEmail = true;
     bool hidenPassword = false;
     bool hidenConfirmP = true;
+    
+    private Animate myAnim;
     
     // input data
     String itemUsername = ""; 
@@ -57,9 +68,14 @@
     String itemEmail = "";
     String itemConfPassword = "";
     
+    String errTitle= "";
+    String errTxt = "";
+    
     String titleSign = "Sign up";
     String txtSign = "Sign in";
     bool isSignUp = true;
+    
+    bool isError = false;
     
     // bool hideLabel = true;
 
@@ -104,6 +120,12 @@
                 NavigationManager.NavigateTo("profile");
                 IsActiveCard = true;
             }
+            else
+            {
+                isError = true;
+                errTitle = "error3";
+                errTxt = "text3";
+            }
         }
         else
         {
@@ -118,8 +140,22 @@
                     NavigationManager.NavigateTo("profile");
                     IsActiveCard = true;
                 }
+                else
+                {
+                    errTitle = "error1";
+                    errTxt = "text1";
+                    isError = true;
+                }
+            }
+            else
+            {
+                errTitle = "error2";
+                errTxt = "text2";
+                isError = true;
             }
         }
+        
+        myAnim.Run();
     }
 
     void OnChangeUsername()
@@ -183,3 +219,5 @@
         }
     }
 }
+
+

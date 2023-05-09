@@ -31,6 +31,7 @@ builder.Services.AddSingleton<UserDbConnection>();
 builder.Services.AddSingleton<PostDbConnection>();
 builder.Services.AddSingleton<CreateComment>();
 builder.Services.AddSingleton<Interests>();
+builder.Services.AddSingleton<ErrorMessage>();
 // builder.Services.AddSingleton<CommentPost>();
 
 var app = builder.Build();

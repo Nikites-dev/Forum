@@ -1,0 +1,21 @@
+﻿
+<div class="card">
+    <p class="title">@Title</p>
+    <p class="text">@Text</p>
+    <button class="btn btn-primary" @onclick="RunAnimation">Animate</button>
+</div>
+
+@code {
+    [Parameter]
+    public String Title { get; set; }
+    
+    [Parameter]
+    public String Text { get; set; }
+    
+    private Animate myAnim;
+
+    private void RunAnimation()
+    {
+        myAnim.Run();
+    }
+}
