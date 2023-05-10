@@ -56,7 +56,6 @@
                                 DownloadLocalUserImg(GetUserImg(post.Username));
                                 <img class="userImg" src="imgSource/@GetUserImg(post.Username)" alt="img"/>    
                             }
-                            
                             <div class="columnText">
                                 <p>@post.Username.ToString()</p>
                                 <p> posted by <span>@post.CreatePost.ToString()</span></p>
@@ -69,18 +68,18 @@
                     @if (post.Text.Length < 20)
                     {
                         <div class="rowCard">
-                            <p style="font-size: 25px">@post.Text</p>
+                            <p style="font-style: @SetTextStyle(post.TextCursive); font-weight: @SetTextWeight(post.TextBold); font-size: 25px">@post.Text</p>
                         </div>  
                     } else if (post.Text.Length >= 20 && post.Text.Length <= 210)
                     {
                         <div class="rowCard">
-                            <p style="font-size: 20px">@post.Text</p>
+                    <p style="font-style: @SetTextStyle(post.TextCursive); font-weight: @SetTextWeight(post.TextBold); font-size: 20px">@post.Text</p>
                         </div>   
                     }
                     else
                     {
                         <div class="rowCard">
-                            <p style="font-size: 15px">@post.Text</p>
+                           <p style="font-style: @SetTextStyle(post.TextCursive); font-weight: @SetTextWeight(post.TextBold); font-size: 15px">@post.Text</p>
                         </div>   
                     }
                     @if (@post.NameImage != null)
@@ -134,6 +133,12 @@
     String _currentInterest = "";
     
     List<Post> _currentListPosts = new List<Post>();
+    
+    private bool textBold = false;
+    private bool textCursive = false;
+    
+    private String fontStyle = "";
+    private String fontWeight = "";
     
     List<double> filterInverts = new List<double>() {0.5, 0.5, 0.1};
     List<String> strBgColors = new List<string>() {"white", "white", "white"};
@@ -297,5 +302,40 @@
                 break;
         }
     }
+    
+    String SetTextStyle(bool uno)
+    {
+        if (uno)
+        {
+            return "italic";
+           
+        }
+        return "normal";
+    }
+    
+    String SetTextWeight(bool uno)
+    {
+        if (uno)
+        {
+            return "bold";
+           
+        }
+        return "";
+    }
+    
+    //
+    // void SetTextWeight()
+    // {
+    //     if (textBold)
+    //     {
+    //         textBold = false;
+    //         fontWeight = "";
+    //     }
+    //     else
+    //     {
+    //         textBold = true;
+    //         fontWeight = "bold";
+    //     }
+    // }
 }
 

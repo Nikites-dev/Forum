@@ -31,6 +31,13 @@ namespace Forum.Models
         
         [BsonIgnoreIfDefault]
         public String Interest { get; set; }
+
+
+        [BsonIgnoreIfDefault]
+        public bool TextBold { get; set; }
+        
+        [BsonIgnoreIfDefault]
+        public bool TextCursive { get; set; }
     }
 }
 
