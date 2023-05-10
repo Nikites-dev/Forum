@@ -7,6 +7,7 @@
 @inject Forum.MongoDB.UserDbConnection UserDbConnection
 @inject PostDbConnection PostDbConnection
 @inject FileSystemService FileSystemService
+@inject NavigationManager NavigationManager
 
 <div class="content">
     @if (_posts != null)
@@ -115,10 +116,26 @@
                 <p>Hm... we couldn’t find any results for <span><u>@_currentInterest</u></span></p>
             </div>
         }
+        else
+        {
+            <div class="footer">
+                <div class="sortBox">
+                    <button disabled="@(indxPosts == 0 ? true : false)" class="btnSort" style="background: @strBgColors[0]" @onclick="@PreviosPage">
+                        <p style="color: @strColors[0]">Previous</p>
+                    </button>
+
+                    <button class="btnSort" style="background: @strBgColors[2]" @onclick="@NextPage">
+                        <p style="color: @strColors[2]">Next</p>
+                    </button>
+                </div>  
+            </div>
+        }
     }
     
     <CommentPost PostChoose="@selectPost"/>
 </div>
+
+
 
 @code {
     List<Comment> comments;
@@ -126,7 +143,11 @@
     bool hideCmntBtn = true;
     bool hideCmntComponent = false;
     Post selectPost = new Post();
-
+    String crntSort = "Popular";
+    
+    int countPosts = 3;
+    int indxPosts = 0;
+    
     String radioName1 = "Popular";
     String radioName2 = "New";
     String radioName3 = "Hot";
@@ -166,6 +187,7 @@
         //OnTopicSelect += GetPosts;
         DataUpdating();
         BehaviourService.isProfile = false;
+        SortPosts();
     }
     
     public async Task DataUpdating()
@@ -208,16 +230,24 @@
 
     void GetPosts()
     {
-        
+        try
+        {
+ 
             if(BehaviourService.SelectInterest == String.Empty)
             {
                 _posts = PostService.GetPosts();     
             }
             else
             {
-               // _posts = PostDbConnection.FindUserPostsByInterest(BehaviourService.SelectInterest);    
+    // _posts = PostDbConnection.FindUserPostsByInterest(BehaviourService.SelectInterest);    
                 _posts = PostDbConnection.FindUserPostsByInterest(_currentInterest);    
             }
+        }
+        catch (Exception e)
+        {
+            _posts = PostService.GetPosts();
+        }
+       
     // _posts = _posts.OrderByDescending(o => o.Likes.Count).ToList();
        // _posts = _posts.OrderByDescending(o => o.CreatePost).ToList();
     }
@@ -264,48 +294,83 @@
 
     void SortPosts(String sortName)
     {
-        // SortName = BehaviourService.SelectInterest;
-       // GetPosts();
-        switch (sortName)
+        try
         {
-            case "Popular":
-                strBgColors[0] = "#f6f7f8";
-                strBgColors[1] = "white";
-                strBgColors[2] = "white";
+            // SortName = BehaviourService.SelectInterest;
+            indxPosts = 0;
+            GetPosts();
+        
+            crntSort = sortName;
+        
+            switch (sortName)
+            {
+                case "Popular":
+                    strBgColors[0] = "#f6f7f8";
+                    strBgColors[1] = "white";
+                    strBgColors[2] = "white";
                 
-                strColors[0] = "black";
-                strColors[1] = "#898b8c";
-                strColors[2] = "#898b8c";
-                _posts = _posts.OrderByDescending(o => o.Likes.Count).ToList();
-                break;
-            case "New":
-                strBgColors[0] = "white";
-                strBgColors[1] = "#f6f7f8";
-                strBgColors[2] = "white";
+                    strColors[0] = "black";
+                    strColors[1] = "#898b8c";
+                    strColors[2] = "#898b8c";
+                    _posts = _posts.OrderByDescending(o => o.Likes.Count).ToList().GetRange(indxPosts, countPosts);
+                    break;
+                case "New":
+                    strBgColors[0] = "white";
+                    strBgColors[1] = "#f6f7f8";
+                    strBgColors[2] = "white";
                 
-                strColors[0] = "#898b8c";
-                strColors[1] = "black";
-                strColors[2] = "#898b8c";
+                    strColors[0] = "#898b8c";
+                    strColors[1] = "black";
+                    strColors[2] = "#898b8c";
                 
-                _posts = _posts.OrderByDescending(o => o.CreatePost).ToList();
-                break;
-            case "Hot":
-                strBgColors[0] = "white";
-                strBgColors[1] = "white";
-                strBgColors[2] = "#f6f7f8";
+                    _posts = _posts.OrderByDescending(o => o.CreatePost).ToList().GetRange(indxPosts, countPosts);
+                    break;
+                case "Hot":
+                    strBgColors[0] = "white";
+                    strBgColors[1] = "white";
+                    strBgColors[2] = "#f6f7f8";
                 
-                strColors[0] = "#898b8c";
-                strColors[1] = "#898b8c";
-                strColors[2] = "black";
+                    strColors[0] = "#898b8c";
+                    strColors[1] = "#898b8c";
+                    strColors[2] = "black";
                 
-                _posts = _posts.OrderByDescending(o => o.Comments.Count).ToList();
-                break;
+                    _posts = _posts.OrderByDescending(o => o.Comments.Count).ToList().GetRange(indxPosts, countPosts);
+                    break;
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+     
         }
     }
     
-    String SetTextStyle(bool uno)
+    void SortPosts()
     {
-        if (uno)
+        try
+        {
+            switch (crntSort)
+            {
+                case "Popular":
+                    _posts = _posts.OrderByDescending(o => o.Likes.Count).ToList().GetRange(indxPosts, countPosts);
+                    break;
+                case "New":
+                    _posts = _posts.OrderByDescending(o => o.CreatePost).ToList().GetRange(indxPosts, countPosts);
+                    break;
+                case "Hot":
+                    _posts = _posts.OrderByDescending(o => o.Comments.Count).ToList().GetRange(indxPosts, countPosts);
+                    break;
+            }        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+      
+    }
+    
+    String SetTextStyle(bool isItalic)
+    {
+        if (isItalic)
         {
             return "italic";
            
@@ -313,29 +378,31 @@
         return "normal";
     }
     
-    String SetTextWeight(bool uno)
+    String SetTextWeight(bool isBold)
     {
-        if (uno)
+        if (isBold)
         {
             return "bold";
            
         }
         return "";
     }
+
+    void NextPage()
+    {
+        indxPosts += countPosts;
+        GetPosts();
+        SortPosts();
+        NavigationManager.NavigateTo("/");
+    }
     
-    //
-    // void SetTextWeight()
-    // {
-    //     if (textBold)
-    //     {
-    //         textBold = false;
-    //         fontWeight = "";
-    //     }
-    //     else
-    //     {
-    //         textBold = true;
-    //         fontWeight = "bold";
-    //     }
-    // }
+    void PreviosPage()
+    {
+        indxPosts -= countPosts;
+        GetPosts();
+        SortPosts();
+        NavigationManager.NavigateTo("/");
+    }
+
 }
 
