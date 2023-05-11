@@ -1,11 +1,21 @@
 ﻿
-<div class="card">
-    <p class="title">@Title</p>
-    <p class="text">@Text</p>
-    <button class="btn btn-primary" @onclick="RunAnimation">Animate</button>
-</div>
+<element style=@myStyle></element>
 
+<button style=@myStyle class="btn btn-primary" data-count="" @onclick="MyMethod">
+    <p class="title">@Title</p>
+        <p class="text">@Text</p>
+</button>
+
+    
+    
+    
 @code {
+    String oldValue;
+    string myStyle;
+    
+    [Parameter]
+    public bool isHidden { get; set; }
+    
     [Parameter]
     public String Title { get; set; }
     
@@ -17,5 +27,19 @@
     private void RunAnimation()
     {
         myAnim.Run();
+    }
+
+    protected override void OnInitialized()
+    {
+        Text = "изменен!!!";
+    }
+
+    void MyMethod()
+    {
+        if (isHidden)
+        {
+            
+        }
+        myStyle = "visibility: hidden";
     }
 }

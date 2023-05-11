@@ -21,4 +21,8 @@
     <PackageReference Include="MongoDB.Driver.GridFS" Version="2.19.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\main.js" />
+  </ItemGroup>
+
 </Project>

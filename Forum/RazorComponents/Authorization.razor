@@ -44,6 +44,13 @@
           <ErrorMessage Title="@errTitle" Text="@errTxt"/>
       </Animate>
  
+    <button @onclick="@(async () => {
+        // изменение состояния компонента
+            errTitle = "Новое значение";
+        // вызов метода StateHasChanged() для обновления компонента
+        await InvokeAsync(StateHasChanged);
+    })">Обновить компонент</button>
+    
 </div>
 
 
