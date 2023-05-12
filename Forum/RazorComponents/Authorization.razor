@@ -42,15 +42,8 @@
         <p>Already have an account? <span style="color: #4807ed" @onclick="@ChangeSignMethod">@txtSign</span></p> 
     </div>
  
-      
-      <Animate Animation="Animations.ZoomIn" Duration="TimeSpan.FromSeconds(0.5)" @ref="myAnim" IsManual="true">
-          <ErrorMessage Title="@errTitle" Text="@errTxt"/>
-      </Animate>
+    
  
- 
-        <MudButton @onclick="@(() => Snackbar.Add("My Close button is gone!", Severity.Error, config => { config.ShowCloseIcon = false; }))" Variant="Variant.Filled" Color="Color.Primary">
-            Open Modified Snackbar
-        </MudButton>
 
     <button @onclick="@(async () => {
         // изменение состояния компонента
@@ -127,6 +120,7 @@
 
     public void isValidate()
     {
+       
         if (isSignUp)
         {
             CheckFields(colorGreen, colorRed);
@@ -141,13 +135,16 @@
                 userConnect.isLoginUser = newUser;
                 NavigationManager.NavigateTo("profile");
                 IsActiveCard = true;
+                Snackbar.Add("My Close button is gone!", Severity.Success, config => { config.ShowCloseIcon = false; });
             }
             else
             {
                 isError = true;
                 errTitle = "error3";
                 errTxt = "text3";
+                Snackbar.Add("My Close button is gone!", Severity.Error, config => { config.ShowCloseIcon = false; });
             }
+
         }
         else
         {
@@ -161,12 +158,14 @@
                 {
                     NavigationManager.NavigateTo("profile");
                     IsActiveCard = true;
+                    Snackbar.Add("My Close button is gone!", Severity.Success, config => { config.ShowCloseIcon = false; });
                 }
                 else
                 {
                     errTitle = "error1";
                     errTxt = "text1";
                     isError = true;
+                    Snackbar.Add("My Close button is gone!", Severity.Error, config => { config.ShowCloseIcon = false; });
                 }
             }
             else
@@ -174,21 +173,9 @@
                 errTitle = "error2";
                 errTxt = "text2";
                 isError = true;
+                Snackbar.Add("My Close button is gone!", Severity.Error, config => { config.ShowCloseIcon = false; });
             }
         }
-        
-        myAnim.Run();
-    }
-
-    void OnChangeUsername()
-    {
-        
-    }
-
-    void BtnSignClick()
-    {
-        
-        // NavigationManager.NavigateTo("profile");
     }
 
     void CheckFields(String colorY, String colorN)
