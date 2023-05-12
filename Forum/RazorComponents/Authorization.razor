@@ -45,12 +45,12 @@
     
  
 
-    <button @onclick="@(async () => {
-        // изменение состояния компонента
-            errTitle = "Новое значение";
-        // вызов метода StateHasChanged() для обновления компонента
-        await InvokeAsync(StateHasChanged);
-    })">Обновить компонент</button>
+    @* <button @onclick="@(async () => { *@
+    @*     // изменение состояния компонента *@
+    @*         errTitle = "Новое значение"; *@
+    @*     // вызов метода StateHasChanged() для обновления компонента *@
+    @*     await InvokeAsync(StateHasChanged); *@
+    @* })">Обновить компонент</button> *@
     
 </div>
 
@@ -135,14 +135,14 @@
                 userConnect.isLoginUser = newUser;
                 NavigationManager.NavigateTo("profile");
                 IsActiveCard = true;
-                Snackbar.Add("My Close button is gone!", Severity.Success, config => { config.ShowCloseIcon = false; });
+                Snackbar.Add("Sign up success!", Severity.Success, config => { config.ShowCloseIcon = false; });
             }
             else
             {
                 isError = true;
                 errTitle = "error3";
                 errTxt = "text3";
-                Snackbar.Add("My Close button is gone!", Severity.Error, config => { config.ShowCloseIcon = false; });
+                Snackbar.Add("Field all fields!", Severity.Error, config => { config.ShowCloseIcon = false; });
             }
 
         }
@@ -158,14 +158,14 @@
                 {
                     NavigationManager.NavigateTo("profile");
                     IsActiveCard = true;
-                    Snackbar.Add("My Close button is gone!", Severity.Success, config => { config.ShowCloseIcon = false; });
+                    Snackbar.Add("Success!", Severity.Success, config => { config.ShowCloseIcon = false; });
                 }
                 else
                 {
                     errTitle = "error1";
                     errTxt = "text1";
                     isError = true;
-                    Snackbar.Add("My Close button is gone!", Severity.Error, config => { config.ShowCloseIcon = false; });
+                    Snackbar.Add("User not found!", Severity.Error, config => { config.ShowCloseIcon = false; });
                 }
             }
             else

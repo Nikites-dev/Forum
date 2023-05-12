@@ -6,7 +6,7 @@
 @inject NavigationManager _navigationManager
 @inject FileSystemService FileSystemService
 @inject Interests Interests
-
+@inject ISnackbar Snackbar
 
 <div class="cardCreate">
     
@@ -102,28 +102,60 @@
         {
             fileName = listNames[0].ToString();
         }
+        
     }
     
     void CreateNewPost()
     {
-        Post post = new Post();
-        post.Username = userConnect.isLoginUser.Username;
-        post.Comments = new List<Comment>();
-        post.Interest = valueInterest;
-        post.NameImage = fileName;
-        post.Text = emailMessage.ToString();
-        post.CreatePost = DateTime.Now;
-        post.Likes = new List<string>();
-        post.TextBold = textBold;
-        post.TextCursive = textCursive;
+        if (valueInterest == "")
+        {
+            Snackbar.Add("Select interest!", Severity.Error, config => { config.ShowCloseIcon = false; });
+            return;
+        }
 
-        postService.AddPost(post);
+        if (emailMessage == "")
+        {
+            Snackbar.Add("Write text!", Severity.Error, config => { config.ShowCloseIcon = false; });
+            return;
+        }
+
+        if (fileName == "")
+        {
+            Snackbar.Add("Write text!", Severity.Error, config => { config.ShowCloseIcon = false; });
+            return;
+        }
+
+        try
+        {
+            Post post = new Post();
+            post.Username = userConnect.isLoginUser.Username;
+            post.Comments = new List<Comment>();
+            post.Interest = valueInterest;
+            post.NameImage = fileName;
+            post.Text = emailMessage.ToString();
+            post.CreatePost = DateTime.Now;
+            post.Likes = new List<string>();
+            post.TextBold = textBold;
+            post.TextCursive = textCursive;
+
+            postService.AddPost(post);
+
+            PostDbConnection.AddToDatabase(post);
+            FileSystemService.UploadCreateImgToDb();
+
+
+            valueInterest = "";
+            emailMessage = "";
+            fileName = null;
+            Snackbar.Add("Post create!", Severity.Success, config => { config.ShowCloseIcon = false; });
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            Snackbar.Add("Something wrong!", Severity.Warning, config => { config.ShowCloseIcon = false; });
+        }
         
-     
-        
-        PostDbConnection.AddToDatabase(post);
-        FileSystemService.UploadCreateImgToDb();
-        
+
         StateHasChanged();
     }
     
@@ -152,7 +184,7 @@
         catch (Exception ex)
         {
             Console.WriteLine(ex);
-            throw;
+            Snackbar.Add("Wrong remove folder", Severity.Warning, config => { config.ShowCloseIcon = false; });
         }
       
         foreach (var file in e.GetMultipleFiles(e.FileCount))
@@ -167,22 +199,19 @@
                 await stream.CopyToAsync(fs);
                 stream.Close();
                 fs.Close();
-                StateHasChanged();
+               // StateHasChanged();
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
-                throw;
+                Snackbar.Add("Something wrong", Severity.Warning, config => { config.ShowCloseIcon = false; });
             }
         }
-      //  _navigationManager.NavigateTo("profile");
         GetNamesOfDir();
-       // StateHasChanged();
     }
     
     public  void DeleteImgLocal(String name)
     {
-    // String path = $"C:/Users/Petov/source/repos/BlazorPMLabsUnits/BlazorPMLabsUnits/wwwroot/imgSource/{name}";
         String path = $"{Directory.CreateDirectory(Directory.GetCurrentDirectory() + "/wwwroot/imgCreate/")}{name}";
            
         FileInfo file = new FileInfo(path);
@@ -205,26 +234,6 @@
             f.Delete();
         }
     }
-
-    // private async Task LoadFiles(InputFileChangeEventArgs e)
-    // {
-    //     _loadedFiles.Clear();
-    //     foreach (var file in e.GetMultipleFiles(e.FileCount))
-    //     {
-    //         _loadedFiles.Add(file);
-    //         Stream stream = file.OpenReadStream();
-    //         
-    //         await FileSystemService.UploadImageToDbAsync(stream, file.Name);
-    //         stream.Dispose();
-    //     }
-    // // LoadNames();
-    //     FileSystemService sService = new FileSystemService();
-    //     loadImgNames = sService.DownloadToLocal();
-    //     imgNames = FileSystemService.GetNamesOfDir();
-    // }  
-    //
-
-    
     
     void SetTextSyle()
     {

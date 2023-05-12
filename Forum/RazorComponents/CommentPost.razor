@@ -2,6 +2,7 @@
 @using Forum.MongoDB
 @inject BehaviourService BehaviourService
 @inject UserDbConnection UserDbConnection
+@inject ISnackbar Snackbar
 
 <div hidden="@BehaviourService.isShowCommentContent" class="background">
     @if (PostChoose.Username != null)
