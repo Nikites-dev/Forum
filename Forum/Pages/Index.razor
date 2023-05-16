@@ -9,12 +9,12 @@
     <HeaderMenu/>
     <div class="contentMain">
         <div class="sideLeft">
-            <NavMenu></NavMenu>
+            <NavMenu onDataChanged="@OnFilterChanged"></NavMenu>
         </div>
         
         <div class="sideRight">
            @* <PostContent Filter="@Filter" RegUser="null" SortName=""></PostContent> *@
-          <PostContent Filter="@BehaviourService.SelectInterest" RegUser="null" SortName="" IsProflie="false"></PostContent>
+          <PostContent Filter="@Filter" RegUser="null" SortName="@Filter" IsProflie="false" onDataChanged="@OnFilterChanged"></PostContent>
         </div>
         
     </div>
@@ -28,8 +28,9 @@
         BehaviourService.SelectInterest = "";
     }
 
-    public void OnFilterChange(string newValue)
+    public void OnFilterChanged(string newValue)
     {
         Filter = newValue;
+        StateHasChanged();
     }
 }

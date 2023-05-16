@@ -24,6 +24,8 @@
 
         @foreach (var post in _posts)
         {
+            <p>@Filter</p>
+            
             <div class="postCard">
                 <div class="leftSide">
                     @if (@post.Likes != null)
@@ -142,10 +144,10 @@
     List<Post> _posts;
     bool hideCmntBtn = true;
     bool hideCmntComponent = false;
-    Post selectPost = new Post();
+    Post selectPost = new Post()    ;
     String crntSort = "Popular";
     
-    int countPosts = 3;
+    int countPosts = 5;
     int indxPosts = 0;
     
     String radioName1 = "Popular";
@@ -174,9 +176,19 @@
     [Parameter]
     public bool IsProflie { get; set; }
 
-    [Required]
     [Parameter]
-    public String Filter { get; set; }
+    public String Filter
+    {
+        get => _currentInterest;
+        set 
+        {
+            if (_currentInterest != value)
+            {
+                _currentInterest = value;
+                OnValueChangedAsync(); // вызываем метод при изменении значения
+            }
+        }
+    }
 
     protected override void OnInitialized()
     {
@@ -190,20 +202,50 @@
         SortPosts();
     }
     
+    [Parameter]
+    public Action<String> onDataChanged { get; set; }
+                            
+    private void FilterChanged(String text)
+    {
+        onDataChanged?.Invoke(text);
+        _currentInterest = text;
+        GetPosts();
+        StateHasChanged();
+    }
+    
+    
+    protected override async Task OnParametersSetAsync()
+    {
+        await OnValueChangedAsync(); // вызываем метод при каждом изменении параметров компонента
+    }
+    
+    
+    private async Task OnValueChangedAsync()
+    {
+       
+        _currentInterest = Filter;
+        GetPosts();
+        StateHasChanged();
+    }
+    
+    
     public async Task DataUpdating()
     {
-        while(true) {
+     //   while(true) {
             // if (_currentListPosts != PostService.posts)
             // {
             //     _currentListPosts = PostService.posts;
             //     GetPosts();
             // }    
             //
-            if (_currentInterest != BehaviourService.SelectInterest)
-            {
-                _currentInterest = BehaviourService.SelectInterest;
-                GetPosts();
-            }      
+
+            _currentInterest = Filter;  
+        GetPosts();
+            // if (_currentInterest != BehaviourService.SelectInterest)
+            // {
+            //     _currentInterest = BehaviourService.SelectInterest;
+            //     
+            // }      
             
             // _currentInterest = BehaviourService.SelectInterest;
             // GetPosts();
@@ -214,7 +256,7 @@
             } 
             StateHasChanged();
             await Task.Delay(1000);
-        }
+    //    }
     }
 
     String? GetUserImg(String username)
@@ -233,14 +275,14 @@
         try
         {
  
-            if(BehaviourService.SelectInterest == String.Empty)
+            if(Filter == String.Empty)
             {
                 _posts = PostService.GetPosts();     
             }
             else
             {
     // _posts = PostDbConnection.FindUserPostsByInterest(BehaviourService.SelectInterest);    
-                _posts = PostDbConnection.FindUserPostsByInterest(_currentInterest);    
+                _posts = PostDbConnection.FindUserPostsByInterest(Filter);    
             }
         }
         catch (Exception e)
@@ -296,12 +338,12 @@
     {
         try
         {
-            // SortName = BehaviourService.SelectInterest;
             indxPosts = 0;
             GetPosts();
-        
             crntSort = sortName;
         
+            var allPosts = _posts.OrderByDescending(o => o.Likes.Count).ToList();
+            
             switch (sortName)
             {
                 case "Popular":
@@ -312,7 +354,9 @@
                     strColors[0] = "black";
                     strColors[1] = "#898b8c";
                     strColors[2] = "#898b8c";
-                    _posts = _posts.OrderByDescending(o => o.Likes.Count).ToList().GetRange(indxPosts, countPosts);
+
+                    allPosts = _posts.OrderByDescending(o => o.Likes.Count).ToList();
+
                     break;
                 case "New":
                     strBgColors[0] = "white";
@@ -322,8 +366,9 @@
                     strColors[0] = "#898b8c";
                     strColors[1] = "black";
                     strColors[2] = "#898b8c";
-                
-                    _posts = _posts.OrderByDescending(o => o.CreatePost).ToList().GetRange(indxPosts, countPosts);
+
+                    allPosts = _posts.OrderByDescending(o => o.CreatePost).ToList();
+
                     break;
                 case "Hot":
                     strBgColors[0] = "white";
@@ -334,8 +379,18 @@
                     strColors[1] = "#898b8c";
                     strColors[2] = "black";
                 
-                    _posts = _posts.OrderByDescending(o => o.Comments.Count).ToList().GetRange(indxPosts, countPosts);
+                    allPosts = _posts.OrderByDescending(o => o.Comments.Count).ToList();
                     break;
+            }
+            
+            
+            if (indxPosts + countPosts < allPosts.Count)
+            {
+                _posts = allPosts.GetRange(indxPosts, countPosts);
+            }
+            else
+            {
+                _posts = allPosts.GetRange(indxPosts, allPosts.Count);
             }
         }
         catch (Exception e)

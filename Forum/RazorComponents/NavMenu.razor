@@ -59,11 +59,20 @@
             @foreach (var interest in listInterests)
             {
                 <div class="rowNav">
-                    <button class="btnNav" @onclick="() => SetInterest(interest)">
+                    <button class="btnNav" @onclick="@(async() => { SetInterest(interest); await InvokeAsync(StateHasChanged);})">
                         <div Match="NavLinkMatch.All">
                             <span><img src="icons/@GetIcon(interest)" width="18"alt="icon"/> </span> @interest
                         </div>
                     </button>
+                    
+                    
+                     @* <button class="btnNav" @onclick="@(async () => { *@
+                     @*        // изменение состояния компонента *@
+                     @*            errTitle = "Новое значение"; *@
+                     @*        // SetInterest(interest); *@
+                     @*        // вызов метода StateHasChanged() для обновления компонента *@
+                     @*        await InvokeAsync(StateHasChanged); *@
+                     @*    })">Обновить компонент</button> *@
                 </div>
             }
         }
@@ -81,6 +90,9 @@
     [Parameter]
     public String Filter{ get; set; }
 
+    [Parameter]
+    public Action<String> onDataChanged { get; set; }
+
     protected override void OnInitialized()
     {
         listInterests = Models.Interests.GetListInterest();
@@ -90,9 +102,11 @@
 
     void SetInterest(String nameInterest)
     {
-        BehaviourService.OnFilterChange(nameInterest);
+      //  BehaviourService.OnFilterChange(nameInterest);
        // BehaviourService.SelectInterest = nameInterest;
         //OnTopicSelect.Invoke();
+        Filter = nameInterest;
+        onDataChanged?.Invoke(Filter);
     }
 
     String GetIcon(String name)
