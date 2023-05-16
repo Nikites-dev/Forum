@@ -15,9 +15,9 @@
         @if (!IsProflie)
         {
             <div class="sortBox">
-                <button class="btnSort" style="background: @strBgColors[0]" @onclick="() => SortPosts(radioName1)"><img src="icons/Popular.svg" alt="img" style="filter: invert(0.2)"> <p style="color: @strColors[0]">Popular</p></button> 
-                <button class="btnSort" style="background: @strBgColors[1]" @onclick="() => SortPosts(radioName2)"><img src="icons/Fresh.svg" style="filter: invert(0.2)"/> <p style="color: @strColors[1]">New</p></button> 
-                <button class="btnSort" style="background: @strBgColors[2]" @onclick="() => SortPosts(radioName3)"><img src="icons/Hot.svg" style="filter: invert(0.2)"/> <p style="color: @strColors[2]">Hot</p></button>
+                <button class="btnSort" style="background: @strBgColors[0]" @onclick="() => OnClickSort(radioName1)"><img src="icons/Popular.svg" alt="img" style="filter: invert(0.2)"> <p style="color: @strColors[0]">Popular</p></button> 
+                <button class="btnSort" style="background: @strBgColors[1]" @onclick="() => OnClickSort(radioName2)"><img src="icons/Fresh.svg" style="filter: invert(0.2)"/> <p style="color: @strColors[1]">New</p></button> 
+                <button class="btnSort" style="background: @strBgColors[2]" @onclick="() => OnClickSort(radioName3)"><img src="icons/Hot.svg" style="filter: invert(0.2)"/> <p style="color: @strColors[2]">Hot</p></button>
             </div>    
         }
         
@@ -127,11 +127,36 @@
                     </button>
 
                     <button class="btnSort" style="background: @strBgColors[2]" @onclick="@NextPage">
-                        <p style="color: @strColors[2]">Next</p>
+                        <p style="color: @strColors[2]">_posts.Count</p>
+                        <p style="color: @strColors[2]">@_posts.Count</p>
+                    </button> 
+                    
+                    <button class="btnSort" style="background: @strBgColors[2]" @onclick="@NextPage">
+                        <p style="color: @strColors[2]">allPosts.Count</p>
+                        <p style="color: @strColors[2]">@allPosts.Count</p>
                     </button>
+                    
+                    <button class="btnSort" style="background: @strBgColors[2]" @onclick="@NextPage">
+                        <p style="color: @strColors[2]">indxPosts</p>
+                        <p style="color: @strColors[2]">@indxPosts</p>
+                    </button>
+                    
+                    @if (@SetActiveBtnNext())
+                    {
+                        <button class="btnSort" style="background: @strBgColors[2]" @onclick="@NextPage">
+                            <p style="color: @strColors[2]">Next</p>
+                        </button>
+                    }
+                    
                 </div>  
             </div>
         }
+    }
+    else 
+    {
+        <div class="cardNotFound">
+            <p>Hm... we couldn’t find any results for <span><u>@_currentInterest</u></span></p>
+        </div>
     }
     
     <CommentPost PostChoose="@selectPost"/>
@@ -149,6 +174,7 @@
     
     int countPosts = 5;
     int indxPosts = 0;
+    List<Post> allPosts = new List<Post>();
     
     String radioName1 = "Popular";
     String radioName2 = "New";
@@ -222,9 +248,9 @@
     
     private async Task OnValueChangedAsync()
     {
-       
-        _currentInterest = Filter;
+        indxPosts = 0;
         GetPosts();
+        SortPosts(crntSort);
         StateHasChanged();
     }
     
@@ -275,7 +301,7 @@
         try
         {
  
-            if(Filter == String.Empty)
+            if(Filter == null || Filter == String.Empty)
             {
                 _posts = PostService.GetPosts();     
             }
@@ -334,15 +360,21 @@
         BehaviourService.isShowCommentContent = false;
     }
 
+
+    void OnClickSort(String sortName)
+    {
+        indxPosts = 0;
+        SortPosts(sortName);
+    }
+    
     void SortPosts(String sortName)
     {
         try
         {
-            indxPosts = 0;
             GetPosts();
             crntSort = sortName;
         
-            var allPosts = _posts.OrderByDescending(o => o.Likes.Count).ToList();
+            allPosts = new List<Post>();
             
             switch (sortName)
             {
@@ -356,7 +388,7 @@
                     strColors[2] = "#898b8c";
 
                     allPosts = _posts.OrderByDescending(o => o.Likes.Count).ToList();
-
+                    
                     break;
                 case "New":
                     strBgColors[0] = "white";
@@ -390,13 +422,21 @@
             }
             else
             {
-                _posts = allPosts.GetRange(indxPosts, allPosts.Count);
+                try
+                {
+                    _posts = allPosts.GetRange(indxPosts, allPosts.Count-indxPosts);
+                }
+                catch (Exception e)
+                {
+                    _posts = null;
+                }
+               
             }
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
-     
+            throw;
         }
     }
     
@@ -446,17 +486,33 @@
     void NextPage()
     {
         indxPosts += countPosts;
-        GetPosts();
-        SortPosts();
-        NavigationManager.NavigateTo("/");
+      //  GetPosts();
+       
+        SortPosts(crntSort);
+        
+       // NavigationManager.NavigateTo("/");
     }
     
     void PreviosPage()
     {
         indxPosts -= countPosts;
         GetPosts();
-        SortPosts();
-        NavigationManager.NavigateTo("/");
+
+        
+        SortPosts(crntSort);
+        
+
+     //   NavigationManager.NavigateTo("/");
+    }
+
+
+    bool SetActiveBtnNext()
+    {
+        if (_posts.Count + indxPosts == allPosts.Count)
+        {
+            return false;
+        }
+        return true;
     }
 
 }
