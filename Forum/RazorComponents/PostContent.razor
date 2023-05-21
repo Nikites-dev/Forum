@@ -12,20 +12,14 @@
 <div class="content">
     @if (_posts != null)
     {
-        @if (!IsProflie)
-        {
-            <div class="sortBox">
+        <div class="sortBox">
                 <button class="btnSort" style="background: @strBgColors[0]" @onclick="() => OnClickSort(radioName1)"><img src="icons/Popular.svg" alt="img" style="filter: invert(0.2)"> <p style="color: @strColors[0]">Popular</p></button> 
                 <button class="btnSort" style="background: @strBgColors[1]" @onclick="() => OnClickSort(radioName2)"><img src="icons/Fresh.svg" style="filter: invert(0.2)"/> <p style="color: @strColors[1]">New</p></button> 
                 <button class="btnSort" style="background: @strBgColors[2]" @onclick="() => OnClickSort(radioName3)"><img src="icons/Hot.svg" style="filter: invert(0.2)"/> <p style="color: @strColors[2]">Hot</p></button>
-            </div>    
-        }
+            </div>
         
-
         @foreach (var post in _posts)
         {
-            <p>@Filter</p>
-            
             <div class="postCard">
                 <div class="leftSide">
                     @if (@post.Likes != null)
@@ -224,7 +218,7 @@
         GetPosts();
         //OnTopicSelect += GetPosts;
         DataUpdating();
-        BehaviourService.isProfile = false;
+        // BehaviourService.isProfile = false;
         SortPosts();
     }
     
@@ -276,10 +270,10 @@
             // _currentInterest = BehaviourService.SelectInterest;
             // GetPosts();
             
-            if (RegUser != null && SortName == "profile")
-            {
-                _posts = PostDbConnection.FindUserPostsByUsername(RegUser.Username);
-            } 
+            // if (RegUser != null && SortName == "profile")
+            // {
+            //     _posts = PostDbConnection.FindUserPostsByUsername(RegUser.Username);
+            // } 
             StateHasChanged();
             await Task.Delay(1000);
     //    }
@@ -298,26 +292,48 @@
 
     void GetPosts()
     {
-        try
+
+        if (BehaviourService.isProfile)
         {
- 
-            if(Filter == null || Filter == String.Empty)
+            
+            try
             {
-                _posts = PostService.GetPosts();     
+                if(Filter == null || Filter == String.Empty)
+                {
+                    _posts = PostDbConnection.FindUserPostsByUsername(RegUser.Username);  
+                }
+                else
+                {
+                    _posts = PostDbConnection.FindUserPostsByUsername(RegUser.Username).Where(x => x.Interest == Filter).ToList();
+                   // _posts = PostDbConnection.FindUserPostsByInterest(Filter);    
+                }
             }
-            else
+            catch (Exception e)
             {
-    // _posts = PostDbConnection.FindUserPostsByInterest(BehaviourService.SelectInterest);    
-                _posts = PostDbConnection.FindUserPostsByInterest(Filter);    
+                _posts = PostDbConnection.FindUserPostsByUsername(RegUser.Username);
+            }
+            
+        }
+        else
+        {
+            try
+            {
+                if(Filter == null || Filter == String.Empty)
+                {
+                    _posts = PostService.GetPosts();     
+                }
+                else
+                {
+                    _posts = PostDbConnection.FindUserPostsByInterest(Filter);    
+                }
+            }
+            catch (Exception e)
+            {
+                _posts = PostService.GetPosts();
             }
         }
-        catch (Exception e)
-        {
-            _posts = PostService.GetPosts();
-        }
-       
-    // _posts = _posts.OrderByDescending(o => o.Likes.Count).ToList();
-       // _posts = _posts.OrderByDescending(o => o.CreatePost).ToList();
+
+        
     }
 
    

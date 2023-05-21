@@ -9,12 +9,12 @@
     <HeaderMenu/>
     <div class="contentMain">
         <div class="sideLeft">
-            <NavMenu></NavMenu>
+            <NavMenu onDataChanged="@OnFilterChanged"></NavMenu>
         </div>
         
         <div class="sideCenter">
             <CreatePost></CreatePost>
-            <PostContent RegUser="userConnect.isLoginUser" SortName="profile" IsProflie="true"></PostContent>
+            <PostContent Filter="@Filter" RegUser="userConnect.isLoginUser" SortName="profile" IsProflie="true"></PostContent>
         </div>
         
         <div class="sideRight">
@@ -25,10 +25,17 @@
 
 @code
 {
+    private string Filter { get; set; }
     protected override void OnInitialized()
     {
         BehaviourService.SelectInterest = "profile";
-       
+        BehaviourService.isProfile = true;
+    }
+    
+    public void OnFilterChanged(string newValue)
+    {
+        Filter = newValue;
+        StateHasChanged();
     }
 }
 

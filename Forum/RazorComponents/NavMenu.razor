@@ -19,16 +19,16 @@
             </button>
         </div>
         
-        @if (UserDbConnection.isLoginUser != null)
-        {
-            <div class="rowNav">
+        @* @if (UserDbConnection.isLoginUser != null) *@
+        @* { *@
+        <div class="rowNav">
                 <button class="btnNav"  @onclick="NavigationProfile">
                     <div Match="NavLinkMatch.All">
                         <span><img src="icons/@GetIcon("Star")" width="18"alt="icon"/> </span> Profile
                     </div>
                 </button>
             </div>
-        }
+        @* } *@
 
         @* <div class="rowNav"> *@
         @*     <button class="btnNav"> *@
