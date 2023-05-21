@@ -60,7 +60,7 @@
 
                                     <div class="columnText">
                                         <p>@PostChoose.Username.ToString()</p>
-                                        <p> posted by <span>@PostChoose.CreatePost.ToString()</span></p>
+                                        <p style="color: #9a9a9a"> posted by <span style="color: #9a9a9a">@PostChoose.CreatePost.ToString("dd.MM HH:mm")</span></p>
                                     </div>
 
                                 </div>
@@ -136,7 +136,15 @@
                                     <div class="columnText">
                                         <p>@comment.Username</p>
                                     </div>
-
+                                    <p class="point">·</p>
+                                    @if (@comment.CreateComment != null)
+                                    {
+                                        <p style="color: #727272">@comment.CreateComment.ToString("dd.MM")</p>
+                                        <p  style="color: #727272" class="point"></p>
+                                        <p  style="color: #727272">@comment.CreateComment.ToString("HH:mm")</p>
+                                    }
+                                    
+                                    
                                 </div>
                                 
                                 <div class="textContent">
@@ -150,15 +158,14 @@
                                     </div>
 
                                 </div>
-
-                                
+                                <hr class="rounded">
                             </div>
                         }
                     }
                 </div>
 
                 <div class="footer">
-                    <p>footer</p>
+                    <p>ㅤ</p>
                 </div>
 
             </div>

@@ -38,6 +38,7 @@
         Comment comment = new Comment();
         comment.Username = UserDbConnection.isLoginUser.Username;
         comment.Rating = 1;
+        comment.CreateComment = DateTime.Now;
         comment.Text = text;
         CurrentPost.Comments.Add(comment);
         

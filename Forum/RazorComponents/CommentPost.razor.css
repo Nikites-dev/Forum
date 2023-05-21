@@ -240,3 +240,14 @@
 .emptyStick:hover {
     background: #dcdee0;
 }
+
+hr.rounded {
+    border-top: 2px solid #bbb;
+    border-radius: 5px;
+    margin: 10px auto;
+    width: 91%;
+}
+
+.point {
+    margin: 3px;
+}

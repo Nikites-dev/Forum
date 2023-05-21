@@ -7,6 +7,8 @@ namespace Forum.Models
         public String Username { get; set; }
         public String Text { get; set; }
         public int Rating { get; set; }
+       
+        public DateTime CreateComment { get; set; }
     }
 }
 
