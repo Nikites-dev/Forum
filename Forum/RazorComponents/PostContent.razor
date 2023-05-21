@@ -20,6 +20,8 @@
         
         @foreach (var post in _posts)
         {
+            <p>@Search</p>
+            <p>ывыв</p>
             <div class="postCard">
                 <div class="leftSide">
                     @if (@post.Likes != null)
@@ -198,6 +200,7 @@
     private String fontWeight = "";
     
     String dataChange = "";
+    String textSearch = "";
     
     List<double> filterInverts = new List<double>() {0.5, 0.5, 0.1};
     List<String> strBgColors = new List<string>() {"white", "white", "white"};
@@ -225,6 +228,18 @@
             }
         }
     }
+    
+    [Parameter]
+    public String Search
+    {
+        get => textSearch;
+        set
+        {
+            textSearch = value;
+            OnValueChangedAsync();
+        }
+    }
+    
 
     [Parameter]
     public String DataChange
@@ -258,8 +273,10 @@
         GetPosts();
         StateHasChanged();
     }
-    
-    
+
+  
+
+
     protected override async Task OnParametersSetAsync()
     {
         await OnValueChangedAsync(); // вызываем метод при каждом изменении параметров компонента
@@ -270,9 +287,12 @@
     {
         indxPosts = 0;
         GetPosts();
+     
         SortPosts(crntSort);
+       
         StateHasChanged();
     }
+    
     
     
     public async Task DataUpdating()
@@ -358,8 +378,8 @@
                 _posts = PostService.GetPosts();
             }
         }
-
         
+        SearchChanged();
     }
 
    
@@ -561,6 +581,38 @@
             return false;
         }
         return true;
+    }
+    
+    private void SearchChanged()
+    {
+        if (_posts == null)
+        {
+            return; 
+        }
+        
+        if (Search == null)
+        {
+            return;
+        }
+        
+        
+    if (Search == "")
+    {
+    return;
+    }
+    else
+    {
+        // _posts.Clear();
+        // GetPosts();
+
+        _posts = _posts.Where(
+            x => x.Text.ToLower().Contains(Search) ||
+                 x.Username.ToLower().Contains(Search) ||
+                 x.CreatePost.ToShortDateString().Contains(Search)
+            ).ToList();
+        
+        StateHasChanged();
+    }
     }
 
 }

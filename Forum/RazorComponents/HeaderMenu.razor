@@ -15,8 +15,13 @@
     
     <div class="box2">
         <span class="oi oi-magnifying-glass" aria-hidden="true">  </span> 
-            <p>Search</p>
-         <span class="oi oi-magnifying-glass" aria-hidden="true">  </span>
+        <input class="inputSearch" @bind="TextSearch" placeholder="Найти..." @bind:event="oninput" @onkeyup="(() => OnSearchChanged())">
+        
+        @* <input type="text" @bind="TextSearch"/> *@
+        @* *@
+        @* <button style="background: red" @onclick="(() => OnSearchChanged())">Click</button> *@
+        
+        <span class="oi oi-magnifying-glass" aria-hidden="true">  </span>
     </div>
     
     <div class="box3">
@@ -46,17 +51,19 @@
 @code {
     bool isClickSign = true;
     String fileName = "";
+    private String TextSearch { get; set; }
 
     protected override void OnInitialized()
     {
-       // fileName = FileSystemService.GetNameOfDir("imgUser");
+    // fileName = FileSystemService.GetNameOfDir("imgUser");
         DataUpdating();
     }
-    
-    
+
+
     public async Task DataUpdating()
     {
-        while(true) {
+        while (true)
+        {
             if (fileName != FileSystemService.GetNameOfDir("imgUser"))
             {
                 fileName = FileSystemService.GetNameOfDir("imgUser");
@@ -65,7 +72,7 @@
             await Task.Delay(500);
         }
     }
-    
+
     void SignInClick()
     {
         if (UserDbConnection.isLoginUser != null)
@@ -89,15 +96,24 @@
     {
         NavigationManager.NavigateTo("/");
     }
-    
+
     public static void RemoveFolder()
     {
         String path = $"{Directory.CreateDirectory(Directory.GetCurrentDirectory() + "/wwwroot/imgUser/")}";
         DirectoryInfo dirInfo = new DirectoryInfo(path);
- 
+
         foreach (FileInfo f in dirInfo.GetFiles())
         {
             f.Delete();
         }
     }
+
+    private void OnSearchChanged()
+    {
+        onSearchChanged?.Invoke(TextSearch);
+    }
+
+    [Parameter]
+    public Action<String> onSearchChanged { get; set; }
+
 }
