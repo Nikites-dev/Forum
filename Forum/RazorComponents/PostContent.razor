@@ -183,6 +183,8 @@
     private String fontStyle = "";
     private String fontWeight = "";
     
+    String dataChange = "";
+    
     List<double> filterInverts = new List<double>() {0.5, 0.5, 0.1};
     List<String> strBgColors = new List<string>() {"white", "white", "white"};
     List<String> strColors = new List<string>() {"#898b8c", "#898b8c", "#898b8c"};
@@ -207,6 +209,16 @@
                 _currentInterest = value;
                 OnValueChangedAsync(); // вызываем метод при изменении значения
             }
+        }
+    }
+
+    [Parameter]
+    public String DataChange
+    {
+        get => dataChange;
+        set
+        {
+            OnValueChangedAsync();
         }
     }
 
@@ -287,7 +299,7 @@
     
     void DownloadLocalUserImg(String username)
     {
-      //  FileSystemService.DownloadToLocalByName(username, "imgSource");
+        FileSystemService.DownloadToLocalByName(username, "imgSource");
     }
 
     void GetPosts()

@@ -72,8 +72,8 @@
     private String edImgName = "";
     private List<String> listInterests = Models.Interests.GetListInterest();
     private String valueInterest = "";
-    
-    
+
+    String dataChange = "";
     
     protected override void OnInitialized()
     {
@@ -148,6 +148,8 @@
             emailMessage = "";
             fileName = null;
             Snackbar.Add("Post create!", Severity.Success, config => { config.ShowCloseIcon = false; });
+            
+            onDataChanged?.Invoke(dataChange);
         }
         catch (Exception e)
         {
@@ -162,7 +164,7 @@
     private string emailMessage = "";
     private bool textBold = false;
     private bool textCursive = false;
-    
+    private String ChangeData { get; set; }
     public string EmailMessage
     {
         get =>  emailMessage;
@@ -263,4 +265,7 @@
         }
     }
     
+    
+    [Parameter]
+    public Action<String> onDataChanged { get; set; }
 }

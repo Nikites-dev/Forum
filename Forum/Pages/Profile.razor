@@ -13,8 +13,8 @@
         </div>
         
         <div class="sideCenter">
-            <CreatePost></CreatePost>
-            <PostContent Filter="@Filter" RegUser="userConnect.isLoginUser" SortName="profile" IsProflie="true"></PostContent>
+            <CreatePost onDataChanged="@OnDataChanged"></CreatePost>
+            <PostContent Filter="@Filter" DataChange="@ValueChange" RegUser="userConnect.isLoginUser" SortName="profile" IsProflie="true"></PostContent>
         </div>
         
         <div class="sideRight">
@@ -26,6 +26,7 @@
 @code
 {
     private string Filter { get; set; }
+    private string ValueChange { get; set; }
     protected override void OnInitialized()
     {
         BehaviourService.SelectInterest = "profile";
@@ -35,6 +36,12 @@
     public void OnFilterChanged(string newValue)
     {
         Filter = newValue;
+        StateHasChanged();
+    }
+    
+    private void OnDataChanged(string newValue)
+    {
+        ValueChange = newValue;
         StateHasChanged();
     }
 }
