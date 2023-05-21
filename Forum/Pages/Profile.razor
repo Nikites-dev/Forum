@@ -6,7 +6,7 @@
 @inject BehaviourService BehaviourService
 
 <div class="page">
-    <HeaderMenu/>
+    <HeaderMenu onSearchChanged="@OnSearchChanged"/>
     <div class="contentMain">
         <div class="sideLeft">
             <NavMenu onDataChanged="@OnFilterChanged"></NavMenu>
@@ -14,7 +14,7 @@
         
         <div class="sideCenter">
             <CreatePost onDataChanged="@OnDataChanged"></CreatePost>
-            <PostContent Filter="@Filter" DataChange="@ValueChange" RegUser="userConnect.isLoginUser" SortName="profile" IsProflie="true"></PostContent>
+            <PostContent Filter="@Filter" DataChange="@ValueChange" Search="@Search" RegUser="userConnect.isLoginUser" SortName="profile" IsProflie="true"></PostContent>
         </div>
         
         <div class="sideRight">
@@ -25,6 +25,7 @@
 
 @code
 {
+    private string Search { get; set; }
     private string Filter { get; set; }
     private string ValueChange { get; set; }
     protected override void OnInitialized()
@@ -42,6 +43,12 @@
     private void OnDataChanged(string newValue)
     {
         ValueChange = newValue;
+        StateHasChanged();
+    }
+    
+    private void OnSearchChanged(string newValue)
+    {
+        Search = newValue;
         StateHasChanged();
     }
 }
