@@ -173,6 +173,7 @@ span u {
 .postInterest {
     float: right;
     background: #24292f;
+    border: 2px solid #24292f;
     color: white;
     font-size: 10px;
     padding: 5px 10px;
@@ -180,6 +181,26 @@ span u {
     margin-right: 10px;
     letter-spacing: .1rem;
 }
+
+.postDelete {
+    float: right;
+    color: #24292f;
+    background: #dae0e6;
+    font-size: 10px;
+    padding: 5px 10px;
+    border-radius: 999px;
+    margin-right: 10px;
+    letter-spacing: .1rem;
+}
+
+.postDelete img {
+    width: 19px;
+}
+
+.postDelete:hover {
+    background: #d1d8dc;
+}
+
 
 .userImg {
     width: 40px;

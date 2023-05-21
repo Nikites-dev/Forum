@@ -185,5 +185,13 @@ namespace Forum.MongoDB
             var collection = database.GetCollection<Post>("Posts");
             var b = collection.ReplaceOne(x => x._id == post._id, post).ModifiedCount > 0;
         }
+        
+        public static void DeletePost(Post post)
+        {
+            var client = new MongoClient("mongodb://localhost");
+            var database = client.GetDatabase("Forum");
+            var collection = database.GetCollection<Post>("Posts");
+            var unit = collection.DeleteOne(x => x._id == post._id);
+        }
     }
 }
