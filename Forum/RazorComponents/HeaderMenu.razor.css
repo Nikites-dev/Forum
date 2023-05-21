@@ -118,3 +118,16 @@
     width: 100%;
     left:0;
 }
+
+
+.inputSearch {
+    width: 100%;
+    margin-right: 15px;
+    color: white;
+    background: #24292f;
+}
+
+
+.inputSearch:focus {
+    outline: 0;
+}
