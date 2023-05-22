@@ -108,14 +108,20 @@
                     
                     
                     <div class="rowCard">
-                        @if (post.Comments != null)
+
+                        @if (UserDbConnection.isLoginUser != null)
                         {
-                            <button class="btnComment" @onclick="(() => CommmentRemote(post))"><img src="icons/Comment.svg" alt="like" > @post.Comments.Count.ToString() Comments</button>
+                            @if (post.Comments != null)
+                            {
+                                <button class="btnComment" @onclick="(() => CommmentRemote(post))"><img src="icons/Comment.svg" alt="like"> @post.Comments.Count.ToString() Comments</button>
+                            }
+                            else
+                            {
+                                <button class="btnComment" @onclick="(() => CommmentRemote(post))">add first comment</button>
+                            }    
                         }
-                        else
-                        {
-                            <button class="btnComment" @onclick="(() => CommmentRemote(post))">add first comment</button>
-                        }
+                        
+                        
                     </div>
                 </div>
             </div>
@@ -130,33 +136,41 @@
         else
         {
             <div class="footer">
-                <div class="sortBox">
-                    <button disabled="@(indxPosts == 0 ? true : false)" class="btnSort" style="background: @strBgColors[0]" @onclick="@PreviosPage">
-                        <p style="color: @strColors[0]">Previous</p>
+                <div class="sortBox2">
+
+                     <button class="btnSort" style="background: @strBgColors[2]" @onclick="@NextPage">
+                        <p style="color: white">posts: </p>
+                        <p style="color: white">@_posts.Count</p>
                     </button>
+                    
+                    <div class="boxFooter">
+                        <button disabled="@(indxPosts == 0 ? true : false)" class="btnSort" style="background: @strBgColors[0]" @onclick="@PreviosPage">
+                            <p style="color: @strColors[0]">Previous</p>
+                        </button>
+
+                        <button class="btnSort" style="background: @strBgColors[2]" @onclick="@NextPage">
+                            <p style="color: @strColors[2]">@CaluclatePost(@indxPosts, _posts.Count)</p> /
+                            <p style="color: @strColors[2]">@allPosts.Count</p>
+                        </button>
+
+                        @if (@SetActiveBtnNext())
+                        {
+                            <button class="btnSort" style="background: @strBgColors[2]" @onclick="@NextPage">
+                                <p style="color: @strColors[2]">Next</p>
+                            </button>
+                        }
+
+                    </div>
+
+
+
 
                     <button class="btnSort" style="background: @strBgColors[2]" @onclick="@NextPage">
-                        <p style="color: @strColors[2]">_posts.Count</p>
+                        <p style="color: @strColors[2]">posts: </p>
                         <p style="color: @strColors[2]">@_posts.Count</p>
-                    </button> 
-                    
-                    <button class="btnSort" style="background: @strBgColors[2]" @onclick="@NextPage">
-                        <p style="color: @strColors[2]">allPosts.Count</p>
-                        <p style="color: @strColors[2]">@allPosts.Count</p>
                     </button>
-                    
-                    <button class="btnSort" style="background: @strBgColors[2]" @onclick="@NextPage">
-                        <p style="color: @strColors[2]">indxPosts</p>
-                        <p style="color: @strColors[2]">@indxPosts</p>
-                    </button>
-                    
-                    @if (@SetActiveBtnNext())
-                    {
-                        <button class="btnSort" style="background: @strBgColors[2]" @onclick="@NextPage">
-                            <p style="color: @strColors[2]">Next</p>
-                        </button>
-                    }
-                </div>  
+
+                </div>
             </div>
         }
     }
@@ -550,7 +564,7 @@
        
         SortPosts(crntSort);
         
-       // NavigationManager.NavigateTo("/");
+       NavigationManager.NavigateTo("/");
     }
     
     void PreviosPage()
@@ -562,7 +576,7 @@
         SortPosts(crntSort);
         
 
-     //   NavigationManager.NavigateTo("/");
+      NavigationManager.NavigateTo("/");
     }
 
     void DeletePost(Post post)
@@ -611,6 +625,12 @@
         
         StateHasChanged();
     }
+    }
+
+
+    int CaluclatePost(int num1, int num2)
+    {
+        return num1 + num2;
     }
 
 }
