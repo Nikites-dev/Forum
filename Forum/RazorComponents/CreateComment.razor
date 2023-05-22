@@ -33,6 +33,9 @@
         }
     }
 
+    [Parameter]
+    public Action<String> onDataChanged { get; set; }
+
     void AddComment()
     {
         Comment comment = new Comment();
@@ -44,6 +47,8 @@
         
         PostDbConnection.UpdatePost(CurrentPost);
         text = "";
+        
+        onDataChanged?.Invoke(text);
         StateHasChanged();
     }
 }

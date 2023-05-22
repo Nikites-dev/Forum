@@ -138,7 +138,7 @@
             <div class="footer">
                 <div class="sortBox2">
 
-                     <button class="btnSort" style="background: @strBgColors[2]" @onclick="@NextPage">
+                     <button class="btnSort" style="background: white" @onclick="@NextPage">
                         <p style="color: white">posts: </p>
                         <p style="color: white">@_posts.Count</p>
                     </button>
@@ -148,15 +148,15 @@
                             <p style="color: @strColors[0]">Previous</p>
                         </button>
 
-                        <button class="btnSort" style="background: @strBgColors[2]" @onclick="@NextPage">
-                            <p style="color: @strColors[2]">@CaluclatePost(@indxPosts, _posts.Count)</p> /
-                            <p style="color: @strColors[2]">@allPosts.Count</p>
+                        <button class="btnSort" style="color: #898b8c">
+                            <p style="color: #898b8c">@CaluclatePost(@indxPosts, _posts.Count)</p> /
+                            <p style="color: #898b8c">@allPosts.Count</p>
                         </button>
 
                         @if (@SetActiveBtnNext())
                         {
-                            <button class="btnSort" style="background: @strBgColors[2]" @onclick="@NextPage">
-                                <p style="color: @strColors[2]">Next</p>
+                            <button class="btnSort" style="background: #f6f7f8" @onclick="@NextPage">
+                                <p >Next</p>
                             </button>
                         }
 

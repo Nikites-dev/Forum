@@ -114,12 +114,12 @@
 
                 </div>
 
-                <CreateComment CurrentPost="PostChoose"/>
+                <CreateComment onDataChanged="@OnDataChanged" CurrentPost="PostChoose"/>
 
                 <div class="contentComments">
-                    @if (@PostChoose.Comments != null)
+                    @if (PostChoose.Comments != null)
                     {
-                        @foreach (var comment in @PostChoose.Comments)
+                        @foreach (var comment in PostChoose.Comments)
                         {
                             <div class="commentField">
 
@@ -179,9 +179,18 @@
     [Parameter]
     public Post PostChoose { get; set; }
 
+    private List<Comment> comments = new List<Comment>();
+    private String Text { get; set; }
+
     Post selectPost = new Post();
     // [Parameter]
     // public bool HiddenContent { get; set; }
+
+
+    protected override void OnInitialized()
+    {
+     //   comments =  PostChoose.Comments;
+    }
 
     void ShowCheck()
     {
@@ -193,6 +202,13 @@
     {
         User user = UserDbConnection.GetUserByUsername(username);
         return user.NameImage;
+    }
+
+    private void OnDataChanged(String text)
+    {
+        Text = text;
+        PostChoose.Comments =  PostChoose.Comments;
+        StateHasChanged();
     }
 
 
