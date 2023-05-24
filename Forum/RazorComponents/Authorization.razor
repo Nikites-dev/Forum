@@ -126,16 +126,26 @@
             CheckFields(colorGreen, colorRed);
             if (itemData[0] != "" && itemData[1] != "" && itemData[2] != ""  && itemData[3] != "" && itemData[2] == itemData[3])
             {
-                User newUser = new User();
-                newUser.Username = itemData[0]; 
-                newUser.Email = itemData[1];
-                newUser.Password = itemData[2];
+                if (UserDbConnection.GetUserByUsername(itemData[0].ToString()) == null)
+                {
+                    User newUser = new User();
+                    newUser.Username = itemData[0]; 
+                    newUser.Email = itemData[1];
+                    newUser.Password = itemData[2];
                 
-                UserDbConnection.AddToDatabase(newUser);
-                userConnect.isLoginUser = newUser;
-                NavigationManager.NavigateTo("profile");
-                IsActiveCard = true;
-                Snackbar.Add("Sign up success!", Severity.Success, config => { config.ShowCloseIcon = false; });
+                    UserDbConnection.AddToDatabase(newUser);
+                    userConnect.isLoginUser = newUser;
+                    NavigationManager.NavigateTo("profile");
+                    IsActiveCard = true;
+                    Snackbar.Add("Sign up success!", Severity.Success, config => { config.ShowCloseIcon = false; });
+                    itemColors[0] = colorGreen;
+                }
+                else
+                {
+                    itemColors[0] = colorRed;
+                    Snackbar.Add("Username already exists!", Severity.Error, config => { config.ShowCloseIcon = false; });
+                }
+
             }
             else
             {

@@ -563,8 +563,15 @@
       //  GetPosts();
        
         SortPosts(crntSort);
-        
-       NavigationManager.NavigateTo("/");
+
+        if (IsProflie)
+        {
+            NavigationManager.NavigateTo("profile");
+        } else
+        {
+            NavigationManager.NavigateTo("/");
+        }
+       
     }
     
     void PreviosPage()
@@ -576,7 +583,13 @@
         SortPosts(crntSort);
         
 
-      NavigationManager.NavigateTo("/");
+        if (IsProflie)
+        {
+            NavigationManager.NavigateTo("profile");
+        } else
+        {
+            NavigationManager.NavigateTo("/");
+        }
     }
 
     void DeletePost(Post post)
