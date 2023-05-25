@@ -8,8 +8,7 @@
 
 
 <div hidden="@IsActiveCard" class="cardSign">
-    
-     <div class="rowContent">
+    <div class="rowContent">
             <h3>@titleSign</h3>
      </div>
     
@@ -23,7 +22,6 @@
         <input class="inputCard" @bind-value="@itemData[1]"/>
     </div>
 
-
     <div hidden="@hidenPassword" class="rowContent">
         <p style="  color: @itemColors[2]">Password</p>
         <input type="password" class="inputCard" @bind-value="@itemData[2]"/>
@@ -33,27 +31,22 @@
         <p style="color: @itemColors[3]">Confirm password</p>
         <input type="password" class="inputCard" @bind-value="@itemData[3]"/>
     </div>
-        
-    
 
     <button class="btnSign" @onclick="@isValidate">@titleSign</button>
     <br/>
-    <div>
-        <p>Already have an account? <span style="color: #4807ed" @onclick="@ChangeSignMethod">@txtSign</span></p> 
-    </div>
- 
-    
- 
-
-    @* <button @onclick="@(async () => { *@
-    @*     // изменение состояния компонента *@
-    @*         errTitle = "Новое значение"; *@
-    @*     // вызов метода StateHasChanged() для обновления компонента *@
-    @*     await InvokeAsync(StateHasChanged); *@
-    @* })">Обновить компонент</button> *@
-    
+    @if (isSignUp)
+    {
+        <div>
+            <p>Already have an account? <span style="color: #4807ed" @onclick="@ChangeSignMethod">@txtSign</span></p> 
+        </div>
+    }
+    else
+    {
+        <div>
+            <p>Have no account? <span style="color: #4807ed" @onclick="@ChangeSignMethod">@txtSign</span></p> 
+        </div>
+    }
 </div>
-
 
 @code
 {
@@ -82,7 +75,6 @@
     String titleSign = "Sign up";
     String txtSign = "Sign in";
     bool isSignUp = true;
-    
     bool isError = false;
     
     // bool hideLabel = true;
@@ -105,7 +97,6 @@
     {
         Snackbar.Clear();
         Snackbar.Configuration.PositionClass = position;
-      
     }
     
     protected override void OnInitialized()
@@ -120,7 +111,6 @@
 
     public void isValidate()
     {
-       
         if (isSignUp)
         {
             CheckFields(colorGreen, colorRed);
@@ -152,7 +142,6 @@
                     itemColors[0] = colorRed;
                     Snackbar.Add("Username already exists!", Severity.Error, config => { config.ShowCloseIcon = false; });
                 }
-
             }
             else
             {
@@ -161,7 +150,6 @@
                 errTxt = "text3";
                 Snackbar.Add("Field all fields!", Severity.Error, config => { config.ShowCloseIcon = false; });
             }
-
         }
         else
         {
@@ -229,7 +217,6 @@
             isSignUp = false;
             titleSign = "Sign in";
             txtSign = "Sign up";
-            
             
             hidenEmail = true;
             hidenConfirmP = true;

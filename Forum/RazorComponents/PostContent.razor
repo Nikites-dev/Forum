@@ -61,7 +61,6 @@
                                 <p>@post.Username.ToString()</p>
                                 <p> posted by <span>@post.CreatePost.ToString("dd.MM.yy HH:mm")</span></p>
                             </div>
-                            
                         </div>
                         
                         @if (BehaviourService.isProfile && isShowDelete)
@@ -77,8 +76,6 @@
                                 <p class="postInterest"> @post.Interest.ToString()</p>
                             </div>    
                         }
-                        
-                        
                     </div>
                     
                     @if (post.Text.Length < 20)
@@ -108,8 +105,6 @@
                             <img class="imgPost" src="imgSource/@post.NameImage" alt="img"/>
                         </div>    
                     }
-                      
-                    
                     
                     <div class="rowCard">
 
@@ -124,8 +119,6 @@
                                 <button class="btnComment" @onclick="(() => CommmentRemote(post))">add first comment</button>
                             }    
                         }
-                        
-                        
                     </div>
                 </div>
             </div>
@@ -141,8 +134,7 @@
         {
             <div class="footer">
                 <div class="sortBox2">
-
-                     <button class="btnSort" style="background: white" @onclick="@NextPage">
+                    <button class="btnSort" style="background: white" @onclick="@NextPage">
                         <p style="color: white">posts: </p>
                         <p style="color: white">@_posts.Count</p>
                     </button>
@@ -163,17 +155,12 @@
                                 <p >Next</p>
                             </button>
                         }
-
                     </div>
-
-
-
-
+                    
                     <button class="btnSort" style="background: @strBgColors[2]" @onclick="@NextPage">
                         <p style="color: @strColors[2]">posts: </p>
                         <p style="color: @strColors[2]">@_posts.Count</p>
                     </button>
-
                 </div>
             </div>
         }
@@ -187,8 +174,6 @@
     
     <CommentPost PostChoose="@selectPost"/>
 </div>
-
-
 
 @code {
     List<Comment> comments;
@@ -257,7 +242,6 @@
             OnValueChangedAsync();
         }
     }
-    
 
     [Parameter]
     public String DataChange
@@ -273,11 +257,8 @@
     {
         BehaviourService.isShowCommentContent = true;
         StateHasChanged();
-        //GetPosts();
         GetPosts();
-        //OnTopicSelect += GetPosts;
         DataUpdating();
-        // BehaviourService.isProfile = false;
         SortPosts();
     }
     
@@ -291,56 +272,26 @@
         GetPosts();
         StateHasChanged();
     }
-
-  
-
-
+    
     protected override async Task OnParametersSetAsync()
     {
         await OnValueChangedAsync(); // вызываем метод при каждом изменении параметров компонента
     }
     
-    
     private async Task OnValueChangedAsync()
     {
         indxPosts = 0;
         GetPosts();
-     
         SortPosts(crntSort);
-       
         StateHasChanged();
     }
-    
-    
-    
+
     public async Task DataUpdating()
     {
-     //   while(true) {
-            // if (_currentListPosts != PostService.posts)
-            // {
-            //     _currentListPosts = PostService.posts;
-            //     GetPosts();
-            // }    
-            //
-
-            _currentInterest = Filter;  
+        _currentInterest = Filter;  
         GetPosts();
-            // if (_currentInterest != BehaviourService.SelectInterest)
-            // {
-            //     _currentInterest = BehaviourService.SelectInterest;
-            //     
-            // }      
-            
-            // _currentInterest = BehaviourService.SelectInterest;
-            // GetPosts();
-            
-            // if (RegUser != null && SortName == "profile")
-            // {
-            //     _posts = PostDbConnection.FindUserPostsByUsername(RegUser.Username);
-            // } 
-            StateHasChanged();
-            await Task.Delay(1000);
-    //    }
+        StateHasChanged();
+        await Task.Delay(1000);
     }
 
     String? GetUserImg(String username)
@@ -356,10 +307,8 @@
 
     void GetPosts()
     {
-
         if (BehaviourService.isProfile)
         {
-            
             try
             {
                 if(Filter == null || Filter == String.Empty)
@@ -369,14 +318,12 @@
                 else
                 {
                     _posts = PostDbConnection.FindUserPostsByUsername(RegUser.Username).Where(x => x.Interest == Filter).ToList();
-                   // _posts = PostDbConnection.FindUserPostsByInterest(Filter);    
                 }
             }
             catch (Exception e)
             {
                 _posts = PostDbConnection.FindUserPostsByUsername(RegUser.Username);
             }
-            
         }
         else
         {
@@ -396,12 +343,9 @@
                 _posts = PostService.GetPosts();
             }
         }
-        
         SearchChanged();
     }
-
-   
-
+    
     void PutLike(Post post)
     {
         bool alreadyLike = CheckLike(post);
@@ -430,8 +374,7 @@
                 }
             }
         }
-
-       return alreadyLike;
+        return alreadyLike;
     }
 
     void CommmentRemote(Post post)
@@ -439,8 +382,7 @@
         selectPost = post;
         BehaviourService.isShowCommentContent = false;
     }
-
-
+    
     void OnClickSort(String sortName)
     {
         indxPosts = 0;
@@ -520,7 +462,6 @@
                     break;
             }
             
-            
             if (indxPosts + countPosts < allPosts.Count)
             {
                 _posts = allPosts.GetRange(indxPosts, countPosts);
@@ -535,7 +476,6 @@
                 {
                     _posts = null;
                 }
-               
             }
         }
         catch (Exception e)
@@ -583,7 +523,6 @@
         if (isBold)
         {
             return "bold";
-           
         }
         return "";
     }
@@ -591,8 +530,6 @@
     void NextPage()
     {
         indxPosts += countPosts;
-      //  GetPosts();
-       
         SortPosts(crntSort);
 
         if (IsProflie)
@@ -602,18 +539,14 @@
         {
             NavigationManager.NavigateTo("/");
         }
-       
     }
     
     void PreviosPage()
     {
         indxPosts -= countPosts;
         GetPosts();
-
-        
         SortPosts(crntSort);
         
-
         if (IsProflie)
         {
             NavigationManager.NavigateTo("profile");
@@ -658,9 +591,6 @@
     }
     else
     {
-        // _posts.Clear();
-        // GetPosts();
-
         _posts = _posts.Where(
             x => x.Text.ToLower().Contains(Search) ||
                  x.Username.ToLower().Contains(Search) ||

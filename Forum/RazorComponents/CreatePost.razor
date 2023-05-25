@@ -33,9 +33,6 @@
                 <span class="title"><img class="imgtool" src="icons/Image.svg" alt="img"/></span>
                 <InputFile id="filePicker" class="invisible" OnChange="@OnSubmit" multiple></InputFile>
             </label>
-
-
-
             @* <p>@valueInterest</p> *@
 
         </div>
@@ -43,8 +40,6 @@
             @* <label class="control-label">Message</label> *@
             <textarea style="font-style: @fontStyle; font-weight: @fontWeight" rows="4" placeholder="What are your thoughts?" value="@EmailMessage" @onchange="@((args) => EmailMessage = args.Value.ToString())"></textarea>
         </div>
-
-
     </div>
     @if (fileName != null)
     {
@@ -100,7 +95,6 @@
         {
             fileName = listNames[0].ToString();
         }
-        
     }
     
     void CreateNewPost()
@@ -141,7 +135,6 @@
             PostDbConnection.AddToDatabase(post);
             FileSystemService.UploadCreateImgToDb();
 
-
             valueInterest = "";
             emailMessage = "";
             fileName = null;
@@ -154,8 +147,6 @@
             Console.WriteLine(e);
             Snackbar.Add("Something wrong!", Severity.Warning, config => { config.ShowCloseIcon = false; });
         }
-        
-
         StateHasChanged();
     }
     
@@ -191,7 +182,6 @@
         {
             try
             {
-                // fileName = file.Name;
                 Stream stream = file.OpenReadStream();
                 var path = $"{Directory.CreateDirectory(Directory.GetCurrentDirectory() + "/wwwroot/imgCreate/")}{file.Name}";
                 path = path.Replace("/", @"\");
@@ -199,7 +189,6 @@
                 await stream.CopyToAsync(fs);
                 stream.Close();
                 fs.Close();
-               // StateHasChanged();
             }
             catch (Exception ex)
             {
@@ -262,7 +251,6 @@
             fontWeight = "bold";
         }
     }
-    
     
     [Parameter]
     public Action<String> onDataChanged { get; set; }

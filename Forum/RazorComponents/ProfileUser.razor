@@ -15,20 +15,13 @@
             {
                 <img class="userImg" src="imgUser/@fileName" alt=" "/>
             }
-            @* <div class="inputFile"> *@
-                @* <InputFile OnChange="@OnSubmit" class="invisible" multiple type="file"/> *@
 
-            @* </div> *@
-            
             <label for="filePicker2" class="label">
               <span class="title"><img class="imgtool" src="icons/Image.svg" alt="img"/></span>
 
                 <InputFile id="filePicker2" class="invisible" OnChange="@OnSubmit" multiple></InputFile>
             </label>
-            
         </div>
-    
-        
         
         <div class="boxEnd">
             <h3>@CrntUser.Username.ToString()</h3>
@@ -64,7 +57,6 @@
                 </div>
             </div>
             
-          
               <button class="btnLogOut" @onclick="@ClickSignOut"><img src="icons/LogOut.svg"> <p>Log Out</p></button>
         </div> 
     }
@@ -107,7 +99,6 @@
                 await stream.CopyToAsync(fs);
                 stream.Close();
                 fs.Close();
-               // StateHasChanged();
             }
             catch (Exception ex)
             {
@@ -120,7 +111,6 @@
         {
             ConfirmImage(fileName);
         }
-     //   NavigationManager.NavigateTo("/profile");
         StateHasChanged();
     }
     
@@ -137,5 +127,4 @@
         UserDbConnection.isLoginUser = null;
         NavigationManager.NavigateTo("/");
     }
-
 }

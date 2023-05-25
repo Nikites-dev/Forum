@@ -13,7 +13,6 @@
                 <button @onclick="@ShowCheck">&#66327; Close</button>
             </div>
 
-
             <div class="content2">
                 <div class="card">
                     <div class="postCard">
@@ -62,11 +61,9 @@
                                         <p>@PostChoose.Username.ToString()</p>
                                         <p style="color: #9a9a9a"> posted by <span style="color: #9a9a9a">@PostChoose.CreatePost.ToString("dd.MM HH:mm")</span></p>
                                     </div>
-
                                 </div>
                                 <p class="postInterest"> @PostChoose.Interest.ToString()</p>
                             </div>
-
 
                             @if (PostChoose.Text.Length < 20)
                             {
@@ -97,7 +94,6 @@
                                 </div>
                             }
 
-
                             <div class="rowCard">
                                 @if (PostChoose.Comments != null)
                                 {
@@ -108,7 +104,6 @@
                                     <button class="btnComment" @onclick="(() => CommmentRemote(PostChoose))">add first comment</button>
                                 }
                             </div>
-
                         </div>
                     </div>
 
@@ -143,20 +138,15 @@
                                         <p  style="color: #727272" class="point"></p>
                                         <p  style="color: #727272">@comment.CreateComment.ToString("HH:mm")</p>
                                     }
-                                    
-                                    
                                 </div>
                                 
                                 <div class="textContent">
-                                    
                                     <div class="emptyStick">
                                         &nbsp;
                                     </div>
-                                    
                                     <div class="rowCard">
                                         <p style="font-size: 15px">@comment.Text</p>
                                     </div>
-
                                 </div>
                                 <hr class="rounded">
                             </div>
@@ -167,15 +157,12 @@
                 <div class="footer">
                     <p>ㅤ</p>
                 </div>
-
             </div>
-
         </div>
     }
 </div>
 
 @code {
-
     [Parameter]
     public Post PostChoose { get; set; }
 
@@ -183,9 +170,6 @@
     private String Text { get; set; }
 
     Post selectPost = new Post();
-    // [Parameter]
-    // public bool HiddenContent { get; set; }
-
 
     protected override void OnInitialized()
     {
@@ -210,8 +194,7 @@
         PostChoose.Comments =  PostChoose.Comments;
         StateHasChanged();
     }
-
-
+    
     void PutLike(Post post)
     {
         bool alreadyLike = CheckLike(post);
@@ -246,8 +229,6 @@
                 }
             }
         }
-
         return alreadyLike;
     }
-
 }

@@ -15,8 +15,7 @@
         </div>
         
         <div class="sideRight">
-           @* <PostContent Filter="@Filter" RegUser="null" SortName=""></PostContent> *@
-          <PostContent Filter="@Filter" RegUser="null" Search="@Search" SortName="@Filter" IsProflie="false" onDataChanged="@OnFilterChanged"></PostContent>
+            <PostContent Filter="@Filter" RegUser="null" Search="@Search" SortName="@Filter" IsProflie="false" onDataChanged="@OnFilterChanged"></PostContent>
         </div>
         
     </div>
@@ -43,5 +42,4 @@
         Search = newValue;
         StateHasChanged();
     }
-
 }
