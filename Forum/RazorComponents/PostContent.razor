@@ -15,8 +15,12 @@
         <div class="sortBox">
                 <button class="btnSort" style="background: @strBgColors[0]" @onclick="() => OnClickSort(radioName1)"><img src="icons/Popular.svg" alt="img" style="filter: invert(0.2)"> <p style="color: @strColors[0]">Popular</p></button> 
                 <button class="btnSort" style="background: @strBgColors[1]" @onclick="() => OnClickSort(radioName2)"><img src="icons/Fresh.svg" style="filter: invert(0.2)"/> <p style="color: @strColors[1]">New</p></button> 
-                <button class="btnSort" style="background: @strBgColors[2]" @onclick="() => OnClickSort(radioName3)"><img src="icons/Hot.svg" style="filter: invert(0.2)"/> <p style="color: @strColors[2]">Hot</p></button>
-            </div>
+            <button class="btnSort" style="background: @strBgColors[2]" @onclick="() => OnClickSort(radioName3)"><img src="icons/Hot.svg" style="filter: invert(0.2)"/> <p style="color: @strColors[2]">Hot</p></button>
+            @if (UserDbConnection.isLoginUser != null && IsProflie)
+            {
+                <button class="btnSort" style="background: @strBgColors[3]" @onclick="() => OnClickSort(radioName4)"><img src="icons/Like.svg" style="filter: invert(0.2)"/> <p style="color: @strColors[2]">Likes</p></button>    
+            }
+        </div>
         
         @foreach (var post in _posts)
         {
@@ -60,7 +64,7 @@
                             
                         </div>
                         
-                        @if (BehaviourService.isProfile)
+                        @if (BehaviourService.isProfile && isShowDelete)
                         {
                             <div class="side1">
                                 <button class="postDelete" @onclick="(() => DeletePost(post))"><img src="icons/Delete.svg"/></button>
@@ -191,6 +195,7 @@
     List<Post> _posts;
     bool hideCmntBtn = true;
     bool hideCmntComponent = false;
+    bool isShowDelete = false;
     Post selectPost = new Post()    ;
     String crntSort = "Popular";
     
@@ -201,6 +206,7 @@
     String radioName1 = "Popular";
     String radioName2 = "New";
     String radioName3 = "Hot";
+    String radioName4 = "Likes";
     String _currentInterest = "";
     
     List<Post> _currentListPosts = new List<Post>();
@@ -215,8 +221,8 @@
     String textSearch = "";
     
     List<double> filterInverts = new List<double>() {0.5, 0.5, 0.1};
-    List<String> strBgColors = new List<string>() {"white", "white", "white"};
-    List<String> strColors = new List<string>() {"#898b8c", "#898b8c", "#898b8c"};
+    List<String> strBgColors = new List<string>() {"white", "white", "white", "white"};
+    List<String> strColors = new List<string>() {"#898b8c", "#898b8c", "#898b8c", "#898b8c" };
 
     [Parameter]
     public User RegUser { get; set; }
@@ -456,10 +462,12 @@
                     strBgColors[0] = "#f6f7f8";
                     strBgColors[1] = "white";
                     strBgColors[2] = "white";
+                    strBgColors[3] = "white";
                 
                     strColors[0] = "black";
                     strColors[1] = "#898b8c";
                     strColors[2] = "#898b8c";
+                    strColors[3] = "#898b8c";
 
                     allPosts = _posts.OrderByDescending(o => o.Likes.Count).ToList();
                     
@@ -468,24 +476,47 @@
                     strBgColors[0] = "white";
                     strBgColors[1] = "#f6f7f8";
                     strBgColors[2] = "white";
+                    strBgColors[3] = "white";
                 
                     strColors[0] = "#898b8c";
                     strColors[1] = "black";
                     strColors[2] = "#898b8c";
+                    strColors[3] = "#898b8c";
 
                     allPosts = _posts.OrderByDescending(o => o.CreatePost).ToList();
-
+                    isShowDelete = true;
                     break;
                 case "Hot":
                     strBgColors[0] = "white";
                     strBgColors[1] = "white";
                     strBgColors[2] = "#f6f7f8";
+                    strBgColors[3] = "white";
                 
                     strColors[0] = "#898b8c";
                     strColors[1] = "#898b8c";
                     strColors[2] = "black";
+                    strColors[3] = "#898b8c";
                 
                     allPosts = _posts.OrderByDescending(o => o.Comments.Count).ToList();
+                    isShowDelete = true;
+                    break;
+                    
+                case "Likes":
+                    strBgColors[0] = "white";
+                    strBgColors[1] = "white";
+                    strBgColors[2] = "white";
+                    strBgColors[3] = "#f6f7f8";
+
+                    strColors[0] = "#898b8c";
+                    strColors[1] = "#898b8c";
+                    strColors[2] = "#898b8c";
+                    strColors[3] = "black";
+                
+                    _posts = _posts = PostService.GetPosts();
+
+                    allPosts = _posts.Where(o => o.Likes.Contains(RegUser.Username)).ToList();
+
+                    isShowDelete = false;
                     break;
             }
             
