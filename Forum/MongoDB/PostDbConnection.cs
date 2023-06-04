@@ -10,7 +10,7 @@ namespace Forum.MongoDB
     {
         public static void AddToDatabase(Post post)
         {
-            var client = new MongoClient("mongodb://localhost");
+            var client = new MongoClient("mongodb://root:smPdmfjwgx8geAb8nshrXAwCr8DEy6nrPF3A@37.139.32.247/");
             var database = client.GetDatabase("Forum");
             var collection = database.GetCollection<Post>("Posts");
             collection.InsertOne(post);
@@ -19,7 +19,7 @@ namespace Forum.MongoDB
         
         public static Post FindPostByUsername(String username)
         {
-            var client = new MongoClient("mongodb://localhost");
+            var client = new MongoClient("mongodb://root:smPdmfjwgx8geAb8nshrXAwCr8DEy6nrPF3A@37.139.32.247/");
             var database = client.GetDatabase("Forum");
             var collection = database.GetCollection<Post>("Posts");
             Post post = collection.Find(x => x.Username  == username).FirstOrDefault();
@@ -33,7 +33,7 @@ namespace Forum.MongoDB
         
         public static List<Post> FindPosts()
         {
-            var client = new MongoClient("mongodb://localhost");
+            var client = new MongoClient("mongodb://root:smPdmfjwgx8geAb8nshrXAwCr8DEy6nrPF3A@37.139.32.247/");
             var database = client.GetDatabase("Forum");
             var collection = database.GetCollection<Post>("Posts");
 
@@ -57,7 +57,7 @@ namespace Forum.MongoDB
         
         public static List<Post> FindUserPostsByUsername(String username)
         {
-            var client = new MongoClient("mongodb://localhost");
+            var client = new MongoClient("mongodb://root:smPdmfjwgx8geAb8nshrXAwCr8DEy6nrPF3A@37.139.32.247/");
             var database = client.GetDatabase("Forum");
             var collection = database.GetCollection<Post>("Posts");
 
@@ -81,7 +81,7 @@ namespace Forum.MongoDB
         
         public static int FindUserLikesByUsername(String username)
         {
-            var client = new MongoClient("mongodb://localhost");
+            var client = new MongoClient("mongodb://root:smPdmfjwgx8geAb8nshrXAwCr8DEy6nrPF3A@37.139.32.247/");
             var database = client.GetDatabase("Forum");
             var collection = database.GetCollection<Post>("Posts");
 
@@ -119,7 +119,7 @@ namespace Forum.MongoDB
         
         public static int FindUserCommentsByUsername(String username)
         {
-            var client = new MongoClient("mongodb://localhost");
+            var client = new MongoClient("mongodb://root:smPdmfjwgx8geAb8nshrXAwCr8DEy6nrPF3A@37.139.32.247/");
             var database = client.GetDatabase("Forum");
             var collection = database.GetCollection<Post>("Posts");
 
@@ -156,7 +156,7 @@ namespace Forum.MongoDB
         
         public static List<Post> FindUserPostsByInterest(String interest)
         {
-            var client = new MongoClient("mongodb://localhost");
+            var client = new MongoClient("mongodb://root:smPdmfjwgx8geAb8nshrXAwCr8DEy6nrPF3A@37.139.32.247/");
             var database = client.GetDatabase("Forum");
             var collection = database.GetCollection<Post>("Posts");
 
@@ -180,7 +180,7 @@ namespace Forum.MongoDB
         
         public static void UpdatePost(Post post)
         {
-            var client = new MongoClient("mongodb://localhost");
+            var client = new MongoClient("mongodb://root:smPdmfjwgx8geAb8nshrXAwCr8DEy6nrPF3A@37.139.32.247/");
             var database = client.GetDatabase("Forum");
             var collection = database.GetCollection<Post>("Posts");
             var b = collection.ReplaceOne(x => x._id == post._id, post).ModifiedCount > 0;
@@ -188,7 +188,7 @@ namespace Forum.MongoDB
         
         public static void DeletePost(Post post)
         {
-            var client = new MongoClient("mongodb://localhost");
+            var client = new MongoClient("mongodb://root:smPdmfjwgx8geAb8nshrXAwCr8DEy6nrPF3A@37.139.32.247/");
             var database = client.GetDatabase("Forum");
             var collection = database.GetCollection<Post>("Posts");
             var unit = collection.DeleteOne(x => x._id == post._id);

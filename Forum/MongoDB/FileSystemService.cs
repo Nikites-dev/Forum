@@ -23,7 +23,7 @@ namespace Forum.MongoDB
 
         public List<String> UploadImageToDb()
         {
-            var client = new MongoClient("mongodb://localhost");
+            var client = new MongoClient("mongodb://root:smPdmfjwgx8geAb8nshrXAwCr8DEy6nrPF3A@37.139.32.247/");
             var database = client.GetDatabase("Forum");
             List<String> listNames = new List<string>();
 
@@ -49,7 +49,7 @@ namespace Forum.MongoDB
             String path = $"{Directory.CreateDirectory(Directory.GetCurrentDirectory() + pathFolder)}";
             path = path.Replace("/", @"\");
             
-            var client = new MongoClient("mongodb://localhost");
+            var client = new MongoClient("mongodb://root:smPdmfjwgx8geAb8nshrXAwCr8DEy6nrPF3A@37.139.32.247/");
             var database = client.GetDatabase("Forum");
             List<String> listNames = new List<string>();
             List<String> imgNames = GetNamesOfDir(folder);
@@ -70,7 +70,7 @@ namespace Forum.MongoDB
         
         public void UploadCreateImgToDb()
         {
-            var client = new MongoClient("mongodb://localhost");
+            var client = new MongoClient("mongodb://root:smPdmfjwgx8geAb8nshrXAwCr8DEy6nrPF3A@37.139.32.247/");
             var database = client.GetDatabase("Forum");
 
 
@@ -93,7 +93,7 @@ namespace Forum.MongoDB
             List<String> imgNames = GetFindByName();
             List<String> loadImgNames = new List<string>();
 
-            var client = new MongoClient("mongodb://localhost");
+            var client = new MongoClient("mongodb://root:smPdmfjwgx8geAb8nshrXAwCr8DEy6nrPF3A@37.139.32.247/");
             var database = client.GetDatabase("Forum");
             var gridFS = new GridFSBucket(database);
 
@@ -125,7 +125,7 @@ namespace Forum.MongoDB
             List<String> imgNames = GetFindByName();
             List<String> loadImgNames = new List<string>();
 
-            var client = new MongoClient("mongodb://localhost");
+            var client = new MongoClient("mongodb://root:smPdmfjwgx8geAb8nshrXAwCr8DEy6nrPF3A@37.139.32.247/");
             var database = client.GetDatabase("Forum");
             var gridFS = new GridFSBucket(database);
 
@@ -193,7 +193,7 @@ namespace Forum.MongoDB
 
         public static List<String> GetFindByName()
         {
-            var client = new MongoClient("mongodb://localhost");
+            var client = new MongoClient("mongodb://root:smPdmfjwgx8geAb8nshrXAwCr8DEy6nrPF3A@37.139.32.247/");
             var database = client.GetDatabase("Forum");
             var gridFS = new GridFSBucket(database);
             var collection = database.GetCollection<GridFSFileInfo>("fs.files");
@@ -205,7 +205,7 @@ namespace Forum.MongoDB
 
         public static void ClearDB()
         {
-            var client = new MongoClient("mongodb://localhost");
+            var client = new MongoClient("mongodb://root:smPdmfjwgx8geAb8nshrXAwCr8DEy6nrPF3A@37.139.32.247/");
             client.GetDatabase("Forum").DropCollectionAsync("fs.files");
             client.GetDatabase("Forum").DropCollectionAsync("fs.chunks");
         }
@@ -258,7 +258,7 @@ namespace Forum.MongoDB
 
         public static async Task UploadImageToDbAsync(Stream fs, string name)
         {
-            var client = new MongoClient("mongodb://localhost");
+            var client = new MongoClient("mongodb://root:smPdmfjwgx8geAb8nshrXAwCr8DEy6nrPF3A@37.139.32.247/");
             var database = client.GetDatabase("Forum");
             var gridFS = new GridFSBucket(database);
 
